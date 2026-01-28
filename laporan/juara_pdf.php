@@ -4,7 +4,7 @@ error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 include"../config/koneksi.php";
 $sql_panitia = $koneksi->query("SELECT nama_kegiatan FROM tb_panitia LIMIT 1");
 $data_panitia = $sql_panitia->fetch_assoc();
-$nama_kegiatan = isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung ' . date('Y');
+$nama_kegiatan = (isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung') . ' ' . date('Y');
 require('../assets/vendor/setasign/fpdf/fpdf.php');
 include "../admin/page/juaraumum/juara_logic.php";
 
@@ -49,6 +49,25 @@ foreach($stats as $pangkalan => $data) {
     $pdf->Cell(3, 1, $predikat, 1, 0, 'C');
     $pdf->ln(1);
 }
+
+$pdf->ln(1);
+$pdf->SetFont('Arial', '', 10);
+// Signature block
+// Page width is Legal (approx 21.59cm width? No, 'cm' unit, Legal size is 21.59 x 35.56 cm)
+// Default margins are 1cm. Content width approx 19.5cm.
+// We want signature on right.
+$pdf->Cell(12, 0.5, '', 0, 0); // Spacer
+$pdf->Cell(7, 0.5, $tempat . ', ' . $tanggal_indo, 0, 1, 'C');
+$pdf->Cell(12, 0.5, '', 0, 0); // Spacer
+$pdf->Cell(7, 0.5, 'Ketua Panitia', 0, 1, 'C');
+$pdf->ln(2.5);
+$pdf->SetFont('Arial', 'BU', 10);
+$pdf->Cell(12, 0.5, '', 0, 0); // Spacer
+$pdf->Cell(7, 0.5, $ketua_panitia, 0, 1, 'C');
+
+$pdf->SetFont('Arial', 'I', 8);
+$pdf->ln(1);
+$pdf->Cell(0, 0.5, 'Dicetak pada: ' . date('d-m-Y H:i:s'), 0, 1, 'L');
 
 ob_end_clean();
 $pdfContent = $pdf->Output('S');

@@ -4,7 +4,14 @@ ob_start();
 include"../config/koneksi.php";
 $sql_panitia = $koneksi->query("SELECT nama_kegiatan FROM tb_panitia LIMIT 1");
 $data_panitia = $sql_panitia->fetch_assoc();
-$nama_kegiatan = isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung ' . date('Y');
+$nama_kegiatan = (isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung') . ' ' . date('Y');
+$tempat = isset($data_panitia['tempat']) ? $data_panitia['tempat'] : 'Jepara';
+$ketua_panitia = isset($data_panitia['ketua_panitia']) ? $data_panitia['ketua_panitia'] : '..................';
+$bulan_indo = array(
+    1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni',
+    7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+);
+$tanggal_indo = date('d') . ' ' . $bulan_indo[(int)date('m')] . ' ' . date('Y');
 $content = '
 <page>
 	<style type="text/css">
@@ -63,6 +70,20 @@ $content = '
         }
         $content.='
 	</table>
+    <br>
+    <table style="width: 100%; border: none;">
+        <tr>
+            <td style="width: 70%;"></td>
+            <td style="width: 30%; text-align: center;">
+                ' . $tempat . ', ' . $tanggal_indo . '<br>
+                Ketua Panitia<br>
+                <br><br><br>
+                <b><u>' . $ketua_panitia . '</u></b>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <div style="text-align: left; font-style: italic; font-size: 10px;">Dicetak pada: ' . date('d-m-Y H:i:s') . '</div>
 </page>
 ';
 require '../assets/vendor/autoload.php';

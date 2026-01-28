@@ -3,7 +3,7 @@ ob_start();
 include"../config/koneksi.php";
 $sql_panitia = $koneksi->query("SELECT nama_kegiatan FROM tb_panitia LIMIT 1");
 $data_panitia = $sql_panitia->fetch_assoc();
-$nama_kegiatan = isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung ' . date('Y');
+$nama_kegiatan = (isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung') . ' ' . date('Y');
 $content = '
 
 <page>
@@ -63,6 +63,20 @@ $content = '
         }
         $content.='
 	</table>
+    <br>
+    <table style="width: 100%; border: none;">
+        <tr>
+            <td style="width: 70%;"></td>
+            <td style="width: 30%; text-align: center;">
+                ' . $tempat . ', ' . $tanggal_indo . '<br>
+                Ketua Panitia<br>
+                <br><br><br>
+                <b><u>' . $ketua_panitia . '</u></b>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <div style="text-align: left; font-style: italic; font-size: 10px;">Dicetak pada: ' . date('d-m-Y H:i:s') . '</div>
 </page>
 
 ';

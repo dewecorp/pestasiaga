@@ -2,7 +2,7 @@
 include "../config/koneksi.php";
 $sql_panitia = $koneksi->query("SELECT nama_kegiatan FROM tb_panitia LIMIT 1");
 $data_panitia = $sql_panitia->fetch_assoc();
-$nama_kegiatan = isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung ' . date('Y');
+$nama_kegiatan = (isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung') . ' ' . date('Y');
 $filename = "barung-berprestasi-putri-(" . date('d-m-Y') . ").xls";
 header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 header("Content-Disposition: attachment; filename=\"$filename\"");
@@ -50,3 +50,17 @@ header("Cache-Control: max-age=0");
         ?>
     </tbody>
 </table>
+<br>
+<table border="0">
+    <tr>
+        <td colspan="3"></td>
+        <td colspan="2" align="center">
+            <?= $tempat ?>, <?= $tanggal_indo ?><br>
+            Ketua Panitia<br>
+            <br><br><br>
+            <b><u><?= $ketua_panitia ?></u></b>
+        </td>
+    </tr>
+</table>
+<br>
+<div style="text-align: left; font-style: italic;">Dicetak pada: <?= date('d-m-Y H:i:s') ?></div>

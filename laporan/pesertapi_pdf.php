@@ -40,6 +40,20 @@ $content = '
         }
         $content.='
 	</table>
+    <br>
+    <table style="width: 100%; border: none;">
+        <tr>
+            <td style="width: 60%;"></td>
+            <td style="width: 40%; text-align: center;">
+                ' . $tempat . ', ' . $tanggal_indo . '<br>
+                Ketua Panitia<br>
+                <br><br><br>
+                <b><u>' . $ketua_panitia . '</u></b>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <div style="text-align: left; font-style: italic; font-size: 10px;">Dicetak pada: '.date('d-m-Y H:i:s').'</div>
 </page>
 ';
 require '../assets/vendor/autoload.php';

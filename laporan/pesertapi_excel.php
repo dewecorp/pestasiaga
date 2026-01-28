@@ -37,3 +37,17 @@ while ($data = $sql->fetch_assoc()) {
 	}
 	?>
 </table>
+<br>
+<table border="0">
+    <tr>
+        <td colspan="2"></td>
+        <td colspan="2" align="center">
+            <?= $tempat ?>, <?= $tanggal_indo ?><br>
+            Ketua Panitia<br>
+            <br><br><br>
+            <b><u><?= $ketua_panitia ?></u></b>
+        </td>
+    </tr>
+</table>
+<br>
+<div style="text-align: left; font-style: italic;">Dicetak pada: <?= date('d-m-Y H:i:s') ?></div>
