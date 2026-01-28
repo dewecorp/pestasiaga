@@ -28,8 +28,14 @@ $data = $sql->fetch_assoc();
                             <form action="#" method="POST" enctype="multipart/form-data">
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <label for="ketua">Ketua Panitia</label>
+                                        <label for="nama_kegiatan">Nama Kegiatan</label>
                                         <input type="hidden" name="id" value="<?=$data['id_panitia'];?>">
+                                        <input type="text" name="nama_kegiatan" value="<?= isset($data['nama_kegiatan']) ? $data['nama_kegiatan'] : '' ?>" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="form-line">
+                                        <label for="ketua">Ketua Panitia</label>
                                         <input type="text" name="ketua" value="<?=$data['ketua_panitia']; ?>" class="form-control" />
                                     </div>
                                 </div>
@@ -41,7 +47,7 @@ $data = $sql->fetch_assoc();
                                 </div>
                                 <div class="form-group">
                                     <div class="form-line">
-                                        <label for="kwarran">Ka. Kwarran</label>
+                                        <label for="kwarran">Ketua Kwartir</label>
                                         <input type="text" name="kwarran" value="<?=$data['ka_kwarran']; ?>" class="form-control" />
                                     </div>
                                 </div>
@@ -73,12 +79,17 @@ $data = $sql->fetch_assoc();
     $ketua = $_POST['ketua'];
     $juri = $_POST['juri'];
     $kwarran = $_POST['kwarran'];
+    $nama_kegiatan = $_POST['nama_kegiatan'];
+    $cek = $koneksi->query("SHOW COLUMNS FROM tb_panitia LIKE 'nama_kegiatan'");
+    if ($cek->num_rows == 0) {
+    $koneksi->query("ALTER TABLE tb_panitia ADD nama_kegiatan VARCHAR(255) NOT NULL DEFAULT ''");
+    }
     $sumber = $_FILES['logo']['tmp_name'];
     $ekstensi = explode(".", $_FILES['logo']['name']);
     $nama_logo = "logo-".round(microtime(true)).".".end($ekstensi);
     $upload = move_uploaded_file($sumber, "assets/images/".$nama_logo);
     if ($upload) {
-    $koneksi->query("UPDATE tb_panitia SET logo='$nama_logo' WHERE id_panitia='$id'");
+    $koneksi->query("UPDATE tb_panitia SET nama_kegiatan='$nama_kegiatan', logo='$nama_logo' WHERE id_panitia='$id'");
     $logo_lama = $_POST['logo_lama'];
     unlink("assets/images/".$logo_lama); ?>
     <script>
@@ -89,7 +100,7 @@ $data = $sql->fetch_assoc();
     <?php
     } else {
     if ($sumber == "") {
-    $koneksi->query("UPDATE tb_panitia SET ketua_panitia='$ketua', ketua_juri='$juri', ka_kwarran='$kwarran' WHERE id_panitia='$id'"); ?>
+    $koneksi->query("UPDATE tb_panitia SET nama_kegiatan='$nama_kegiatan', ketua_panitia='$ketua', ketua_juri='$juri', ka_kwarran='$kwarran' WHERE id_panitia='$id'"); ?>
     <script>
         alert('Data Giat Berhasil Diedit');
         window.location.href = "?page=panitia";

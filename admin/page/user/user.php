@@ -38,6 +38,7 @@ $sql = $koneksi->query("SELECT * FROM tb_user WHERE id ='$id'");
                             <thead>
                                 <tr>
                                     <th style="width: 5px;">No.</th>
+                                    <th>Foto</th>
                                     <th>Username</th>
                                     <th>Password</th>
                                     <th>Nama</th>
@@ -53,6 +54,17 @@ $sql = $koneksi->query("SELECT * FROM tb_user WHERE id ='$id'");
                                 $level = ($data['level'] == 'admin') ? "Admin" : "User"; ?>
                                 <tr>
                                     <td><?=$no++."."; ?></td>
+                                    <td>
+                                        <?php
+                                        $foto = isset($data['foto']) ? $data['foto'] : '';
+                                        if ($foto) {
+                                            echo '<img src="../assets/images/'.$foto.'" alt="Foto" style="height:40px;width:40px;object-fit:cover;border-radius:50%;">';
+                                        } else {
+                                            $initial = strtoupper(substr($data['nama'],0,1));
+                                            echo '<span style="display:inline-flex;align-items:center;justify-content:center;height:40px;width:40px;border-radius:50%;background:#e0e0e0;color:#333;font-weight:bold;">'.$initial.'</span>';
+                                        }
+                                        ?>
+                                    </td>
                                     <td><?=$data['username']; ?></td>
                                     <td><?=$data['password']; ?></td>
                                     <td><?=$data['nama']; ?></td>

@@ -13,10 +13,10 @@ $total_nilai1=null;
 //Query SQL untuk Barung Putra (Join Peserta & Rekap)
 $nama_pangkalan = "";
 $total_nilai = "";
-$sql = $koneksi->query("SELECT p.pangkalan, r.nilai_akhir_pa 
-                        FROM tb_peserta_pa p 
-                        LEFT JOIN tb_rekap r ON p.id_pa = r.id_pa 
-                        ORDER BY p.id_pa ASC");
+$sql = $koneksi->query("SELECT p.pangkalan, r.nilai_akhir_pa
+                        FROM tb_peserta_pa p
+                        LEFT JOIN tb_rekap r ON p.id_pa = r.id_pa
+                        ORDER BY CAST(r.nilai_akhir_pa AS UNSIGNED) DESC");
 while ($data = $sql->fetch_assoc()) {
     $nama = $data['pangkalan'];
     $nilai = isset($data['nilai_akhir_pa']) ? $data['nilai_akhir_pa'] : 0;
@@ -33,7 +33,7 @@ $total_nilai1 = "";
 $sql1 = $koneksi->query("SELECT p.pangkalan, r.nilai_akhir_pi 
                          FROM tb_peserta_pi p 
                          LEFT JOIN tb_rekap_pi r ON p.id_pi = r.id_pi 
-                         ORDER BY p.id_pi ASC");
+                         ORDER BY CAST(r.nilai_akhir_pi AS DECIMAL(10,2)) DESC");
 while ($data = $sql1->fetch_assoc()) {
     $nama = $data['pangkalan'];
     $nilai = isset($data['nilai_akhir_pi']) ? $data['nilai_akhir_pi'] : 0;
@@ -127,6 +127,23 @@ header("location:../login.php");
         background: linear-gradient(45deg, #1b5e20, #4caf50);
         height: 135px;
     }
+    .navbar .navbar-brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 15px;
+        font-size: 16px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 75vw;
+    }
+    .navbar .navbar-brand img {
+        height: 36px;
+        width: auto;
+        display: inline-block;
+        filter: drop-shadow(0 0 1px #ffffff) drop-shadow(0 0 3px #ffffff);
+    }
 
 </style>
 
@@ -156,12 +173,15 @@ header("location:../login.php");
             <div class="navbar-header">
                 <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
                 <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="index.php">PESTA SIAGA KWARRAN KEDUNG <?=date('Y')?></a>
+                <a class="navbar-brand" href="index.php">
+                    <img src="../assets/images/<?=$data['logo']; ?>" alt="Logo" style="height:24px; vertical-align:middle; margin-right:8px;">
+                    <?= strtoupper('Sistem Informasi Nilai'); ?> | <?= isset($data['nama_kegiatan']) ? strtoupper($data['nama_kegiatan']) : '' ?>
+                </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
                 <div class="nav navbar-nav navbar-right" style="padding: 10px;">
                     <div class="pull-right navbar-brand"><?php $date=date('Y-m-d');
-							echo format_hari_tanggal($date)?>
+							echo format_hari_tanggal($date)?><span id="clock"></span>
                     </div>
                 </div>
             </div>
@@ -174,7 +194,15 @@ header("location:../login.php");
             <!-- User Info -->
             <div class="user-info" align="center">
                 <div class="image">
-                    <img src="../assets/images/<?=$data['logo']; ?>" width="70" height="70" alt="User" />
+                    <?php
+                    $foto = isset($tampil['foto']) ? $tampil['foto'] : '';
+                    if (!empty($foto)) {
+                        echo '<img src="../assets/images/'.$foto.'" width="70" height="70" alt="User" style="object-fit:cover;border-radius:50%;box-shadow:0 0 0 2px #ffffff;">';
+                    } else {
+                        $initial = strtoupper(substr($tampil['nama'],0,1));
+                        echo '<span style="display:inline-flex;align-items:center;justify-content:center;height:70px;width:70px;border-radius:50%;background:#e0e0e0;color:#333;font-weight:bold;font-size:28px;box-shadow:0 0 0 2px #ffffff;">'.$initial.'</span>';
+                    }
+                    ?>
                 </div>
                 <div class="info-container">
                     <div class="name" style="color: #000000; font-weight: bold; font-size: 18px; ">
@@ -284,7 +312,7 @@ header("location:../login.php");
             <!-- Footer -->
             <div class="legal">
                 <div class="copyright">
-                    &copy; <?=date('Y')?> <a href="javascript:void(0);">Pesta Siaga Kwarran Kedung</a>
+                    &copy; <?=date('Y')?> <a href="javascript:void(0);">Sistem Informasi Nilai</a>
                 </div>
                 <div class="version">
                     <b>Version: </b> 1.0.0
@@ -452,6 +480,18 @@ header("location:../login.php");
 
     </script>
     <script>
+        function updateClock() {
+            var now = new Date();
+            var h = now.getHours().toString().padStart(2,'0');
+            var m = now.getMinutes().toString().padStart(2,'0');
+            var s = now.getSeconds().toString().padStart(2,'0');
+            var el = document.getElementById('clock');
+            if (el) { el.textContent = ' | ' + h + ':' + m + ':' + s; }
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+    <script>
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'horizontalBar',
@@ -516,6 +556,9 @@ header("location:../login.php");
                 }]
             },
             options: {
+                legend: {
+                    display: false
+                },
                 scales: {
                     yAxes: [{
                         ticks: {
@@ -590,6 +633,9 @@ header("location:../login.php");
                 }]
             },
             options: {
+                legend: {
+                    display: false
+                },
                 scales: {
                     yAxes: [{
                         ticks: {

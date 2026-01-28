@@ -8,7 +8,7 @@
                 <h5 class="modal-title" id="largeModalLabel" align="center">INPUT DATA USER</h5>
             </div>
 
-            <form action="#" method="POST">
+            <form action="#" method="POST" enctype="multipart/form-data">
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="form-line">
@@ -38,6 +38,12 @@
                             </select>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="form-line">
+                            <label for="foto">Foto</label>
+                            <input type="file" name="foto" id="foto" class="form-control" />
+                        </div>
+                    </div>
                 </div>
                 <hr>
                 <div class="modal-footer">
@@ -54,7 +60,18 @@ if (@$_POST['simpan']) {
     $pass  = @$_POST['pass'];
     $nama  = @$_POST['nama'];
     $level = @$_POST['level'];
-    $sql = $koneksi->query("INSERT INTO tb_user (username, password, nama, level) VALUES ('$user', '$pass', '$nama', '$level')");
+    $cek = $koneksi->query("SHOW COLUMNS FROM tb_user LIKE 'foto'");
+    if ($cek->num_rows == 0) {
+        $koneksi->query("ALTER TABLE tb_user ADD foto VARCHAR(255) NOT NULL DEFAULT ''");
+    }
+    $sumber = $_FILES['foto']['tmp_name'];
+    $nama_foto = '';
+    if (!empty($sumber)) {
+        $ekstensi = explode(".", $_FILES['foto']['name']);
+        $nama_foto = "user-".round(microtime(true)).".".end($ekstensi);
+        move_uploaded_file($sumber, "../assets/images/".$nama_foto);
+    }
+    $sql = $koneksi->query("INSERT INTO tb_user (username, password, nama, level, foto) VALUES ('$user', '$pass', '$nama', '$level', '$nama_foto')");
     if ($sql) {
         ?>
 <script>

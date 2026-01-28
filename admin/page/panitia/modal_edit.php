@@ -17,7 +17,19 @@ while ($data = $sql->fetch_assoc()) {
                     <input type="hidden" name="id" value="<?= $data['id_panitia']; ?>">
                     <div class="row">
                         <div class="col-lg-3 form-control-label">
-                            <label for="kwarran">Ka. Kwarran</label>
+                            <label for="nama_kegiatan">Nama Kegiatan</label>
+                        </div>
+                        <div class="col-lg-9">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" name="nama_kegiatan" id="nama_kegiatan" class="form-control" value="<?= isset($data['nama_kegiatan']) ? $data['nama_kegiatan'] : '' ?>">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3 form-control-label">
+                            <label for="kwarran">Ketua Kwartir</label>
                         </div>
                         <div class="col-lg-9">
                             <div class="form-group">
@@ -67,10 +79,15 @@ while ($data = $sql->fetch_assoc()) {
 <?php
 if ($_POST['ganti']) {
 $id = $_POST['id'];
+$nama_kegiatan = $_POST['nama_kegiatan'];
 $ketua = $_POST['ketua'];
 $juri = $_POST['juri'];
 $kwarran = $_POST['kwarran'];
-$koneksi->query("UPDATE tb_panitia SET ketua_panitia='$ketua', ketua_juri='$juri', ka_kwarran='$kwarran' WHERE id_panitia='$id'"); ?>
+$cek = $koneksi->query("SHOW COLUMNS FROM tb_panitia LIKE 'nama_kegiatan'");
+if ($cek->num_rows == 0) {
+$koneksi->query("ALTER TABLE tb_panitia ADD nama_kegiatan VARCHAR(255) NOT NULL DEFAULT ''");
+}
+$koneksi->query("UPDATE tb_panitia SET nama_kegiatan='$nama_kegiatan', ketua_panitia='$ketua', ketua_juri='$juri', ka_kwarran='$kwarran' WHERE id_panitia='$id'"); ?>
 <script>
     Swal.fire({
         position: 'top-center',
