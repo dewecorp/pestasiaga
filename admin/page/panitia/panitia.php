@@ -95,6 +95,26 @@ $sql = $koneksi->query("SELECT * FROM tb_panitia WHERE id_panitia='$id'");
                             <a data-toggle="modal" data-target="#modal_logo<?=$data['id']; ?>"><button class="btn btn-success btn-sm waves-effect"><i class="fa fa-edit"></i> Ganti</button></a>
                         </div>
                     </div>
+                    <div class="section" style="margin-top:20px">
+                        <h4><i class="material-icons">image</i> BACKGROUND LOGIN</h4>
+                        <?php
+							$sql = $koneksi->query("SELECT * FROM tb_panitia");
+							while ($data = $sql->fetch_assoc()) {
+							?>
+                        <table class="table table-bordered">
+                            <tr>
+                                <td align="center">
+                                    <img src="../assets/images/<?=$data['bg']; ?>" width="400" height="200" alt="Background">
+                                </td>
+                            </tr>
+                        </table>
+                        <?php
+							}
+							?>
+                        <div>
+                            <a data-toggle="modal" data-target="#modal_bg<?=$data['id']; ?>"><button class="btn btn-success btn-sm waves-effect"><i class="fa fa-edit"></i> Ganti</button></a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,5 +122,6 @@ $sql = $koneksi->query("SELECT * FROM tb_panitia WHERE id_panitia='$id'");
 <?php
 include "modal_edit.php";
 include "modal_logo.php";
+include "modal_bg.php";
 include "modal_waktu.php";
 ?>

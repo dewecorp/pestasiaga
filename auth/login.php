@@ -43,11 +43,13 @@ header("location:../index.php");
     body {
         background-image: url('../assets/images/<?=$data['bg']; ?>');
         background-size: cover;
+        overflow: hidden;
     }
 
     h1 {
         color: #228B22;
         text-align: center;
+        font-size: 25px;
     }
 
     h4 {
@@ -57,9 +59,7 @@ header("location:../index.php");
 
 </style>
 
-<body>
-
-    <body class="login-page">
+<body class="login-page">
         <div class="login-box">
             <div class="card">
                 <div class="body">
@@ -67,8 +67,8 @@ header("location:../index.php");
                         <div align="center">
                             <img src="../assets/images//<?=$data['logo']; ?>" alt="Login">
                         </div>
-                        <h1>Pesta Siaga <b><?=date('Y')?></b></h1>
-                        <h4>Kwartir Ranting Kedung</h4>
+                        <h1>SISTEM INFORMASI NILAI</h1>
+                        <h4 style="text-transform: uppercase;"><?=$data['nama_kegiatan']; ?> <?=date('Y')?></h4>
                     </div>
                     <div class="alert alert-success">
                         <center>Masukkan Username dan Password Anda</center>
@@ -108,10 +108,9 @@ header("location:../index.php");
         <!-- Custom Js -->
         <script src="../assets/js/admin.js"></script>
         <script src="../assets/js/pages/examples/sign-in.js"></script>
-    </body>
-    <div class="legal align-center" style="color: #ffffff;">
+    <div class="legal align-center" style="color: #ffffff; position: fixed; bottom: 50px; width: 100%; text-align: center;">
         <div class="copyright">
-            Tim IT Kwartir Ranting Kedung &copy; <?=date('Y')?>
+            SISTEM INFORMASI NILAI &copy; <?=date('Y')?>
         </div>
     </div>
 </body>
