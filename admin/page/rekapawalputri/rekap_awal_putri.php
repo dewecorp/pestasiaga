@@ -7,7 +7,7 @@ if (!isset($koneksi)) {
 
 $id = @$_GET['id'];
 
-$sql_taman = $koneksi->query("SELECT * FROM tb_taman ORDER BY id_taman ASC");
+$sql_taman = $koneksi->query("SELECT * FROM tb_taman WHERE nama_taman LIKE '%PUTRI%' ORDER BY id_taman ASC");
 if (!$sql_taman) {
     echo "Query Taman Error: " . $koneksi->error; // Changed die to echo to avoid killing the whole page
 }
@@ -32,7 +32,8 @@ if (!function_exists('map_column_putri')) {
         if (strpos($nama, 'ranking') !== false || strpos($nama, 'rangking') !== false) return 'rangking';
         if (strpos($nama, 'lbb') !== false) return 'lbb';
         if (strpos($nama, 'seni') !== false) return 'seni_budaya';
-        if (strpos($nama, 'lempar') !== false || strpos($nama, 'kereta') !== false) return 'kereta_bola';
+        if (strpos($nama, 'lempar') !== false) return 'lempar_bola';
+        if (strpos($nama, 'kereta') !== false) return 'kereta_bola';
         
         // Fallback: Remove ' putra' or ' putri' and snake_case
         $nama = str_replace([' putra', ' putri'], '', $nama);
@@ -191,7 +192,7 @@ if (!function_exists('map_column_putri')) {
                                     $val = isset($data[$col]) ? $data[$col] : 0;
                                 ?>
                                     <td align="center">
-                                        <input type="number" class="input-nilai" data-column="<?=$col?>" value="<?=$val?>" disabled>
+                                        <input type="number" class="input-nilai" data-column="<?=$col?>" value="<?=$val?>" min="0" max="100" disabled>
                                     </td>
                                 <?php } ?>
                                 <td align="center" class="cell-total"><?=$nilai?></td>
@@ -213,79 +214,147 @@ if (!function_exists('map_column_putri')) {
 </div>
 
 <script>
-(function() {
-    // Wait for jQuery to be loaded
-    var waitForJQuery = setInterval(function() {
-        if (typeof window.jQuery !== 'undefined') {
-            clearInterval(waitForJQuery);
-            var $ = window.jQuery;
+window.addEventListener('load', function() {
+    var $ = window.jQuery;
+    
+    // Ensure SweetAlert2 is available, otherwise fallback
+    var Swal = window.Swal;
+
+    // Unbind previous events to prevent duplicates
+    $(document).off('click', '.btn-edit');
+    $(document).off('click', '.btn-simpan');
+    $(document).off('input', '.input-nilai');
+    
+    // Edit button handler
+    $(document).on('click', '.btn-edit', function() {
+        var tr = $(this).closest('tr');
+        tr.find('.input-nilai').prop('disabled', false);
+        $(this).hide();
+        tr.find('.btn-simpan').show();
+    });
+
+    // Save button handler
+    $(document).on('click', '.btn-simpan', function() {
+        var tr = $(this).closest('tr');
+        var id = tr.data('id');
+        var peserta_id = tr.data('peserta-id');
+        var values = {};
+        var isValid = true;
+        
+        tr.find('.input-nilai').each(function() {
+            var col = $(this).data('column');
+            var val = $(this).val();
             
-            $(document).ready(function() {
-                // Use event delegation for dynamic elements (DataTables)
-                $(document).on('click', '.btn-edit', function() {
-                    var tr = $(this).closest('tr');
-                    tr.find('.input-nilai').prop('disabled', false);
-                    $(this).hide();
-                    tr.find('.btn-simpan').show();
-                });
+            // Validation
+            if (parseInt(val) > 100) {
+                if (Swal) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Peringatan',
+                        text: 'Nilai tidak boleh lebih dari 100!'
+                    });
+                } else {
+                    alert('Nilai tidak boleh lebih dari 100!');
+                }
+                $(this).focus();
+                isValid = false;
+                return false; // Break loop
+            }
+            if (parseInt(val) < 0) {
+                if (Swal) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Peringatan',
+                        text: 'Nilai tidak boleh kurang dari 0!'
+                    });
+                } else {
+                    alert('Nilai tidak boleh kurang dari 0!');
+                }
+                $(this).focus();
+                isValid = false;
+                return false; // Break loop
+            }
+            
+            values[col] = val;
+        });
 
-                $(document).on('click', '.btn-simpan', function() {
-                    var tr = $(this).closest('tr');
-                    var id = tr.data('id');
-                    var peserta_id = tr.data('peserta-id');
-                    var values = {};
+        if (!isValid) return;
+
+        $.ajax({
+            url: 'ajax/update_nilai.php',
+            type: 'POST',
+            data: {
+                type: 'putri',
+                id: id,
+                peserta_id: peserta_id,
+                values: values
+            },
+            dataType: 'json',
+            success: function(response) {
+                if (response.status === 'success') {
+                    if (response.new_id) {
+                        tr.data('id', response.new_id);
+                    }
+                    tr.find('.input-nilai').prop('disabled', true);
+                    tr.find('.btn-simpan').hide();
+                    tr.find('.btn-edit').show();
                     
-                    tr.find('.input-nilai').each(function() {
-                        var col = $(this).data('column');
-                        var val = $(this).val();
-                        values[col] = val;
+                    // Update total
+                    tr.find('.cell-total').text(response.total);
+                    
+                    if (Swal) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: 'Nilai berhasil disimpan!',
+                            timer: 1500,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        alert('Nilai berhasil disimpan!');
+                    }
+                } else {
+                    if (Swal) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Gagal menyimpan: ' + response.message
+                        });
+                    } else {
+                        alert('Gagal menyimpan: ' + response.message);
+                    }
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+                if (Swal) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Terjadi Kesalahan',
+                        text: 'Error: ' + error
                     });
-
-                    $.ajax({
-                        url: 'ajax/update_nilai.php',
-                        type: 'POST',
-                        data: {
-                            type: 'putri',
-                            id: id,
-                            peserta_id: peserta_id,
-                            values: values
-                        },
-                        dataType: 'json',
-                        success: function(response) {
-                            if (response.status === 'success') {
-                                if (response.new_id) {
-                                    tr.data('id', response.new_id);
-                                }
-                                tr.find('.input-nilai').prop('disabled', true);
-                                tr.find('.btn-simpan').hide();
-                                tr.find('.btn-edit').show();
-                                
-                                // Update total
-                                tr.find('.cell-total').text(response.total);
-                                
-                                // SweetAlert success (if available, otherwise alert)
-                                if (typeof Swal !== 'undefined') {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Berhasil',
-                                        text: 'Nilai berhasil disimpan!',
-                                        timer: 1500,
-                                        showConfirmButton: false
-                                    });
-                                } else {
-                                    alert('Nilai berhasil disimpan!');
-                                }
-                            } else {
-                                alert('Gagal menyimpan: ' + response.message);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            alert('Terjadi kesalahan: ' + error);
-                        }
-                    });
+                } else {
+                    alert('Terjadi kesalahan: ' + error);
+                }
+            }
+        });
+    });
+    
+    // Input validation on type
+    $(document).on('input', '.input-nilai', function() {
+        var val = parseInt($(this).val());
+        if (val > 100) {
+            $(this).val(100);
+            if (Swal) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Peringatan',
+                    text: 'Nilai maksimal 100'
                 });
-            });
+            } else {
+                alert('Nilai maksimal 100');
+            }
         }
-    }, 100);
-})();
+    });
+});
 </script>

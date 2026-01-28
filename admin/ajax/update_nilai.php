@@ -69,7 +69,8 @@ function map_column_taman($nama) {
     if (strpos($nama, 'ranking') !== false || strpos($nama, 'rangking') !== false) return 'rangking';
     if (strpos($nama, 'lbb') !== false) return 'lbb';
     if (strpos($nama, 'seni') !== false) return 'seni_budaya';
-    if (strpos($nama, 'lempar') !== false || strpos($nama, 'kereta') !== false) return 'kereta_bola';
+    if (strpos($nama, 'lempar') !== false) return 'lempar_bola';
+    if (strpos($nama, 'kereta') !== false) return 'kereta_bola';
     
     $nama = str_replace([' putra', ' putri'], '', $nama);
     return str_replace(' ', '_', $nama);
@@ -79,6 +80,10 @@ function map_column_taman($nama) {
 $updates = [];
 if (!empty($values)) {
     foreach ($values as $col => $val) {
+        if ((int)$val > 100) {
+            echo json_encode(['status' => 'error', 'message' => 'Nilai maksimal adalah 100']);
+            exit;
+        }
         // Sanitize input
         $val = $koneksi->real_escape_string($val);
         $updates[] = "$col = '$val'";
