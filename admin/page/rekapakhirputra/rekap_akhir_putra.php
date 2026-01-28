@@ -49,10 +49,42 @@ $sql = $koneksi->query("SELECT * FROM tb_prestasi_pa WHERE id_prestasi_pa ='$id'
                             <tbody>
                                 <?php
                                     $no = 1;
-                                    $sql = $koneksi->query("SELECT * FROM tb_prestasi_pa
-                                    JOIN tb_rekap ON tb_prestasi_pa.id_rekap = tb_rekap.id_rekap
-                           RIGHT JOIN tb_peserta_pa ON tb_peserta_pa.id_pa = tb_prestasi_pa.id_pa ORDER BY  nilai_akhir_pa DESC LIMIT 3");
+                                    // Modified query to fetch top 6 scores directly from tb_rekap
+                                    $sql = $koneksi->query("SELECT * FROM tb_rekap 
+                                                          JOIN tb_peserta_pa ON tb_rekap.id_pa = tb_peserta_pa.id_pa 
+                                                          ORDER BY CAST(nilai_akhir_pa AS UNSIGNED) DESC LIMIT 6");
+                                    
                                     while ($data = $sql->fetch_assoc()) {
+                                        // Determine predicate based on rank ($no)
+                                        $predikat = "";
+                                        $badge_color = "";
+                                        
+                                        switch ($no) {
+                                            case 1:
+                                                $predikat = "Tergiat I";
+                                                $badge_color = "bg-green";
+                                                break;
+                                            case 2:
+                                                $predikat = "Tergiat II";
+                                                $badge_color = "bg-orange";
+                                                break;
+                                            case 3:
+                                                $predikat = "Tergiat III";
+                                                $badge_color = "bg-red";
+                                                break;
+                                            case 4:
+                                                $predikat = "Harapan I";
+                                                $badge_color = "bg-blue";
+                                                break;
+                                            case 5:
+                                                $predikat = "Harapan II";
+                                                $badge_color = "bg-blue";
+                                                break;
+                                            case 6:
+                                                $predikat = "Harapan III";
+                                                $badge_color = "bg-blue";
+                                                break;
+                                        }
                                         ?>
                                 <tr>
                                     <td><?=$no++."."; ?></td>
@@ -60,9 +92,7 @@ $sql = $koneksi->query("SELECT * FROM tb_prestasi_pa WHERE id_prestasi_pa ='$id'
                                     <td><?=$data['pangkalan']; ?></td>
                                     <td><?=$data['nilai_akhir_pa']; ?></td>
                                     <td>
-                                        <span class="badge bg-green">Tergiat I</span>
-                                        <span class="badge bg-orange">Tergiat II</span>
-                                        <span class="badge bg-red">Tergiat III</span>
+                                        <span class="badge <?=$badge_color?>"><?=$predikat?></span>
                                     </td>
                                     <!--   <td align="center">
                                             <a href="?page=rekapakhirputra&aksi=hapus&id=<?=$data['id_prestasi_pa']; ?>"
