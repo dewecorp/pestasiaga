@@ -18,8 +18,7 @@ $sql = $koneksi->query("SELECT * FROM tb_juara WHERE id_juara='$id'");
                 </div>
                 <div class="body">
                     <div class=" pull-right">
-                        <a href="../laporan/juara_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i>
-                PDF</a>            Export PDF</a>
+                        <a href="../laporan/juara_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i> Export PDF</a>
                         <a href="../laporan/juara_excel.php" target="_blank" class="btn btn-success btn-sm waves-effect"><i class="fa fa-download"></i> Export Excel</a>
                     </div><br><br>
                     <div class="table-responsive">
@@ -28,9 +27,8 @@ $sql = $koneksi->query("SELECT * FROM tb_juara WHERE id_juara='$id'");
                                 <tr>
                                     <th style="width: 5px;">No.</th>
                                     <th>Nama Pangkalan</th>
-                                    <th style="text-align: center;">Emas<br><small>(>=85)</small></th>
-                                    <th style="text-align: center;">Perak<br><small>(75-84)</small></th>
-                                    <th style="text-align: center;">Perunggu<br><small>(60-74)</small></th>
+                                    <th>Total Nilai Putra</th>
+                                    <th>Total Nilai Putri</th>
                                     <th>Total Nilai</th>
                                     <th>Keterangan</th>
 
@@ -57,9 +55,8 @@ $sql = $koneksi->query("SELECT * FROM tb_juara WHERE id_juara='$id'");
                                 <tr>
                                     <td><?=$no++."."; ?></td>
                                     <td><?=$pangkalan; ?></td>
-                                    <td align="center"><span class="badge bg-amber"><?=$data['emas']; ?></span></td>
-                                    <td align="center"><span class="badge bg-grey"><?=$data['perak']; ?></span></td>
-                                    <td align="center"><span class="badge bg-brown"><?=$data['perunggu']; ?></span></td>
+                                    <td><?=$data['nilai_pa']?></td>
+                                    <td><?=$data['nilai_pi']?></td>
                                     <td><?=$data['nilai']?></td>
                                     <td>
                                         <?php if ($predikat != ""): ?>

@@ -16,9 +16,8 @@ header("Content-Disposition: attachment; filename=Juara_Umum.xls");
         <tr>
             <th>No.</th>
             <th>Pangkalan</th>
-            <th>Emas</th>
-            <th>Perak</th>
-            <th>Perunggu</th>
+            <th>Total Nilai Putra</th>
+            <th>Total Nilai Putri</th>
             <th>Total Nilai</th>
             <th>Keterangan</th>
         </tr>
@@ -40,9 +39,8 @@ header("Content-Disposition: attachment; filename=Juara_Umum.xls");
         <tr>
             <td><?=$no++?></td>
             <td><?=$pangkalan?></td>
-            <td><?=$data['emas']?></td>
-            <td><?=$data['perak']?></td>
-            <td><?=$data['perunggu']?></td>
+            <td><?=$data['nilai_pa']?></td>
+            <td><?=$data['nilai_pi']?></td>
             <td><?=$data['nilai']?></td>
             <td><?=$predikat?></td>
         </tr>

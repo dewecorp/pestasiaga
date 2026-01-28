@@ -68,20 +68,11 @@ $sql_pa = $koneksi->query("SELECT p.pangkalan, r.* FROM tb_peserta_pa p LEFT JOI
 if ($sql_pa) {
     while($row = $sql_pa->fetch_assoc()) {
         $pangkalan = $row['pangkalan'];
-        if(!isset($stats[$pangkalan])) $stats[$pangkalan] = ['emas'=>0, 'perak'=>0, 'perunggu'=>0, 'nilai'=>0];
+        if(!isset($stats[$pangkalan])) $stats[$pangkalan] = ['nilai'=>0, 'nilai_pa'=>0, 'nilai_pi'=>0];
         
         // Add total score
+        $stats[$pangkalan]['nilai_pa'] += (int)$row['nilai_akhir_pa'];
         $stats[$pangkalan]['nilai'] += (int)$row['nilai_akhir_pa'];
-        
-        // Calculate medals
-        foreach($cols_pa as $col) {
-            if(isset($row[$col])) {
-                $val = (int)$row[$col];
-                if($val >= 85) $stats[$pangkalan]['emas']++;
-                else if($val >= 75) $stats[$pangkalan]['perak']++;
-                else if($val >= 60) $stats[$pangkalan]['perunggu']++;
-            }
-        }
     }
 }
 
@@ -90,27 +81,15 @@ $sql_pi = $koneksi->query("SELECT p.pangkalan, r.* FROM tb_peserta_pi p LEFT JOI
 if ($sql_pi) {
     while($row = $sql_pi->fetch_assoc()) {
         $pangkalan = $row['pangkalan'];
-        if(!isset($stats[$pangkalan])) $stats[$pangkalan] = ['emas'=>0, 'perak'=>0, 'perunggu'=>0, 'nilai'=>0];
+        if(!isset($stats[$pangkalan])) $stats[$pangkalan] = ['nilai'=>0, 'nilai_pa'=>0, 'nilai_pi'=>0];
         
         // Add total score
+        $stats[$pangkalan]['nilai_pi'] += (int)$row['nilai_akhir_pi'];
         $stats[$pangkalan]['nilai'] += (int)$row['nilai_akhir_pi'];
-        
-        // Calculate medals
-        foreach($cols_pi as $col) {
-            if(isset($row[$col])) {
-                $val = (int)$row[$col];
-                if($val >= 85) $stats[$pangkalan]['emas']++;
-                else if($val >= 75) $stats[$pangkalan]['perak']++;
-                else if($val >= 60) $stats[$pangkalan]['perunggu']++;
-            }
-        }
     }
 }
 
-// 5. Sorting (Gold > Silver > Bronze > Score)
+// 5. Sorting (Total Score DESC)
 uasort($stats, function($a, $b) {
-    if($a['emas'] != $b['emas']) return $b['emas'] - $a['emas'];
-    if($a['perak'] != $b['perak']) return $b['perak'] - $a['perak'];
-    if($a['perunggu'] != $b['perunggu']) return $b['perunggu'] - $a['perunggu'];
     return $b['nilai'] - $a['nilai'];
 });

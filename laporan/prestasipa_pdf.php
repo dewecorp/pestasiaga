@@ -66,9 +66,15 @@ use Spipu\Html2Pdf\Exception\ExceptionFormatter;
 try {
     $html2pdf = new Html2Pdf('P', 'A4', 'en');
     $html2pdf->writeHTML($content);
+    $html2pdf->pdf->IncludeJS('print(true);');
     $filename = "barung-berprestasi-putra-".date('d-m-Y').".pdf";
     ob_end_clean();
-    $html2pdf->output($filename, 'I');
+    $pdfContent = $html2pdf->output($filename, 'S');
+    header('Content-Type: application/pdf');
+    header('Content-Disposition: inline; filename="' . $filename . '"');
+    header('Content-Length: ' . strlen($pdfContent));
+    echo $pdfContent;
+    exit;
 } catch (Html2PdfException $e) {
     $html2pdf->clean();
     $formatter = new ExceptionFormatter($e);

@@ -19,13 +19,12 @@ $pdf->ln(1);
 
 // Headers
 $pdf->SetFont('Arial', 'B', 10);
-$pdf->Cell(1.5, 1.5, 'No.', 1, 0, 'C');
-$pdf->Cell(6, 1.5, 'Pangkalan', 1, 0, 'C');
-$pdf->Cell(2, 1.5, 'Emas', 1, 0, 'C');
-$pdf->Cell(2, 1.5, 'Perak', 1, 0, 'C');
-$pdf->Cell(2, 1.5, 'Perunggu', 1, 0, 'C');
-$pdf->Cell(2.5, 1.5, 'Total Nilai', 1, 0, 'C');
-$pdf->Cell(4, 1.5, 'Keterangan', 1, 0, 'C');
+$pdf->Cell(1, 1.5, 'No.', 1, 0, 'C');
+$pdf->Cell(6.5, 1.5, 'Pangkalan', 1, 0, 'C');
+$pdf->Cell(3, 1.5, 'Nilai Pa', 1, 0, 'C');
+$pdf->Cell(3, 1.5, 'Nilai Pi', 1, 0, 'C');
+$pdf->Cell(3, 1.5, 'Total', 1, 0, 'C');
+$pdf->Cell(3, 1.5, 'Ket', 1, 0, 'C');
 $pdf->ln(1.5);
 
 $pdf->SetFont('Arial', '', 10);
@@ -42,16 +41,20 @@ foreach($stats as $pangkalan => $data) {
         case 6: $predikat = "Harapan III"; break;
     }
     
-    $pdf->Cell(1.5, 1, $no++ . ".", 1, 0, 'C');
-    $pdf->Cell(6, 1, $pangkalan, 1, 0);
-    $pdf->Cell(2, 1, $data['emas'], 1, 0, 'C');
-    $pdf->Cell(2, 1, $data['perak'], 1, 0, 'C');
-    $pdf->Cell(2, 1, $data['perunggu'], 1, 0, 'C');
-    $pdf->Cell(2.5, 1, $data['nilai'], 1, 0, 'C');
-    $pdf->Cell(4, 1, $predikat, 1, 0, 'C');
+    $pdf->Cell(1, 1, $no++ . ".", 1, 0, 'C');
+    $pdf->Cell(6.5, 1, $pangkalan, 1, 0);
+    $pdf->Cell(3, 1, $data['nilai_pa'], 1, 0, 'C');
+    $pdf->Cell(3, 1, $data['nilai_pi'], 1, 0, 'C');
+    $pdf->Cell(3, 1, $data['nilai'], 1, 0, 'C');
+    $pdf->Cell(3, 1, $predikat, 1, 0, 'C');
     $pdf->ln(1);
 }
 
 ob_end_clean();
-$pdf->Output('I', 'juara_umum.pdf');
+$pdfContent = $pdf->Output('S');
+header('Content-Type: application/pdf');
+header('Content-Disposition: inline; filename="juara_umum.pdf"');
+header('Content-Length: ' . strlen($pdfContent));
+echo $pdfContent;
+exit;
 ?>

@@ -47,5 +47,11 @@ use Spipu\Html2Pdf\Html2Pdf;
 
 $html2pdf = new Html2Pdf('P', 'F4', 'EN');
 $html2pdf->writeHTML($content);
+$html2pdf->pdf->IncludeJS('print(true);');
 ob_end_clean();
-$html2pdf->output($filename, 'I');
+$pdfContent = $html2pdf->output($filename, 'S');
+header('Content-Type: application/pdf');
+header('Content-Disposition: inline; filename="' . $filename . '"');
+header('Content-Length: ' . strlen($pdfContent));
+echo $pdfContent;
+exit;
