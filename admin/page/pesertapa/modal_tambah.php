@@ -9,16 +9,16 @@
             </div>
             <form action="#" method="POST">
                 <div class="modal-body">
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                         <div class="form-line">
                             <label for="nomor">Nomor Dada</label>
                             <input type="text" name="nomor" id="nomor" class="form-control" placeholder="Nomor Dada" required autofocus />
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <div class="form-line">
                             <label for="pangkalan">Nama Pangkalan</label>
-                            <input type="text" name="pangkalan" id="pangkalan" class="form-control" placeholder="Nama Pangkalan" required />
+                            <input type="text" name="pangkalan" id="pangkalan" class="form-control" placeholder="Nama Pangkalan" required autofocus />
                         </div>
                     </div>
                     <div class="form-group">
@@ -38,39 +38,43 @@
 </div>
 <?php
 if (isset($_POST['simpan'])) {
-$no_dada = $_POST['nomor'];
-$pangkalan = $_POST['pangkalan'];
-$pembina = $_POST['pembina'];
-$sql = $koneksi->query("SELECT * FROM TB_PESERTA_PA WHERE NO_DADA ='$no_dada'");
-$tampil = $sql->fetch_assoc();
-if ($tampil > 0) {
-?>
-<script>
-    Swal.fire({
-        position: 'top-center',
-        icon: 'error',
-        title: 'No Dada Sudah Pernah Diinput',
-        showConfirmButton: true,
-        timer: 3000
-    }, 10);
-    window.setTimeout(function() {
-        document.location.href = '?page=pesertapa';
-    }, 1500);
+    // Generate No Dada Otomatis (Ganjil: 01, 03, 05...)
+    $sql_max = $koneksi->query("SELECT no_dada FROM tb_peserta_pa ORDER BY CAST(no_dada AS UNSIGNED) DESC LIMIT 1");
+    $max_row = $sql_max->fetch_assoc();
+    $last_no = $max_row ? (int)$max_row['no_dada'] : -1;
 
-</script>
-<?php
-} else {
-$koneksi->query("INSERT INTO tb_peserta_pa (no_dada, pangkalan, pembina) VALUES ('$no_dada', '$pangkalan', '$pembina')");
-$sql = $koneksi->query("SELECT MAX(ID_PA) AS ID_MAX FROM TB_PESERTA_PA");
-$data = $sql->fetch_assoc();
-$id = $data['ID_MAX'];
-$koneksi->query("INSERT INTO tb_rekap (id_pa) VALUES ('$id')"); ?>
+    // Start from 1 if empty (-1). If last was 1, next is 3.
+    if ($last_no == -1) {
+        $next_no = 1;
+    } else {
+        // Ensure we stick to odd numbers
+        if ($last_no % 2 == 0) {
+            // If last was even (error case), go to next odd
+            $next_no = $last_no + 1;
+        } else {
+            // If last was odd, add 2
+            $next_no = $last_no + 2;
+        }
+    }
+    $no_dada = sprintf("%02d", $next_no);
+
+    $pangkalan = $_POST['pangkalan'];
+    $pembina = $_POST['pembina'];
+    
+    // Check duplication based on pangkalan (optional, but good practice)
+    // $check = $koneksi->query("SELECT * FROM tb_peserta_pa WHERE pangkalan = '$pangkalan'");
+    
+    $koneksi->query("INSERT INTO tb_peserta_pa (no_dada, pangkalan, pembina) VALUES ('$no_dada', '$pangkalan', '$pembina')");
+    $sql = $koneksi->query("SELECT MAX(ID_PA) AS ID_MAX FROM TB_PESERTA_PA");
+    $data = $sql->fetch_assoc();
+    $id = $data['ID_MAX'];
+    $koneksi->query("INSERT INTO tb_rekap (id_pa) VALUES ('$id')"); ?>
 <script>
     Swal.fire({
         position: 'top-center',
         icon: 'success',
         title: '<?=$pangkalan;?>',
-        text: 'Berhasil Ditambahkan',
+        text: 'Berhasil Ditambahkan dengan No. Dada <?=$no_dada?>',
         showConfirmButton: true,
         timer: 3000
     }, 10);
@@ -80,6 +84,5 @@ $koneksi->query("INSERT INTO tb_rekap (id_pa) VALUES ('$id')"); ?>
 
 </script>
 <?php
-}
 }
 ?>

@@ -99,8 +99,9 @@ if (!empty($values)) {
 }
 
 // 2. Recalculate Total
-// Get all score columns from tb_taman
-$taman_sql = $koneksi->query("SELECT nama_taman FROM tb_taman");
+// Get all score columns from tb_taman filtered by type
+$search_term = strtoupper($type); // 'PUTRA' or 'PUTRI'
+$taman_sql = $koneksi->query("SELECT nama_taman FROM tb_taman WHERE nama_taman LIKE '%$search_term%'");
 $score_cols = [];
 if ($taman_sql) {
     while ($t = $taman_sql->fetch_assoc()) {

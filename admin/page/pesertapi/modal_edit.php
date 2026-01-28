@@ -13,13 +13,13 @@ while ($data = $sql->fetch_assoc()) {
             </div>
             <form action="#" method="POST">
                 <div class="modal-body">
-                    <div class="form-group">
+                    <input type="hidden" name="id" value="<?=$data['id_pi'] ?>">
+                    <!-- <div class="form-group">
                         <div class="form-line">
                             <label for="nomor">Nomor Dada</label>
-                            <input type="hidden" name="id" value="<?=$data['id_pi'] ?>">
                             <input type="text" name="nomor" id="nomor" class="form-control" placeholder="Nomor Dada" value="<?=$data['no_dada'] ?>">
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                         <div class="form-line">
                             <label for="pangkalan">Nama Pangkalan</label>
@@ -43,12 +43,12 @@ while ($data = $sql->fetch_assoc()) {
 </div>
 <?php
 $id        = @$_POST['id'];
-$no_dada   = @$_POST['nomor'];
+// $no_dada   = @$_POST['nomor'];
 $pangkalan = @$_POST['pangkalan'];
 $pembina   = @$_POST['pembina'];
 $edit   = @$_POST['edit'];
 if ($edit) {
-$koneksi->query("UPDATE tb_peserta_pi SET no_dada='$no_dada', pangkalan='$pangkalan', pembina='$pembina' WHERE id_pi='$id'");
+$koneksi->query("UPDATE tb_peserta_pi SET pangkalan='$pangkalan', pembina='$pembina' WHERE id_pi='$id'");
 
 ?>
 <script>

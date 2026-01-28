@@ -39,8 +39,9 @@ $sql = $koneksi->query("SELECT * FROM tb_juara WHERE id_juara='$id'");
                                 <tr>
                                     <th style="width: 5px;">No.</th>
                                     <th>Nama Pangkalan</th>
-                                    <th>Nilai Putra</th>
-                                    <th>Nilai Putri</th>
+                                    <th style="text-align: center;">Emas<br><small>(>=85)</small></th>
+                                    <th style="text-align: center;">Perak<br><small>(75-84)</small></th>
+                                    <th style="text-align: center;">Perunggu<br><small>(60-74)</small></th>
                                     <th>Total Nilai</th>
                                     <th>Keterangan</th>
 
@@ -48,66 +49,29 @@ $sql = $koneksi->query("SELECT * FROM tb_juara WHERE id_juara='$id'");
                             </thead>
                             <tbody>
                                 <?php
-                                    $no = 1;
-                                    // Complex query to get combined scores from both tables based on pangkalan name
-                                    $query = "
-                                        SELECT 
-                                            T.pangkalan,
-                                            r_pa.nilai_akhir_pa as nilai_putra,
-                                            r_pi.nilai_akhir_pi as nilai_putri,
-                                            (CAST(COALESCE(NULLIF(r_pa.nilai_akhir_pa, ''), 0) AS UNSIGNED) + CAST(COALESCE(NULLIF(r_pi.nilai_akhir_pi, ''), 0) AS UNSIGNED)) as total_nilai
-                                        FROM 
-                                            (SELECT pangkalan FROM tb_peserta_pa UNION SELECT pangkalan FROM tb_peserta_pi) as T
-                                        LEFT JOIN tb_peserta_pa pa ON T.pangkalan = pa.pangkalan
-                                        LEFT JOIN tb_rekap r_pa ON pa.id_pa = r_pa.id_pa
-                                        LEFT JOIN tb_peserta_pi pi ON T.pangkalan = pi.pangkalan
-                                        LEFT JOIN tb_rekap_pi r_pi ON pi.id_pi = r_pi.id_pi
-                                        ORDER BY total_nilai DESC
-                                    ";
+                                include 'juara_logic.php';
+
+                                $no = 1;
+                                foreach($stats as $pangkalan => $data) {
+                                    $predikat = "";
+                                    $badge_color = "";
                                     
-                                    $sql = $koneksi->query($query);
-                                    
-                                    if (!$sql) {
-                                        echo "<tr><td colspan='6'>Query Error: " . $koneksi->error . "</td></tr>";
-                                    } else {
-                                        while ($data = $sql->fetch_assoc()) {
-                                            $predikat = "";
-                                            $badge_color = "";
-                                            
-                                            // Determine predicate for top 6
-                                            switch ($no) {
-                                                case 1:
-                                                    $predikat = "Juara Umum I";
-                                                    $badge_color = "bg-green";
-                                                    break;
-                                                case 2:
-                                                    $predikat = "Juara Umum II";
-                                                    $badge_color = "bg-green";
-                                                    break;
-                                                case 3:
-                                                    $predikat = "Juara Umum III";
-                                                    $badge_color = "bg-green";
-                                                    break;
-                                                case 4:
-                                                    $predikat = "Harapan I";
-                                                    $badge_color = "bg-orange";
-                                                    break;
-                                                case 5:
-                                                    $predikat = "Harapan II";
-                                                    $badge_color = "bg-orange";
-                                                    break;
-                                                case 6:
-                                                    $predikat = "Harapan III";
-                                                    $badge_color = "bg-orange";
-                                                    break;
-                                            }
+                                    switch ($no) {
+                                        case 1: $predikat = "Juara Umum I"; $badge_color = "bg-green"; break;
+                                        case 2: $predikat = "Juara Umum II"; $badge_color = "bg-green"; break;
+                                        case 3: $predikat = "Juara Umum III"; $badge_color = "bg-green"; break;
+                                        case 4: $predikat = "Harapan I"; $badge_color = "bg-orange"; break;
+                                        case 5: $predikat = "Harapan II"; $badge_color = "bg-orange"; break;
+                                        case 6: $predikat = "Harapan III"; $badge_color = "bg-orange"; break;
+                                    }
                                 ?>
                                 <tr>
                                     <td><?=$no++."."; ?></td>
-                                    <td><?=$data['pangkalan']; ?></td>
-                                    <td><?=!empty($data['nilai_putra']) ? $data['nilai_putra'] : 0; ?></td>
-                                    <td><?=!empty($data['nilai_putri']) ? $data['nilai_putri'] : 0; ?></td>
-                                    <td><?=$data['total_nilai']?></td>
+                                    <td><?=$pangkalan; ?></td>
+                                    <td align="center"><span class="badge bg-amber"><?=$data['emas']; ?></span></td>
+                                    <td align="center"><span class="badge bg-grey"><?=$data['perak']; ?></span></td>
+                                    <td align="center"><span class="badge bg-brown"><?=$data['perunggu']; ?></span></td>
+                                    <td><?=$data['nilai']?></td>
                                     <td>
                                         <?php if ($predikat != ""): ?>
                                         <span class="badge <?=$badge_color?>"><?=$predikat?></span>
@@ -115,8 +79,7 @@ $sql = $koneksi->query("SELECT * FROM tb_juara WHERE id_juara='$id'");
                                     </td>
                                 </tr>
                                 <?php
-                                        }
-                                    }
+                                }
                                 ?>
                             </tbody>
                         </table>

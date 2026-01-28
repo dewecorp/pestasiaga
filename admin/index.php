@@ -10,35 +10,39 @@ $nama_pangkalan= "";
 $total_nilai=null;
 $nama_pangkalan1= "";
 $total_nilai1=null;
-//Query SQL
-$sql = $koneksi->query("SELECT pangkalan FROM tb_peserta_pa");
+//Query SQL untuk Barung Putra (Join Peserta & Rekap)
+$nama_pangkalan = "";
+$total_nilai = "";
+$sql = $koneksi->query("SELECT p.pangkalan, r.nilai_akhir_pa 
+                        FROM tb_peserta_pa p 
+                        LEFT JOIN tb_rekap r ON p.id_pa = r.id_pa 
+                        ORDER BY p.id_pa ASC");
 while ($data = $sql->fetch_assoc()) {
-//Mengambil nilai nama_jurusan dari database
-$nama = $data['pangkalan'];
-// echo  print_r($nama);
-$nama_pangkalan .= "'$nama'". ", ";
+    $nama = $data['pangkalan'];
+    $nilai = isset($data['nilai_akhir_pa']) ? $data['nilai_akhir_pa'] : 0;
+    $nama_pangkalan .= "'$nama', ";
+    $total_nilai .= "'$nilai', ";
 }
-//Query SQL
-$sql1 = $koneksi->query("SELECT nilai_akhir_pa FROM tb_rekap");
+// Hapus koma terakhir
+$nama_pangkalan = rtrim($nama_pangkalan, ", ");
+$total_nilai = rtrim($total_nilai, ", ");
+
+//Query SQL untuk Barung Putri (Join Peserta & Rekap)
+$nama_pangkalan1 = "";
+$total_nilai1 = "";
+$sql1 = $koneksi->query("SELECT p.pangkalan, r.nilai_akhir_pi 
+                         FROM tb_peserta_pi p 
+                         LEFT JOIN tb_rekap_pi r ON p.id_pi = r.id_pi 
+                         ORDER BY p.id_pi ASC");
 while ($data = $sql1->fetch_assoc()) {
-//Mengambil nilai jumlah_siswa dari database
-$jumlah = $data['nilai_akhir_pa'];
-$total_nilai .= "'$jumlah'". ", ";
+    $nama = $data['pangkalan'];
+    $nilai = isset($data['nilai_akhir_pi']) ? $data['nilai_akhir_pi'] : 0;
+    $nama_pangkalan1 .= "'$nama', ";
+    $total_nilai1 .= "'$nilai', ";
 }
-//Query SQL
-$sql = $koneksi->query("SELECT pangkalan FROM tb_peserta_pi");
-while ($data = $sql->fetch_assoc()) {
-//Mengambil nilai nama_jurusan dari database
-$nama = $data['pangkalan'];
-$nama_pangkalan1 .= "'$nama'". ", ";
-}
-//Query SQL
-$sql1 = $koneksi->query("SELECT nilai_akhir_pi FROM tb_rekap_pi");
-while ($data = $sql1->fetch_assoc()) {
-//Mengambil nilai jumlah_siswa dari database
-$jumlah = $data['nilai_akhir_pi'];
-$total_nilai1 .= "'$jumlah'". ", ";
-}
+// Hapus koma terakhir
+$nama_pangkalan1 = rtrim($nama_pangkalan1, ", ");
+$total_nilai1 = rtrim($total_nilai1, ", ");
 $id = @$_SESSION['id_user'];
 $sql = $koneksi->query("SELECT * FROM tb_user WHERE id ='$id'");
 $tampil = $sql->fetch_assoc();
