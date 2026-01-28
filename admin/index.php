@@ -251,6 +251,12 @@ header("location:../login.php");
                     </li>
                     <li class="header" id="dashboard">PENGATURAN</li>
                     <li>
+                        <a href="?page=backup">
+                            <i class="material-icons">backup</i>
+                            <span>Backup Restore</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="?page=user">
                             <i class="material-icons">person</i>
                             <span>User</span>
@@ -300,6 +306,8 @@ header("location:../login.php");
 							} elseif ($aksi == "hapus") {
 							include "page/juri/hapus.php";
 							}
+							} elseif ($page == "backup") {
+							include "page/backup/backup.php";
 							} elseif ($page == "pesertapa") {
 							if ($aksi == "") {
 							include "page/pesertapa/peserta_putra.php";
@@ -408,7 +416,6 @@ header("location:../login.php");
         </div>
     </section>
     <!-- Jquery Core Js -->
-    <script src="../assets/plugins/jquery/jquery.js"></script>
     <script src="../assets/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap Core Js -->
     <script src="../assets/plugins/bootstrap/js/bootstrap.js"></script>
