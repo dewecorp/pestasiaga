@@ -30,12 +30,24 @@ while ($data = $sql->fetch_assoc()) {
                     </div>
                     <div class="row">
                         <div class="col-lg-2 form-control-label">
-                            <label for="tempat">Tempat</label>
+                            <label for="tempat">Lokasi Kegiatan</label>
                         </div>
                         <div class="col-lg-10">
                             <div class="form-group">
                                 <div class="form-line">
                                     <textarea name="tempat" rows="2" cols="50" class="form-control"><?= $data['tempat']; ?></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2 form-control-label">
+                            <label for="tempat_ttd">Tempat TTD</label>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" name="tempat_ttd" class="form-control" value="<?=$data['tempat_ttd']; ?>">
                                 </div>
                             </div>
                         </div>
@@ -58,7 +70,8 @@ if (isset($_POST['ubah'])) {
 $id = $_POST['id'];
 $waktu = $_POST['waktu'];
 $tempat = $_POST['tempat'];
-$koneksi->query("UPDATE tb_panitia SET waktu='$waktu', tempat='$tempat' WHERE id_panitia='$id'"); ?>
+$tempat_ttd = $_POST['tempat_ttd'];
+$koneksi->query("UPDATE tb_panitia SET waktu='$waktu', tempat='$tempat', tempat_ttd='$tempat_ttd' WHERE id_panitia='$id'"); ?>
 <script>
     Swal.fire({
         position: 'top-center',

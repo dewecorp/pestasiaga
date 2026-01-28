@@ -29,8 +29,12 @@ $sql = $koneksi->query("SELECT * FROM tb_panitia WHERE id_panitia='$id'");
                                 <td align="left"><?php $hari=$data['waktu']; echo format_hari_tanggal($hari) ?></td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold;">Tempat Kegiatan</td>
+                                <td style="font-weight: bold;">Lokasi Kegiatan</td>
                                 <td><?=$data['tempat']; ?></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Tempat TTD</td>
+                                <td><?=$data['tempat_ttd']; ?></td>
                             </tr>
                         </table>
                         <?php

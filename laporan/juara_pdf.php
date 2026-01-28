@@ -2,85 +2,92 @@
 ob_start();
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 include"../config/koneksi.php";
-$sql_panitia = $koneksi->query("SELECT nama_kegiatan, tempat, ketua_panitia FROM tb_panitia LIMIT 1");
+$sql_panitia = $koneksi->query("SELECT nama_kegiatan, tempat, tempat_ttd, ketua_panitia FROM tb_panitia LIMIT 1");
 $data_panitia = $sql_panitia->fetch_assoc();
 $nama_kegiatan = (isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung') . ' ' . date('Y');
-$tempat = isset($data_panitia['tempat']) ? $data_panitia['tempat'] : 'Jepara';
+$tempat = isset($data_panitia['tempat_ttd']) ? $data_panitia['tempat_ttd'] : 'Jepara';
 $ketua_panitia = isset($data_panitia['ketua_panitia']) ? $data_panitia['ketua_panitia'] : '..................';
 $bulan_indo = array(
     1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni',
     7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
 );
 $tanggal_indo = date('d') . ' ' . $bulan_indo[(int)date('m')] . ' ' . date('Y');
-require('../assets/vendor/setasign/fpdf/fpdf.php');
+
 include "../admin/page/juaraumum/juara_logic.php";
-
-$pdf = new FPDF('P', 'cm', 'Legal', 'en');
-$pdf->AddPage();
-$pdf->SetFont('Arial', 'B', 12);
-$pdf->ln(0.5);
-$pdf->Cell(0, 0, 'JUARA UMUM', 0, 1, 'C');
-$pdf->ln(1);
-$pdf->Cell(0, 0, strtoupper($nama_kegiatan), 0, 1, 'C');
-$pdf->ln(1);
-
-// Headers
-$pdf->SetFont('Arial', 'B', 10);
-$pdf->Cell(1, 1.5, 'No.', 1, 0, 'C');
-$pdf->Cell(6.5, 1.5, 'Pangkalan', 1, 0, 'C');
-$pdf->Cell(3, 1.5, 'Nilai Pa', 1, 0, 'C');
-$pdf->Cell(3, 1.5, 'Nilai Pi', 1, 0, 'C');
-$pdf->Cell(3, 1.5, 'Total', 1, 0, 'C');
-$pdf->Cell(3, 1.5, 'Ket', 1, 0, 'C');
-$pdf->ln(1.5);
-
-$pdf->SetFont('Arial', '', 10);
-$no = 1;
-
-foreach($stats as $pangkalan => $data) {
-    $predikat = "";
-    switch ($no) {
-        case 1: $predikat = "Juara Umum I"; break;
-        case 2: $predikat = "Juara Umum II"; break;
-        case 3: $predikat = "Juara Umum III"; break;
-        case 4: $predikat = "Harapan I"; break;
-        case 5: $predikat = "Harapan II"; break;
-        case 6: $predikat = "Harapan III"; break;
-    }
-    
-    $pdf->Cell(1, 1, $no++ . ".", 1, 0, 'C');
-    $pdf->Cell(6.5, 1, $pangkalan, 1, 0);
-    $pdf->Cell(3, 1, $data['nilai_pa'], 1, 0, 'C');
-    $pdf->Cell(3, 1, $data['nilai_pi'], 1, 0, 'C');
-    $pdf->Cell(3, 1, $data['nilai'], 1, 0, 'C');
-    $pdf->Cell(3, 1, $predikat, 1, 0, 'C');
-    $pdf->ln(1);
-}
-
-$pdf->ln(1);
-$pdf->SetFont('Arial', '', 10);
-// Signature block
-// Page width is Legal (approx 21.59cm width? No, 'cm' unit, Legal size is 21.59 x 35.56 cm)
-// Default margins are 1cm. Content width approx 19.5cm.
-// We want signature on right.
-$pdf->Cell(12, 0.5, '', 0, 0); // Spacer
-$pdf->Cell(7, 0.5, $tempat . ', ' . $tanggal_indo, 0, 1, 'C');
-$pdf->Cell(12, 0.5, '', 0, 0); // Spacer
-$pdf->Cell(7, 0.5, 'Ketua Panitia', 0, 1, 'C');
-$pdf->ln(2.5);
-$pdf->SetFont('Arial', 'BU', 10);
-$pdf->Cell(12, 0.5, '', 0, 0); // Spacer
-$pdf->Cell(7, 0.5, $ketua_panitia, 0, 1, 'C');
-
-$pdf->SetFont('Arial', 'I', 8);
-$pdf->ln(1);
-$pdf->Cell(0, 0.5, 'Dicetak pada: ' . date('d-m-Y H:i:s'), 0, 1, 'L');
-
-ob_end_clean();
-$pdfContent = $pdf->Output('S');
-header('Content-Type: application/pdf');
-header('Content-Disposition: inline; filename="juara_umum.pdf"');
-header('Content-Length: ' . strlen($pdfContent));
-echo $pdfContent;
-exit;
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cetak Juara Umum</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .table { border-collapse: collapse; width: 100%; margin: 0 auto; }
+        .table th, .table td { border: 1px solid black; padding: 8px 5px; text-align: center; }
+        .table th { background-color: #cccccc; font-weight: bold; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h3, .header h4 { margin: 5px 0; }
+        .signature-table { width: 100%; border: none; margin-top: 20px; }
+        .signature-table td { border: none; text-align: center; }
+        .footer { text-align: left; font-style: italic; font-size: 10px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h3>JUARA UMUM</h3>
+        <h4><?= strtoupper($nama_kegiatan) ?></h4>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th style="width: 5%;">No.</th>
+                <th style="width: 35%;">Pangkalan</th>
+                <th style="width: 15%;">Nilai Pa</th>
+                <th style="width: 15%;">Nilai Pi</th>
+                <th style="width: 15%;">Total</th>
+                <th style="width: 15%;">Ket</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            $no = 1;
+            foreach($stats as $pangkalan => $data) {
+                $predikat = "";
+                switch ($no) {
+                    case 1: $predikat = "Juara Umum I"; break;
+                    case 2: $predikat = "Juara Umum II"; break;
+                    case 3: $predikat = "Juara Umum III"; break;
+                    case 4: $predikat = "Harapan I"; break;
+                    case 5: $predikat = "Harapan II"; break;
+                    case 6: $predikat = "Harapan III"; break;
+                }
+            ?>
+            <tr>
+                <td><?= $no++ ?>.</td>
+                <td style="text-align: left; padding-left: 10px;"><?= $pangkalan ?></td>
+                <td><?= $data['nilai_pa'] ?></td>
+                <td><?= $data['nilai_pi'] ?></td>
+                <td><?= $data['nilai'] ?></td>
+                <td><?= $predikat ?></td>
+            </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+
+    <table class="signature-table">
+        <tr>
+            <td style="width: 60%;"></td>
+            <td style="width: 40%;">
+                <?= $tempat . ', ' . $tanggal_indo ?><br>
+                Ketua Panitia<br>
+                <br><br><br>
+                <b><u><?= $ketua_panitia ?></u></b>
+            </td>
+        </tr>
+    </table>
+
+    <div class="footer">Dicetak pada: <?= date('d-m-Y H:i:s') ?></div>
+
+    <script>window.print();</script>
+</body>
+</html>
