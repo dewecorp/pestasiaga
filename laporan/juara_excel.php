@@ -2,7 +2,7 @@
 include"../config/koneksi.php";
 $sql_panitia = $koneksi->query("SELECT nama_kegiatan, tempat, ketua_panitia FROM tb_panitia LIMIT 1");
 $data_panitia = $sql_panitia->fetch_assoc();
-$nama_kegiatan = isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung ' . date('Y');
+$nama_kegiatan = (isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung') . ' ' . date('Y');
 $tempat = isset($data_panitia['tempat']) ? $data_panitia['tempat'] : 'Jepara';
 $ketua_panitia = isset($data_panitia['ketua_panitia']) ? $data_panitia['ketua_panitia'] : '..................';
 $bulan_indo = array(

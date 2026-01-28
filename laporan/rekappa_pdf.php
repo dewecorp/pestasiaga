@@ -2,7 +2,7 @@
 ob_start();
 // $koneksi = new mysqli("localhost", "root", "", "pestasiaga");
 include"../config/koneksi.php";
-$sql_panitia = $koneksi->query("SELECT nama_kegiatan FROM tb_panitia LIMIT 1");
+$sql_panitia = $koneksi->query("SELECT nama_kegiatan, tempat, ketua_panitia FROM tb_panitia LIMIT 1");
 $data_panitia = $sql_panitia->fetch_assoc();
 $nama_kegiatan = (isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung') . ' ' . date('Y');
 $tempat = isset($data_panitia['tempat']) ? $data_panitia['tempat'] : 'Jepara';
