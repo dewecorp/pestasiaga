@@ -139,7 +139,7 @@ $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
                 </div>
                 <div class="content">
                     <div class="text">
-                        <h4><b>TEMPAT KEGIATAN</b></h4>
+                        <h4><b>LOKASI KEGIATAN</b></h4>
                     </div>
                     <div class="text">
                         <h5><?=$data['tempat'];?></h5>

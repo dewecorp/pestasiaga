@@ -4,9 +4,9 @@ session_start();
 include "../config/koneksi.php";
 $sql = $koneksi->query("SELECT * FROM tb_panitia");
 while ($data = $sql->fetch_assoc()) {
-if (@$_SESSION['admin']) {
+if (@$_SESSION['level'] == 'admin') {
 header("location:../admin/index.php");
-} elseif (@$_SESSION['user']) {
+} elseif (@$_SESSION['level'] == 'peserta') {
 header("location:../index.php");
 } else {
 ?>
@@ -129,7 +129,7 @@ header("location:../index.php");
     if ($_SESSION['level'] == "admin") {
     header("location:../admin/index.php");
     exit;
-    } elseif ($_SESSION['level'] == "user") {
+    } elseif ($_SESSION['level'] == "peserta") {
     header("location:../index.php");
     exit;
     }

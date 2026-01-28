@@ -45,6 +45,25 @@ $sql = $koneksi->query("SELECT * FROM tb_panitia WHERE id_panitia='$id'");
                         </div>
                     </div>
                     <div class="section" style="margin-top:20px">
+                        <h4><i class="material-icons">message</i> PESAN BERANDA</h4>
+                        <?php
+                            $sql = $koneksi->query("SELECT * FROM tb_panitia");
+                            while ($data = $sql->fetch_assoc()) {
+                            ?>
+                        <table style="font-size: 18px" class="table table-bordered table-hover">
+                            <tr>
+                                <td align="left" width="200px" style="font-weight: bold;">Pesan</td>
+                                <td align="left"><?= isset($data['pesan_beranda']) ? $data['pesan_beranda'] : ''; ?></td>
+                            </tr>
+                        </table>
+                        <?php
+                            }
+                            ?>
+                        <div>
+                            <a data-toggle="modal" data-target="#modal_pesan<?=$data['id']; ?>"><button class="btn btn-success btn-sm waves-effect"><i class="fa fa-edit"></i> Edit</button></a>
+                        </div>
+                    </div>
+                    <div class="section" style="margin-top:20px">
                         <h4><i class="material-icons">archive</i> DATA KEGIATAN</h4>
                         <?php
 							$sql = $koneksi->query("SELECT * FROM tb_panitia");
@@ -124,4 +143,5 @@ include "modal_edit.php";
 include "modal_logo.php";
 include "modal_bg.php";
 include "modal_waktu.php";
+include "modal_pesan.php";
 ?>

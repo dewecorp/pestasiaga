@@ -1,505 +1,214 @@
 <?php
-error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
-session_start();
-error_reporting();
-setlocale(LC_ALL, 'id-ID', 'id_ID');
-include "config/fungsi_hari.php";
 include "config/koneksi.php";
-$id = $_GET['id'];
-//Inisialisasi nilai variabel awal
-$nama_pangkalan= "";
-$total_nilai=null;
-$nama_pangkalan1= "";
-$total_nilai1=null;
-//Query SQL
-$sql = $koneksi->query("SELECT pangkalan FROM tb_peserta_pa");
-while ($data = $sql->fetch_assoc()) {
-//Mengambil nilai nama_jurusan dari database
-$nama = $data['pangkalan'];
-// echo  print_r($nama);
-$nama_pangkalan .= "'$nama'". ", ";
-}
-//Query SQL
-$sql1 = $koneksi->query("SELECT nilai_akhir_pa FROM tb_rekap");
-while ($data = $sql1->fetch_assoc()) {
-//Mengambil nilai jumlah_siswa dari database
-$jumlah = $data['nilai_akhir_pa'];
-$total_nilai .= "'$jumlah'". ", ";
-}
-//Query SQL
-$sql = $koneksi->query("SELECT pangkalan FROM tb_peserta_pi");
-while ($data = $sql->fetch_assoc()) {
-//Mengambil nilai nama_jurusan dari database
-$nama = $data['pangkalan'];
-$nama_pangkalan1 .= "'$nama'". ", ";
-}
-//Query SQL
-$sql1 = $koneksi->query("SELECT nilai_akhir_pi FROM tb_rekap_pi");
-while ($data = $sql1->fetch_assoc()) {
-//Mengambil nilai jumlah_siswa dari database
-$jumlah = $data['nilai_akhir_pi'];
-$total_nilai1 .= "'$jumlah'". ", ";
-}
-$id = @$_SESSION['id_user'];
-$sql = $koneksi->query("SELECT * FROM tb_user WHERE id ='$id'");
-$tampil = $sql->fetch_assoc();
-$sql_logo = $koneksi->query("SELECT * FROM tb_panitia");
-$data = $sql_logo->fetch_assoc();
-if (isset($_SESSION['level']) == "") {
-header("location:auth/login.php");
-} else {
+$sql_panitia = $koneksi->query("SELECT * FROM tb_panitia LIMIT 1");
+$data_panitia = $sql_panitia->fetch_assoc();
 ?>
 <!DOCTYPE html>
-<html>
-
+<html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>
-        <?php
-		$page = @$_GET['page'];
-		if(!empty($page)){
-		if ($page == 'index') {
-			echo "Dashboard Peserta";
-		} elseif($page == 'taman') {
-			echo "Taman-taman";
-			} elseif($page == 'juri') {
-			echo "Dewan Juri";
-			} elseif($page == 'pesertapa') {
-			echo "Barung Putra";
-			} elseif($page == 'pesertapi') {
-			echo "Barung Putri";
-			} elseif($page == 'rekapawalputra') {
-			echo "Rekap Nilai Barung Putra";
-			} elseif($page == 'rekapawalputri') {
-			echo "Rekap Nilai Barung Putri";
-			} elseif($page == 'rekapakhirputra') {
-			echo "Barung Berprestasi Putra";
-			} elseif($page == 'rekapakhirputri') {
-			echo "Barung Berprestasi Putri";
-			} elseif($page == 'juaraumum') {
-			echo "Juara Umum";
-		}
-		} else {
-		echo "Dashboard Peserta";
-		}
-		?>
-    </title>
-    <!-- Favicon-->
-    <link rel="icon" href="assets/images/tunas.png" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?= $data_panitia['nama_kegiatan'] ?></title>
+    <link rel="icon" href="assets/images/<?= $data_panitia['logo'] ?>" type="image/x-icon">
+    <!-- Bootstrap Core Css -->
+    <link href="assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!-- Google Fonts -->
     <link href="assets/css/material-google-font.css" rel="stylesheet" type="text/css">
     <link href="assets/css/roboto-google-font.css" rel="stylesheet" type="text/css">
-    <link href="assets/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- Waves Effect Css -->
-    <link href="assets/plugins/node-waves/waves.css" rel="stylesheet" />
-    <!-- Animation Css -->
-    <link href="assets/plugins/animate-css/animate.css" rel="stylesheet" />
-    <!-- JQuery DataTable Css -->
-    <link href="assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
-    <!-- Custom Css -->
-    <link href="assets/css/style.css" rel="stylesheet">
-    <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
-    <link href="assets/css/themes/all-themes.css" rel="stylesheet" />
-    <link href="assets/css/select2.min.css" rel="stylesheet" />
-    <link href="assets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
-    <!-- <link href="aasets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
-		<link href="assets/css/sweetalert2.min.css" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            padding-top: 50px; /* Adjust for fixed navbar */
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+        }
+        .bg-dark-brown {
+            background-color: #5D4037 !important;
+            border-color: #4E342E !important;
+            color: white !important;
+        }
+        .bg-light-brown {
+            background-color: #8D6E63 !important;
+            color: white !important;
+        }
+        .bg-purple {
+            background-color: #7B1FA2 !important;
+            color: white !important;
+        }
+        .navbar-default .navbar-brand {
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .navbar-default .navbar-nav > li > a {
+            color: white;
+        }
+        .navbar-default .navbar-nav > li > a:hover,
+        .navbar-default .navbar-nav > li > a:focus {
+            color: #ffeb3b;
+            background-color: transparent;
+        }
+        .navbar-default .navbar-nav > .open > a, 
+        .navbar-default .navbar-nav > .open > a:hover, 
+        .navbar-default .navbar-nav > .open > a:focus {
+            background-color: #4E342E;
+            color: white;
+        }
+        .hero {
+            text-align: center;
+            padding: 80px 0;
+            margin-bottom: 30px;
+        }
+        .hero h1 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 4em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+        }
+        .hero h2 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 2.5em;
+            font-weight: 600;
+            margin-bottom: 30px;
+            margin-top: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            text-transform: uppercase;
+        }
+        .hero p {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.6em;
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+        .content-section {
+            padding: 20px 0;
+            min-height: 400px;
+        }
+        .card {
+            background: #fff;
+            min-height: 50px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            margin-bottom: 30px;
+            border-radius: 2px;
+        }
+        .card .header {
+            color: #555;
+            padding: 20px;
+            position: relative;
+            border-bottom: 1px solid rgba(204, 204, 204, 0.35);
+        }
+        .card .header.bg-purple, 
+        .card .header.bg-dark-brown, 
+        .card .header.bg-light-brown {
+            color: #fff !important;
+        }
+        .card .header h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: normal;
+            color: inherit; /* Inherit color from header */
+        }
+        .card .body {
+            padding: 20px;
+        }
+        footer {
+            background-color: #5D4037;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            margin-top: 50px;
+        }
+    </style>
 </head>
-<style media="screen">
-    .sidebar .user-info {
-        padding: 13px 15px 12px 15px;
-        white-space: nowrap;
-        position: relative;
-        border-bottom: 1px solid #e9e9e9;
-        background: url("assets/images/<?=$data['bg']; ?>") no-repeat no-repeat;
-        height: 135px;
-    }
+<body>
 
-</style>
-
-<body class="theme-green">
-    <!-- Page Loader -->
-    <div class="page-loader-wrapper">
-        <div class="loader">
-            <div class="preloader">
-                <div class="spinner-layer pl-red">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div>
-                    <div class="circle-clipper right">
-                        <div class="circle"></div>
-                    </div>
-                </div>
-            </div>
-            <p>Mohon Tunggu ...</p>
-        </div>
-    </div>
-    <!-- #END# Page Loader -->
-    <!-- Overlay For Sidebars -->
-    <div class="overlay"></div>
-    <!-- Top Bar -->
-    <nav class="navbar">
-        <div class="container-fluid">
+    <!-- Navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top bg-dark-brown">
+        <div class="container">
             <div class="navbar-header">
-                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
-                <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="index.php">PESTA SIAGA KWARRAN KEDUNG <?=date('Y')?></a>
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.php">
+                    <img src="assets/images/<?= $data_panitia['logo'] ?>" alt="Logo" style="height: 30px; display: inline-block; margin-right: 10px; vertical-align: top;">
+                    <?= $data_panitia['nama_kegiatan'] ?>
+                </a>
             </div>
-            <div class="collapse navbar-collapse" id="navbar-collapse">
-                <div class="nav navbar-nav navbar-right" style="padding: 10px;">
-                    <div class="pull-right navbar-brand"><?php $date=date('Y-m-d');
-							echo format_hari_tanggal($date)?>
-                    </div>
-                </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="index.php">Beranda</a></li>
+                    <li><a href="?page=taman">Taman</a></li>
+                    <li><a href="?page=juri">Juri</a></li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Peserta <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="?page=peserta_pa">Putra</a></li>
+                            <li><a href="?page=peserta_pi">Putri</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nilai <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="?page=nilai_pa">Rekap Nilai Putra</a></li>
+                            <li><a href="?page=nilai_pi">Rekap Nilai Putri</a></li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Prestasi <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="?page=prestasi_berprestasi">Barung Berprestasi</a></li>
+                            <li><a href="?page=prestasi_juaraumum">Juara Umum</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="auth/login.php" target="_blank" class="btn btn-warning navbar-btn" style="color: #5D4037 !important; font-weight: bold; margin-left: 10px;">Login Admin</a></li>
+                </ul>
             </div>
         </div>
     </nav>
-    <!-- #Top Bar -->
-    <section>
-        <!-- Left Sidebar -->
-        <aside id="leftsidebar" class="sidebar">
-            <!-- User Info -->
-            <div class="user-info" align="center">
-                <div class="image">
-                    <img src="assets/images/<?=$data['logo']; ?>" width="70" height="70" alt="User" />
-                </div>
-                <div class="info-container">
-                    <div class="name" style="color: #000000; font-weight: bold; font-size: 12px;">
-                        <?=$tampil['nama']; ?>
-                    </div>
-                </div>
-            </div>
-            <!-- #User Info -->
-            <!-- Menu -->
-            <div class="menu">
-                <ul class="list">
-                    <li class="header" id="dashboard">MENU UTAMA</li>
-                    <li class="active">
-                        <a href="index.php">
-                            <i class="material-icons">dashboard</i>
-                            <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="?page=taman">
-                            <i class="material-icons">domain</i>
-                            <span>Taman - Taman</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="?page=juri">
-                            <i class="material-icons">visibility</i>
-                            <span>Dewan Juri</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">people</i>
-                            <span>Peserta</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="?page=pesertapa">Barung Putra</a>
-                            </li>
-                            <li>
-                                <a href="?page=pesertapi">Barung Putri</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">list</i>
-                            <span>Rekap Nilai</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="?page=rekapawalputra">Barung Putra</a>
-                            </li>
-                            <li>
-                                <a href="?page=rekapawalputri">Barung Putri</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);" class="menu-toggle">
-                            <i class="material-icons">thumb_up</i>
-                            <span>Barung Berprestasi</span>
-                        </a>
-                        <ul class="ml-menu">
-                            <li>
-                                <a href="?page=rekapakhirputra">Barung Putra</a>
-                            </li>
-                            <li>
-                                <a href="?page=rekapakhirputri">Barung Putri</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a href="?page=juaraumum">
-                            <i class="material-icons">school</i>
-                            <span>Juara Umum</span>
-                        </a>
-                    </li>
-                    <li class="header" id="dashboard">LOGOUT</li>
-                    <li>
-                        <a href="../auth/login.php">
-                            <i class="material-icons">exit_to_app</i>
-                            <span>Log Out</span>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-            <!-- #Menu -->
-            <!-- Footer -->
-            <div class="legal">
-                <div class="copyright">
-                    &copy; <?=date('Y')?> <a href="javascript:void(0);">Pesta Siaga Kwarran Kedung</a>
-                </div>
-                <div class="version">
-                    <b>Versi: </b> 1.0.0
-                </div>
-            </div>
-        </aside>
-        <!-- #Footer -->
-    </section>
-    <section class="content">
-        <div class="container-fluid">
-            <div class="row clearfix">
-                <div class="body">
-                    <?php
-							$page = @$_GET['page'];
-							$aksi = @$_GET['aksi'];
-							if ($page == "juri") {
-							if ($aksi == "") {
-							include "page/juri/juri.php";
-							}
-							} elseif ($page == "pesertapa") {
-							if ($aksi == "") {
-							include "page/pesertapa/peserta_putra.php";
-							}
-							} elseif ($page == "pesertapi") {
-							if ($aksi == "") {
-							include "page/pesertapi/peserta_putri.php";
-							}
-							} elseif ($page == "taman") {
-							if ($aksi == "") {
-							include "page/taman/taman.php";
-							}
-							} elseif ($page == "rekapawalputra") {
-							if ($aksi == "") {
-							include "page/rekapawalputra/rekap_awal_putra.php";
-							}
-							} elseif ($page == "rekapawalputri") {
-							if ($aksi == "") {
-							include "page/rekapawalputri/rekap_awal_putri.php";
-							}
-							} elseif ($page == "rekapakhirputra") {
-							if ($aksi == "") {
-							include "page/rekapakhirputra/rekap_akhir_putra.php";
-							}
-							} elseif ($page == "rekapakhirputri") {
-							if ($aksi == "") {
-							include "page/rekapakhirputri/rekap_akhir_putri.php";
-							}
-							} elseif ($page == "juaraumum") {
-							if ($aksi == "") {
-							include "page/juaraumum/juaraumum.php";
-							}
-							} elseif ($page == "") {
-							include "page/dashboard/index.php";
-							} ?>
-                </div>
-            </div>
+
+    <!-- Main Content -->
+    <?php
+    $page = @$_GET['page'];
+    if (empty($page)) {
+        include "public_page/home.php";
+    } elseif ($page == 'taman') {
+        include "public_page/taman.php";
+    } elseif ($page == 'juri') {
+        include "public_page/juri.php";
+    } elseif ($page == 'peserta_pa') {
+        include "public_page/peserta_pa.php";
+    } elseif ($page == 'peserta_pi') {
+        include "public_page/peserta_pi.php";
+    } elseif ($page == 'nilai_pa') {
+        include "public_page/nilai_pa.php";
+    } elseif ($page == 'nilai_pi') {
+        include "public_page/nilai_pi.php";
+    } elseif ($page == 'prestasi_berprestasi') {
+        include "public_page/prestasi_berprestasi.php";
+    } elseif ($page == 'prestasi_juaraumum') {
+        include "public_page/prestasi_juaraumum.php";
+    } else {
+        include "public_page/home.php";
+    }
+    ?>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; <?= date('Y') ?> <?= $data_panitia['nama_kegiatan'] ?>. All rights reserved.</p>
         </div>
-    </section>
-    <!-- Jquery Core Js -->
-    <script src="assets/plugins/jquery/jquery.js"></script>
+    </footer>
+
+    <!-- Scripts -->
     <script src="assets/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap Core Js -->
     <script src="assets/plugins/bootstrap/js/bootstrap.js"></script>
-    <!-- Slimscroll Plugin Js -->
-    <script src="assets/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
-    <!-- Waves Effect Plugin Js -->
-    <script src="assets/plugins/node-waves/waves.js"></script>
-    <!-- Jquery CountTo Plugin Js -->
-    <script src="assets/plugins/jquery-countto/jquery.countTo.js"></script>
-    <!-- Jquery DataTable Plugin Js -->
-    <script src="assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
-    <script src="assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
-    <!-- Chart Plugins Js -->
-    <script src="assets/plugins/chartjs/Chart.bundle.js"></script>
-    <script src="assets/plugins/chartjs/Chart.min.js"></script>
-    <!-- Custom Js -->
-    <script src="assets/js/admin.js"></script>
-    <script src="assets/js/select2.min.js"></script>
-    <script src="assets/js/pages/tables/jquery-datatable.js"></script>
-    <script src="assets/js/pages/charts/chartjs.js"></script>
-    <!-- Demo Js -->
-    <script src="assets/js/demo.js"></script>
-    <script src="assets/js/pages/forms/basic-form-elements.js"></script>
-    <!-- SweetAlert Plugin Js -->
-    <!-- <script src="assets/plugins/sweetalert/sweetalert.min.js"></script> -->
-    <!-- <script src="assets/js/sweetalert2.all.min.js"></script> -->
-    <script>
-        $('.count-to').countTo();
-        $("#dashboard").addClass('active');
-
-    </script>
-    <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'horizontalBar',
-            data: {
-                labels: [<?php echo $nama_pangkalan; ?>],
-                datasets: [{
-                    label: '# NILAI BARUNG PUTRA',
-                    data: [<?php echo $total_nilai; ?>],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-
-    </script>
-    <script>
-        var ctx = document.getElementById('myChart2').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'horizontalBar',
-            data: {
-                labels: [<?=$nama_pangkalan1; ?>],
-                datasets: [{
-                    label: '# NILAI BARUNG PUTRI',
-                    data: [<?=$total_nilai1; ?>],
-                    backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)',
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)',
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-
-    </script>
 </body>
-
 </html>
-<?php
-	}
-?>
