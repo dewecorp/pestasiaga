@@ -1,0 +1,70 @@
+<?php
+include"../config/koneksi.php";
+$content = '
+
+<page>
+	<style type="text/css">
+	.table{padding-left: 40px; padding-top: 10px; border-collapse: collapse;}
+	.table th{padding: 8px 5px; background-color: #cccccc;}
+	.table td{padding: 8px 5px;}
+	</style>
+	';
+    $content .= '
+
+	<h4 align="center">Rekap Nilai Barung Putri</h4>
+	<h4 align="center">Pesta Siaga Kwarran Kedung '.date('Y').'</h4>
+	<table border="1" class="table">
+		<tr>
+
+			<th style="width: 5px;">No.</th>
+			<th align="center">No. Dada</th>
+			<th align="center">Nama Pangkalan</th>
+			<th>Ketakwaan</th>
+			<th>Toleransi</th>
+			<th>Tanda Pengenal</th>
+			<th>Rangking 1</th>
+			<th>KIM</th>
+			<th>Scout</th>
+			<th>LBB</th>
+			<th>Kereta Bola</th>
+			<th>Seni Budaya</th>
+			<th>Bumbung</th>
+			<th>Nilai Akhir</th>
+
+		</tr>';
+        $no = 1;
+
+        $sql = $koneksi->query("SELECT * FROM tb_rekap_pi
+		RIGHT JOIN tb_peserta_pi ON tb_rekap_pi.id_pi = tb_peserta_pi.id_pi ORDER BY no_dada ASC");
+        while ($data = $sql->fetch_assoc()) {
+            $filename = "rekappi-".date('d-m-Y').".pdf";
+            $content.= '
+		<tr>
+			<td>'.$no++.'</td>
+			<td align="center">'.$data['no_dada'].'</td>
+			<td>'.$data['pangkalan'].'</td>
+			<td align="center">'.$data['ketakwaan'].'</td>
+			<td align="center">'.$data['toleransi'].'</td>
+			<td align="center">'.$data['tanda_pengenal'].'</td>
+			<td align="center">'.$data['rangking'].'</td>
+			<td align="center">'.$data['kim'].'</td>
+			<td align="center">'.$data['scout_skill'].'</td>
+			<td align="center">'.$data['lbb'].'</td>
+			<td align="center">'.$data['kereta_bola'].'</td>
+			<td align="center">'.$data['seni_budaya'].'</td>
+			<td align="center">'.$data['bumbung'].'</td>
+			<td align="center">'.$data['nilai_akhir_pi'].'</td>
+		</tr>
+		';
+        }
+        $content.='
+	</table>
+</page>
+
+';
+require '../assets/vendor/autoload.php';
+use Spipu\Html2Pdf\Html2Pdf;
+
+$html2pdf = new Html2Pdf('L', 'F4', 'EN');
+$html2pdf->writeHTML($content);
+$html2pdf->output($filename);
