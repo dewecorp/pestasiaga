@@ -48,7 +48,7 @@ echo.
 echo [3/3] Update Backup ZIP...
 echo --------------------------
 :: Menggunakan PowerShell untuk update zip (exclude folder .git dan file zip itu sendiri untuk mencegah loop/error)
-powershell -Command "Get-ChildItem -Exclude 'backup_pestasiaga.zip','.git' | Compress-Archive -DestinationPath 'backup_pestasiaga.zip' -Update"
+powershell -Command "Get-ChildItem -Exclude '*.zip','.git' | Compress-Archive -DestinationPath 'backup_pestasiaga.zip' -Update"
 
 echo.
 echo ========================================================
