@@ -1,5 +1,9 @@
 <?php
+ob_start();
 include"../config/koneksi.php";
+$sql_panitia = $koneksi->query("SELECT nama_kegiatan FROM tb_panitia LIMIT 1");
+$data_panitia = $sql_panitia->fetch_assoc();
+$nama_kegiatan = isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung ' . date('Y');
 $content = '
 
 <page>
@@ -12,7 +16,7 @@ $content = '
     $content .= '
 
 	<h4 align="center">Rekap Nilai Barung Putri</h4>
-	<h4 align="center">Pesta Siaga Kwarran Kedung '.date('Y').'</h4>
+	<h4 align="center">'.$nama_kegiatan.'</h4>
 	<table border="1" class="table">
 		<tr>
 
@@ -67,4 +71,5 @@ use Spipu\Html2Pdf\Html2Pdf;
 
 $html2pdf = new Html2Pdf('L', 'F4', 'EN');
 $html2pdf->writeHTML($content);
-$html2pdf->output($filename);
+ob_end_clean();
+$html2pdf->output($filename, 'I');

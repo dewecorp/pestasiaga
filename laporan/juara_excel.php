@@ -1,12 +1,15 @@
 <?php
 include"../config/koneksi.php";
+$sql_panitia = $koneksi->query("SELECT nama_kegiatan FROM tb_panitia LIMIT 1");
+$data_panitia = $sql_panitia->fetch_assoc();
+$nama_kegiatan = isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung ' . date('Y');
 include "../admin/page/juaraumum/juara_logic.php";
 
-header("Content-type: application/vnd-ms-excel");
+header("Content-type: application/vnd.ms-excel");
 header("Content-Disposition: attachment; filename=Juara_Umum.xls");
 ?>
 <center>
-    <h3>JUARA UMUM<br>PESTA SIAGA KWARRAN KEDUNG <?=date('Y')?></h3>
+    <h3>JUARA UMUM<br><?= $nama_kegiatan ?></h3>
 </center>
 <table border="1">
     <thead>

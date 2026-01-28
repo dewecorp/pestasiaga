@@ -152,8 +152,8 @@ if (!function_exists('map_column_putri')) {
             </div>
             <div class="body">
                 <div class=" pull-right">
-                    <a href="../laporan/rekappi_pdf.php" target="_blank" class="btn btn-info btn-sm waves-effect"><i class="fa fa-print"></i>
-                        PDF</a>
+                    <a href="../laporan/rekappi_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i>
+                PDF</a>
                     <a href="../laporan/rekappi_excel.php" target="_blank" class="btn btn-success btn-sm waves-effect"><i class="fa fa-download"></i> Excel</a>
                 </div>
                 <br><br>

@@ -152,7 +152,7 @@ if (!function_exists('map_column_putra')) {
             </div>
             <div class="body">
                 <div class=" pull-right">
-                    <a href="../laporan/rekappa_pdf.php" target="_blank" class="btn btn-info btn-sm waves-effect"><i class="fa fa-print"></i>
+                    <a href="../laporan/rekappa_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i>
                         PDF</a>
                     <a href="../laporan/rekappa_excel.php" target="_blank" class="btn btn-success btn-sm waves-effect"><i class="fa fa-download"></i> Excel</a>
                 </div>

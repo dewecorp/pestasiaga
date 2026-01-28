@@ -32,17 +32,6 @@ $tampil = $sql->fetch_assoc();
 $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
 
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="">
-</head>
-
-<body>
     <div class="body">
         <div class="alert alert-success alert-dismissable" role="alert" id="alert">
             <font style="font-size: 22px;"><b>Salam Pramuka ......</b> Selamat Datang <strong> <?=$tampil['nama'];?>,
@@ -182,9 +171,6 @@ $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
             </div>
         </div>
     </div>
-</body>
-
-</html>
 <script src="../assets/plugins/jquery/jquery.js"></script>
 <script src="../assets/plugins/jquery/jquery.min.js"></script>
 <script>

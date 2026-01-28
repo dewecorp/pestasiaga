@@ -1,6 +1,10 @@
 <?php
-// $koneksi = new mysqli("localhost", "root", "", "pestasiaga");
+ob_start();
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 include"../config/koneksi.php";
+$sql_panitia = $koneksi->query("SELECT nama_kegiatan FROM tb_panitia LIMIT 1");
+$data_panitia = $sql_panitia->fetch_assoc();
+$nama_kegiatan = isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung ' . date('Y');
 $content = '
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +24,7 @@ $content = '
 	';
     $content .= '
 	<h2 align="center">Peserta Barung Putra</h2>
-	<h2 align="center">Pesta Siaga Kwarran Kedung '.date('Y').'</h2>
+	<h2 align="center">'.$nama_kegiatan.'</h2>
 	<table border="1" class="table">
 		<tr>
 			<th style="padding: 8px 8px;">No.</th>
@@ -54,4 +58,5 @@ use Spipu\Html2Pdf\Html2Pdf;
 
 $html2pdf = new Html2Pdf('P', 'F4', 'EN');
 $html2pdf->writeHTML($content);
-$html2pdf->output($filename);
+ob_end_clean();
+$html2pdf->output($filename, 'I');

@@ -2,17 +2,6 @@
 $id = @$_GET['id'];
 $sql = $koneksi->query("SELECT * FROM tb_juara WHERE id_juara='$id'");
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Juara Umum</title>
-    <link rel="stylesheet" href="">
-</head>
-
-<body>
     <div class="body">
         <ol class="breadcrumb breadcrumb-bg-green">
             <li><a href="index.php"><i class="material-icons">dashboard</i> Dashboard</a></li>
@@ -29,8 +18,8 @@ $sql = $koneksi->query("SELECT * FROM tb_juara WHERE id_juara='$id'");
                 </div>
                 <div class="body">
                     <div class=" pull-right">
-                        <a href="../laporan/juara_pdf.php" target="_blank" class="btn btn-default btn-sm waves-effect"><i class="fa fa-print"></i>
-                            Export PDF</a>
+                        <a href="../laporan/juara_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i>
+                PDF</a>            Export PDF</a>
                         <a href="../laporan/juara_excel.php" target="_blank" class="btn btn-success btn-sm waves-effect"><i class="fa fa-download"></i> Export Excel</a>
                     </div><br><br>
                     <div class="table-responsive">
@@ -88,6 +77,3 @@ $sql = $koneksi->query("SELECT * FROM tb_juara WHERE id_juara='$id'");
             </div>
         </div>
     </div>
-</body>
-
-</html>

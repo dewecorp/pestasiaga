@@ -1,12 +1,15 @@
 <?php
 include "../config/koneksi.php";
+$sql_panitia = $koneksi->query("SELECT nama_kegiatan FROM tb_panitia LIMIT 1");
+$data_panitia = $sql_panitia->fetch_assoc();
+$nama_kegiatan = isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung ' . date('Y');
 $filename = "user-(" . date('d-m-Y') . ").xls";
-header("content-disposition: attachment; filename=$filename");
-header("content-type: application/vdn.ms.excel");
+header("Content-Type: application/vnd.ms-excel; charset=utf-8");
+header("Content-Disposition: attachment; filename=\"$filename\"");
+header("Cache-Control: max-age=0");
 ?>
 <h2 align="center">Data User</h2>
-<h2 align="center">Pesta Siaga Kwarran Kedung
-<?= date('Y') ?></h2>
+<h2 align="center"><?= $nama_kegiatan ?></h2>
 <table border="1">
 	<tr>
 		<th>No.</th>

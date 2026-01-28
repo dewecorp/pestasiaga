@@ -1,5 +1,10 @@
 <?php
+ob_start();
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 include"../config/koneksi.php";
+$sql_panitia = $koneksi->query("SELECT nama_kegiatan FROM tb_panitia LIMIT 1");
+$data_panitia = $sql_panitia->fetch_assoc();
+$nama_kegiatan = isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung ' . date('Y');
 require('../assets/vendor/setasign/fpdf/fpdf.php');
 include "../admin/page/juaraumum/juara_logic.php";
 
@@ -9,7 +14,7 @@ $pdf->SetFont('Arial', 'B', 12);
 $pdf->ln(0.5);
 $pdf->Cell(0, 0, 'JUARA UMUM', 0, 1, 'C');
 $pdf->ln(1);
-$pdf->Cell(0, 0, 'PESTA SIAGA KWARRAN KEDUNG '.date('Y'), 0, 1, 'C');
+$pdf->Cell(0, 0, strtoupper($nama_kegiatan), 0, 1, 'C');
 $pdf->ln(1);
 
 // Headers
@@ -47,5 +52,6 @@ foreach($stats as $pangkalan => $data) {
     $pdf->ln(1);
 }
 
-$pdf->Output();
+ob_end_clean();
+$pdf->Output('I', 'juara_umum.pdf');
 ?>

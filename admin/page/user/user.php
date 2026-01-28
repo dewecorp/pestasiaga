@@ -2,17 +2,6 @@
 $id = @$_GET['id'];
 $sql = $koneksi->query("SELECT * FROM tb_user WHERE id ='$id'");
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>User</title>
-    <link rel="stylesheet" href="">
-</head>
-
-<body>
     <div class="body">
         <ol class="breadcrumb breadcrumb-bg-green">
             <li><a href="index.php"><i class="material-icons">dashboard</i> Dashboard</a></li>
@@ -72,8 +61,7 @@ $sql = $koneksi->query("SELECT * FROM tb_user WHERE id ='$id'");
                                     <td align="center">
                                         <a data-toggle="modal" data-target="#modal_edit<?=$data['id']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
                                         </a>
-                                        <a data-toggle="modal" data-target="#modal_konfirmasi<?=$data['id']; ?>"><button class="btn btn-danger btn-xs waves-effect"><i class="material-icons">delete</i><span>Hapus</span></button>
-                                        </a>
+                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-user" data-id="<?=$data['id']; ?>" data-name="<?=$data['nama']; ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
                                         <!-- <a href="?page=user&aksi=hapus&id=<?=$data['id']; ?>"
                                             onclick="return confirm('Yakin Menghapus Data?')"
                                             class="btn btn-danger btn-xs waves-effect"><i
@@ -91,11 +79,33 @@ $sql = $koneksi->query("SELECT * FROM tb_user WHERE id ='$id'");
             </div>
         </div>
     </div>
-</body>
-
-</html>
+    </div>
 <?php
 include "modal_tambah.php";
 include "modal_edit.php";
-include "modal_konfirmasi.php";
 ?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var buttons = document.querySelectorAll('.btn-delete-user');
+    buttons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var id = this.getAttribute('data-id');
+            var name = this.getAttribute('data-name');
+            Swal.fire({
+                title: 'Hapus User?',
+                html: 'Data atas nama <b>'+name+'</b> akan dihapus dan tidak dapat dipulihkan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href='?page=user&aksi=hapus&id='+id;
+                }
+            });
+        });
+    });
+});
+</script>

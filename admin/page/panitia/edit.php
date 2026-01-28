@@ -3,17 +3,6 @@ $id = @$_GET['id'];
 $sql = $koneksi->query("SELECT * FROM tb_panitia WHERE id_panitia='$id'");
 $data = $sql->fetch_assoc();
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Data Kegiatan</title>
-    <link rel="stylesheet" href="">
-</head>
-
-<body>
     <div class="row clearfix">
         <div class="col-lg-12">
             <div class="card">
@@ -118,6 +107,3 @@ $data = $sql->fetch_assoc();
     }
     }
     ?>
-</body>
-
-</html>

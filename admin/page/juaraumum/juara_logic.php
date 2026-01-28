@@ -114,4 +114,3 @@ uasort($stats, function($a, $b) {
     if($a['perunggu'] != $b['perunggu']) return $b['perunggu'] - $a['perunggu'];
     return $b['nilai'] - $a['nilai'];
 });
-?>

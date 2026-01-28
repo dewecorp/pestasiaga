@@ -1,4 +1,27 @@
 <?php
+if (isset($_POST['edit'])) {
+    $id    = $_POST['id'];
+    $taman = $_POST['taman'];
+    $lokasi = $_POST['lokasi'];
+    $koneksi->query("UPDATE tb_taman SET nama_taman='$taman', lokasi='$lokasi' WHERE id_taman='$id'"); ?>
+
+<script>
+    Swal.fire({
+        position: 'top-center',
+        icon: 'success',
+        title: '<?=$taman; ?>',
+        text: 'Berhasil Diedit',
+        showConfirmButton: true,
+        timer: 3000
+    });
+    window.setTimeout(function() {
+        document.location.href = '?page=taman';
+    }, 1500);
+</script>
+
+<?php
+}
+
 $sql = $koneksi->query("SELECT * FROM tb_taman");
 while ($tampil = $sql->fetch_assoc()) {
 ?>
@@ -36,28 +59,5 @@ while ($tampil = $sql->fetch_assoc()) {
     </div>
 </div>
 <?php
-if ($_POST['edit']) {
-$id    = $_POST['id'];
-$taman = $_POST['taman'];
-$lokasi = $_POST['lokasi'];
-$koneksi->query("UPDATE tb_taman SET nama_taman='$taman', lokasi='$lokasi' WHERE id_taman='$id'"); ?>
-
-<script>
-    Swal.fire({
-        position: 'top-center',
-        icon: 'success',
-        title: '<?=$taman; ?>',
-        text: 'Berhasil Diedit',
-        showConfirmButton: true,
-        timer: 3000
-    }, 10);
-    window.setTimeout(function() {
-        document.location.href = '?page=taman';
-    }, 1500);
-
-</script>
-
-<?php
-}
 }
 ?>

@@ -2,17 +2,6 @@
 $id = @$_GET['id'];
 $sql = $koneksi->query("SELECT * FROM tb_peserta_pi WHERE id_pi='$id'");
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Peserta Putri</title>
-    <link rel="stylesheet" href="">
-</head>
-
-<body>
     <div class="body">
         <ol class="breadcrumb breadcrumb-bg-green">
             <li><a href="index.php"><i class="material-icons">dashboard</i> Dashboard</a></li>
@@ -29,8 +18,8 @@ $sql = $koneksi->query("SELECT * FROM tb_peserta_pi WHERE id_pi='$id'");
                 </div>
                 <div class="body">
                     <div class="pull-right">
-                        <a href="../laporan/pesertapi_pdf.php" target="_blank" class="btn btn-default btn-sm waves-effect"><i class="fa fa-print"></i>
-                            PDF</a>
+                        <a href="../laporan/pesertapi_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i>
+                PDF</a>
                         <a href="../laporan/pesertapi_excel.php" target="_blank" class="btn btn-success btn-sm waves-effect"><i class="fa fa-download"></i> Excel</a>
                         <button type="button" class="btn btn-info btn-sm waves-effect" data-toggle="modal" data-target="#modal_tambah"><i class="fa fa-plus"></i> Tambah
                         </button>
@@ -61,8 +50,7 @@ $sql = $koneksi->query("SELECT * FROM tb_peserta_pi WHERE id_pi='$id'");
                                     <td align="center">
                                         <a data-toggle="modal" data-target="#modal_edit<?=$data['id_pi']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
                                         </a>
-                                        <a data-toggle="modal" data-target="#modal_konfirmasi<?=$data['id_pi']; ?>"><button class="btn btn-danger btn-xs waves-effect"><i class="material-icons">delete</i><span>Hapus</span></button>
-                                        </a>
+                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-pi" data-id="<?=$data['id_pi']; ?>" data-name="<?= $data['pangkalan']; ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
                                         <!--  <a href="?page=pesertapi&aksi=hapus&id=<?=$data['id_pi']; ?>"
                                                 onclick="return confirm('Yakin Menghapus Data?')"
                                                 class="btn btn-danger btn-xs waves-effect"><i
@@ -84,8 +72,32 @@ $sql = $koneksi->query("SELECT * FROM tb_peserta_pi WHERE id_pi='$id'");
 
 </html>
 <?php 
-
 include "modal_tambah.php";
 include "modal_edit.php";
-include "modal_konfirmasi.php";
- ?>
+?>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var buttons = document.querySelectorAll('.btn-delete-pi');
+    buttons.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var id = this.getAttribute('data-id');
+            var name = this.getAttribute('data-name');
+            Swal.fire({
+                title: 'Hapus Peserta Putri?',
+                html: 'Barung <b>'+name+'</b> akan dihapus dan tidak dapat dipulihkan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href='?page=pesertapi&aksi=hapus&id='+id;
+                }
+            });
+        });
+    });
+});
+</script>
+<?php ?>

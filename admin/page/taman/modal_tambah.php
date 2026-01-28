@@ -44,11 +44,11 @@ title: '<?=$taman; ?>',
 text: 'Berhasil Ditambahkan',
 showConfirmButton: true,
 timer: 3000
-},10);
-window.setTimeout(function(){
-document.location.href='?page=taman';
-} ,1500);
-</script>
-<?php
-}
+			});
+			window.setTimeout(function(){
+				document.location.href='?page=taman';
+			} ,1500);
+		</script>
+	<?php
+	}
 ?>

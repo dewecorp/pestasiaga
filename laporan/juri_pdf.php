@@ -1,5 +1,11 @@
 <?php
+ob_start();
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 include"../config/koneksi.php";
+$sql_panitia = $koneksi->query("SELECT nama_kegiatan FROM tb_panitia LIMIT 1");
+$data_panitia = $sql_panitia->fetch_assoc();
+$nama_kegiatan = isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung ' . date('Y');
+$filename = "juri-".date('d-m-Y').".pdf";
 $content = '
 <page>
     <style type="text/css">
@@ -12,7 +18,7 @@ $content = '
     $content .= '
    
     <h2 align="center">Dewan Juri</h2>
-    <h2 align="center">Pesta Siaga Kwarran Kedung '.date('Y').'</h2>
+    <h2 align="center">'.$nama_kegiatan.'</h2>
     <table border="1" class="table">
         <tr>
             <th style="padding: 8px 5px;">No.</th>
@@ -26,7 +32,6 @@ $content = '
         JOIN tb_taman ON tb_juri.id_taman = tb_taman.id_taman
         JOIN tb_peserta_pa ON tb_juri.id_pa = tb_peserta_pa.id_pa");
         while ($data = $sql->fetch_assoc()) {
-            $filename = "juri-".date('d-m-Y').".pdf";
             $content.= '
         <tr>
             <td>'.$no++.'</td>
@@ -46,4 +51,5 @@ use Spipu\Html2Pdf\Html2Pdf;
 
 $html2pdf = new Html2Pdf('P', 'F4', 'EN');
 $html2pdf->writeHTML($content);
-$html2pdf->output($filename);
+ob_end_clean();
+$html2pdf->output($filename, 'I');

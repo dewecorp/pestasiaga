@@ -2,17 +2,6 @@
 $id = @$_GET['id'];
 $sql = $koneksi->query("SELECT * FROM tb_panitia WHERE id_panitia='$id'");
 ?>
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Panitia</title>
-    <link rel="stylesheet" href="">
-</head>
-
-<body>
     <div class="body">
         <ol class="breadcrumb breadcrumb-bg-green">
             <li><a href="index.php"><i class="material-icons">dashboard</i> Dashboard</a></li>
@@ -106,10 +95,6 @@ $sql = $koneksi->query("SELECT * FROM tb_panitia WHERE id_panitia='$id'");
             </div>
         </div>
     </div>
-    
-</body>
-
-</html>
 <?php
 include "modal_edit.php";
 include "modal_logo.php";
