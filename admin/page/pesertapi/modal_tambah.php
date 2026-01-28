@@ -39,7 +39,8 @@
 <?php
 if (isset($_POST['simpan'])) {
     // Generate No Dada Otomatis (Genap: 02, 04, 06...)
-    $sql_max = $koneksi->query("SELECT no_dada FROM tb_peserta_pi ORDER BY CAST(no_dada AS UNSIGNED) DESC LIMIT 1");
+    // Ambil nomor dada tertinggi yang valid (tidak kosong)
+    $sql_max = $koneksi->query("SELECT no_dada FROM tb_peserta_pi WHERE no_dada != '' AND no_dada IS NOT NULL ORDER BY CAST(no_dada AS UNSIGNED) DESC LIMIT 1");
     $max_row = $sql_max->fetch_assoc();
     $last_no = $max_row ? (int)$max_row['no_dada'] : 0;
 
@@ -47,7 +48,7 @@ if (isset($_POST['simpan'])) {
         $next_no = 2;
     } else {
         if ($last_no % 2 != 0) {
-            // If last was odd (error), add 1 to make it even
+            // If last was odd (error/manual input ganjil), add 1 to make it even
             $next_no = $last_no + 1;
         } else {
             // If last was even, add 2
@@ -60,10 +61,17 @@ if (isset($_POST['simpan'])) {
     $pembina = $_POST['pembina'];
 
     $koneksi->query("INSERT INTO tb_peserta_pi (no_dada, pangkalan, pembina) VALUES ('$no_dada', '$pangkalan', '$pembina')");
-    $sql = $koneksi->query("SELECT MAX(ID_PI) AS ID_MAX FROM TB_PESERTA_PI");
+    $sql = $koneksi->query("SELECT MAX(ID_PI) AS ID_MAX FROM tb_peserta_pi");
     $data = $sql->fetch_assoc();
     $id = $data['ID_MAX'];
-    $koneksi->query("INSERT INTO tb_rekap_pi (id_pi) VALUES ('$id')"); ?>
+    // Fix: Insert default values for NOT NULL columns in tb_rekap_pi to prevent fatal errors
+    $insert_rekap = $koneksi->query("INSERT INTO tb_rekap_pi (id_pi, ketakwaan, toleransi, tanda_pengenal, rangking, kim, scout_skill, lbb, kereta_bola, seni_budaya, bumbung, nilai_akhir_pi) VALUES ('$id', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0')");
+    
+    if (!$insert_rekap) {
+        echo "Error creating rekap: " . $koneksi->error;
+        exit;
+    }
+    ?>
 <script>
     Swal.fire({
         position: 'top-center',

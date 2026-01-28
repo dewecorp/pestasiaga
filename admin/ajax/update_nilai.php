@@ -45,8 +45,17 @@ if (empty($id) || $id == 'undefined') {
         $new_id = $id; 
     } else {
         // Insert new record
-        $insert_sql = "INSERT INTO $table ($fk_col) VALUES ('" . $koneksi->real_escape_string($peserta_id) . "')";
-        if ($koneksi->query($insert_sql)) {
+    if ($type == 'putra') {
+        // Required columns for tb_rekap
+        $insert_sql = "INSERT INTO tb_rekap (id_pa, toleransi, tanda_pengenal, rangking, kim, scout_skill, lbb, kereta_bola, seni_budaya, bumbung, nilai_akhir_pa) 
+                       VALUES ('" . $koneksi->real_escape_string($peserta_id) . "', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0')";
+    } else {
+        // Required columns for tb_rekap_pi
+        $insert_sql = "INSERT INTO tb_rekap_pi (id_pi, ketakwaan, toleransi, tanda_pengenal, rangking, kim, scout_skill, lbb, kereta_bola, seni_budaya, bumbung, nilai_akhir_pi) 
+                       VALUES ('" . $koneksi->real_escape_string($peserta_id) . "', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0')";
+    }
+
+    if ($koneksi->query($insert_sql)) {
             $id = $koneksi->insert_id;
             $new_id = $id;
         } else {

@@ -53,45 +53,48 @@ if (!function_exists('map_column_putri')) {
 
     /* Standard Header (Sticky Top) */
     table.dataTable thead th {
-        position: sticky;
-        top: 0;
+        position: sticky !important;
+        top: 0 !important;
         z-index: 20; /* Above normal cells */
-        background-color: #fff;
+        background-color: #fff !important;
         box-shadow: 0 2px 2px -1px rgba(0,0,0,0.2);
     }
 
     /* Sticky Column 1: No */
     table.dataTable th:nth-child(1),
     table.dataTable td:nth-child(1) {
-        position: sticky;
-        left: 0;
+        position: sticky !important;
+        left: 0 !important;
         width: 50px;
         min-width: 50px;
         z-index: 10; /* Above normal cells */
         border-right: 1px solid #ddd;
+        background-color: #fff; /* Ensure background */
     }
 
     /* Sticky Column 2: No Dada */
     table.dataTable th:nth-child(2),
     table.dataTable td:nth-child(2) {
-        position: sticky;
-        left: 50px;
+        position: sticky !important;
+        left: 50px !important;
         width: 80px;
         min-width: 80px;
         z-index: 10;
         border-right: 1px solid #ddd;
+        background-color: #fff; /* Ensure background */
     }
 
     /* Sticky Column 3: Pangkalan */
     table.dataTable th:nth-child(3),
     table.dataTable td:nth-child(3) {
-        position: sticky;
-        left: 130px;
+        position: sticky !important;
+        left: 130px !important;
         width: 200px;
         min-width: 200px;
         z-index: 10;
         border-right: 2px solid #aaa; /* Stronger border to separate */
         box-shadow: 2px 0 5px -2px rgba(0,0,0,0.3); /* Shadow for depth */
+        background-color: #fff; /* Ensure background */
     }
 
     /* Intersection (Top-Left Headers) - Highest Priority */
@@ -99,20 +102,20 @@ if (!function_exists('map_column_putri')) {
     table.dataTable thead th:nth-child(2),
     table.dataTable thead th:nth-child(3) {
         z-index: 30 !important; /* Above everything */
-        background-color: #f0f0f0; /* Slightly distinct color */
+        background-color: #f0f0f0 !important; /* Slightly distinct color */
     }
 
     /* Handle striped rows background for sticky columns */
     table.table-striped tbody tr:nth-of-type(odd) td:nth-child(1),
     table.table-striped tbody tr:nth-of-type(odd) td:nth-child(2),
     table.table-striped tbody tr:nth-of-type(odd) td:nth-child(3) {
-        background-color: #f9f9f9;
+        background-color: #f9f9f9 !important;
     }
 
     table.table-striped tbody tr:nth-of-type(even) td:nth-child(1),
     table.table-striped tbody tr:nth-of-type(even) td:nth-child(2),
     table.table-striped tbody tr:nth-of-type(even) td:nth-child(3) {
-        background-color: #fff;
+        background-color: #fff !important;
     }
 
     .input-nilai {

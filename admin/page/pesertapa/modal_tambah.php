@@ -39,17 +39,18 @@
 <?php
 if (isset($_POST['simpan'])) {
     // Generate No Dada Otomatis (Ganjil: 01, 03, 05...)
-    $sql_max = $koneksi->query("SELECT no_dada FROM tb_peserta_pa ORDER BY CAST(no_dada AS UNSIGNED) DESC LIMIT 1");
+    // Ambil nomor dada tertinggi yang valid (tidak kosong)
+    $sql_max = $koneksi->query("SELECT no_dada FROM tb_peserta_pa WHERE no_dada != '' AND no_dada IS NOT NULL ORDER BY CAST(no_dada AS UNSIGNED) DESC LIMIT 1");
     $max_row = $sql_max->fetch_assoc();
     $last_no = $max_row ? (int)$max_row['no_dada'] : -1;
 
-    // Start from 1 if empty (-1). If last was 1, next is 3.
+    // Start from 1 if empty (-1).
     if ($last_no == -1) {
         $next_no = 1;
     } else {
         // Ensure we stick to odd numbers
         if ($last_no % 2 == 0) {
-            // If last was even (error case), go to next odd
+            // If last was even (error case/manual input genap), go to next odd
             $next_no = $last_no + 1;
         } else {
             // If last was odd, add 2
@@ -61,14 +62,18 @@ if (isset($_POST['simpan'])) {
     $pangkalan = $_POST['pangkalan'];
     $pembina = $_POST['pembina'];
     
-    // Check duplication based on pangkalan (optional, but good practice)
-    // $check = $koneksi->query("SELECT * FROM tb_peserta_pa WHERE pangkalan = '$pangkalan'");
-    
     $koneksi->query("INSERT INTO tb_peserta_pa (no_dada, pangkalan, pembina) VALUES ('$no_dada', '$pangkalan', '$pembina')");
-    $sql = $koneksi->query("SELECT MAX(ID_PA) AS ID_MAX FROM TB_PESERTA_PA");
+    $sql = $koneksi->query("SELECT MAX(ID_PA) AS ID_MAX FROM tb_peserta_pa");
     $data = $sql->fetch_assoc();
     $id = $data['ID_MAX'];
-    $koneksi->query("INSERT INTO tb_rekap (id_pa) VALUES ('$id')"); ?>
+    // Fix: Insert default values for NOT NULL columns in tb_rekap to prevent fatal errors
+    $insert_rekap = $koneksi->query("INSERT INTO tb_rekap (id_pa, toleransi, tanda_pengenal, rangking, kim, scout_skill, lbb, kereta_bola, seni_budaya, bumbung, nilai_akhir_pa) VALUES ('$id', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0')");
+    
+    if (!$insert_rekap) {
+        echo "Error creating rekap: " . $koneksi->error;
+        exit;
+    }
+    ?>
 <script>
     Swal.fire({
         position: 'top-center',
