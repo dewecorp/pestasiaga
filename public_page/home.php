@@ -105,7 +105,28 @@ if ($status_home == 'Tutup') {
                                     <?php
                                     if (!empty($data_panitia['waktu'])) {
                                         $date = date_create($data_panitia['waktu']);
-                                        echo ($date) ? date_format($date, "d F Y") : $data_panitia['waktu'];
+                                        if ($date) {
+                                            $bulan_indo = [
+                                                '01' => 'Januari',
+                                                '02' => 'Februari',
+                                                '03' => 'Maret',
+                                                '04' => 'April',
+                                                '05' => 'Mei',
+                                                '06' => 'Juni',
+                                                '07' => 'Juli',
+                                                '08' => 'Agustus',
+                                                '09' => 'September',
+                                                '10' => 'Oktober',
+                                                '11' => 'November',
+                                                '12' => 'Desember'
+                                            ];
+                                            $tgl = date_format($date, "d");
+                                            $bln = date_format($date, "m");
+                                            $thn = date_format($date, "Y");
+                                            echo $tgl . ' ' . ($bulan_indo[$bln] ?? $bln) . ' ' . $thn;
+                                        } else {
+                                            echo $data_panitia['waktu'];
+                                        }
                                     } else {
                                         echo "-";
                                     }
