@@ -38,7 +38,7 @@ if ($status_home == 'Tutup') {
     ?>
     <div class="jumbotron hero bg-light-brown" style="<?= !empty($data_panitia['hero_image']) ? "background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('assets/images/".$data_panitia['hero_image']."'); background-size: cover; background-position: center; color: white;" : "" ?>">
         <div class="container">
-            <h1>Selamat Datang</h1>
+            <h1 style="font-size: 60px; font-weight: bold;">Selamat Datang</h1>
             <h2><?= $data_panitia['nama_kegiatan'] ?> <?= date('Y') ?></h2>
         </div>
     </div>
