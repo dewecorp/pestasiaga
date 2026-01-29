@@ -205,7 +205,7 @@ header("location:../login.php");
                     ?>
                 </div>
                 <div class="info-container">
-                    <div class="name" style="color: #000000; font-weight: bold; font-size: 18px; ">
+                    <div class="name" style="color: #ffffff; font-weight: bold; font-size: 18px; ">
                         <?=$tampil['nama']; ?>
                     </div>
                 </div>
