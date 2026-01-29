@@ -59,8 +59,8 @@ if (isset($_POST['simpan'])) {
     }
     $no_dada = sprintf("%02d", $next_no);
 
-    $pangkalan = $_POST['pangkalan'];
-    $pembina = $_POST['pembina'];
+    $pangkalan = mysqli_real_escape_string($koneksi, $_POST['pangkalan']);
+    $pembina = mysqli_real_escape_string($koneksi, $_POST['pembina']);
     
     $koneksi->query("INSERT INTO tb_peserta_pa (no_dada, pangkalan, pembina) VALUES ('$no_dada', '$pangkalan', '$pembina')");
     $sql = $koneksi->query("SELECT MAX(ID_PA) AS ID_MAX FROM tb_peserta_pa");

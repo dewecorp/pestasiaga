@@ -48,13 +48,19 @@ while ($data = $sql->fetch_assoc()) {
 ?>
 <?php
 if (isset($_POST['edit_hero'])) {
-    $id         = $_POST['id'];
+    $id         = mysqli_real_escape_string($koneksi, $_POST['id']);
     $sumber     = $_FILES['hero_image']['tmp_name'];
-    $ekstensi   = explode(".", $_FILES['hero_image']['name']);
-    $nama_hero  = "hero-".round(microtime(true)).".".end($ekstensi);
-    $upload     = move_uploaded_file($sumber, "../assets/images/".$nama_hero);
-    if ($upload) {
-        $koneksi->query("UPDATE tb_panitia SET hero_image='$nama_hero' WHERE id_panitia='$id'");
+    $original_name = $_FILES['hero_image']['name'];
+    $ekstensi   = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+    $allowed_ext = array('jpg', 'jpeg', 'png', 'gif');
+    
+    if (!in_array($ekstensi, $allowed_ext)) {
+        echo "<script>Swal.fire('Error', 'Format file tidak diizinkan. Gunakan JPG, JPEG, atau PNG.', 'error');</script>";
+    } else {
+        $nama_hero  = "hero-".round(microtime(true)).".".$ekstensi;
+        $upload     = move_uploaded_file($sumber, "../assets/images/".$nama_hero);
+        if ($upload) {
+            $koneksi->query("UPDATE tb_panitia SET hero_image='$nama_hero' WHERE id_panitia='$id'");
         $hero_lama  = $_POST['hero_lama'];
         if (!empty($hero_lama) && file_exists("../assets/images/".$hero_lama)) {
             unlink("../assets/images/".$hero_lama);
@@ -92,6 +98,7 @@ if (isset($_POST['edit_hero'])) {
 
 </script>
 <?php
+    }
     }
 }
 ?>

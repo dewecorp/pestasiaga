@@ -68,7 +68,7 @@ header("location:../index.php");
                             <img src="../assets/images//<?=$data['logo']; ?>" alt="Login">
                         </div>
                         <h1>SISTEM INFORMASI NILAI</h1>
-                        <h4 style="text-transform: uppercase;"><?=$data['nama_kegiatan']; ?> <?=date('Y')?></h4>
+                        <h4 style="text-transform: uppercase;"><?=htmlspecialchars($data['nama_kegiatan']); ?> <?=date('Y')?></h4>
                     </div>
                     <div class="alert alert-success">
                         <center>Masukkan Username dan Password Anda</center>
@@ -118,8 +118,8 @@ header("location:../index.php");
 </html>
 <?php
     if (isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $pass     = $_POST['password'];
+    $username = mysqli_real_escape_string($koneksi, $_POST['username']);
+    $pass     = mysqli_real_escape_string($koneksi, $_POST['password']);
     $sql = $koneksi->query("SELECT * FROM tb_user WHERE username ='$username' AND password ='$pass'");
     $data = $sql->fetch_assoc();
     $login = $sql->num_rows;

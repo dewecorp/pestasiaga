@@ -175,7 +175,7 @@ header("location:../login.php");
                 <a href="javascript:void(0);" class="bars"></a>
                 <a class="navbar-brand" href="index.php">
                     <img src="../assets/images/<?=$data['logo']; ?>" alt="Logo" style="height:24px; vertical-align:middle; margin-right:8px;">
-                    <?= strtoupper('Sistem Informasi Nilai'); ?> | <?= isset($data['nama_kegiatan']) ? strtoupper($data['nama_kegiatan']) . ' ' . date('Y') : '' ?>
+                    <?= strtoupper('Sistem Informasi Nilai'); ?> | <?= isset($data['nama_kegiatan']) ? strtoupper(htmlspecialchars($data['nama_kegiatan'])) . ' ' . date('Y') : '' ?>
                 </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">

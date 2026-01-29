@@ -43,16 +43,24 @@ while ($data = $sql->fetch_assoc()) {
 }
 ?>
 <?php
-if ($_POST['simpan']) {
-$id = $_POST['id'];
+if (isset($_POST['simpan'])) {
+$id = mysqli_real_escape_string($koneksi, $_POST['id']);
 $sumber = $_FILES['logo']['tmp_name'];
-$ekstensi = explode(".", $_FILES['logo']['name']);
-$nama_logo = "logo-".round(microtime(true)).".".end($ekstensi);
-$upload = move_uploaded_file($sumber, "../assets/images/".$nama_logo);
-if ($upload) {
-$koneksi->query("UPDATE tb_panitia SET logo='$nama_logo' WHERE id_panitia='$id'");
-$logo_lama = $_POST['logo_lama'];
-unlink("../assets/images/".$logo_lama); ?>
+$original_name = $_FILES['logo']['name'];
+$ekstensi = strtolower(pathinfo($original_name, PATHINFO_EXTENSION));
+$allowed_ext = array('jpg', 'jpeg', 'png', 'gif');
+
+if (!in_array($ekstensi, $allowed_ext)) {
+    echo "<script>Swal.fire('Error', 'Format file tidak diizinkan. Gunakan JPG, JPEG, atau PNG.', 'error');</script>";
+} else {
+    $nama_logo = "logo-".round(microtime(true)).".".$ekstensi;
+    $upload = move_uploaded_file($sumber, "../assets/images/".$nama_logo);
+    if ($upload) {
+        $koneksi->query("UPDATE tb_panitia SET logo='$nama_logo' WHERE id_panitia='$id'");
+        $logo_lama = $_POST['logo_lama'];
+        if (file_exists("../assets/images/".$logo_lama)) {
+            unlink("../assets/images/".$logo_lama); 
+        } ?>
 <script>
     Swal.fire({
         position: 'top-center',
@@ -85,6 +93,7 @@ unlink("../assets/images/".$logo_lama); ?>
 
 </script>
 <?php
+}
 }
 }
 ?>
