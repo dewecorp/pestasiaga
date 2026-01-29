@@ -203,6 +203,12 @@ $data_panitia = $sql_panitia->fetch_assoc();
     $page = @$_GET['page'];
     $status_home = $data_panitia['status_home'] ?? 'Buka';
 
+    // Add spacing for non-home pages
+    $is_home = (empty($page) || ($status_home == 'Tutup' && !empty($page)));
+    if (!$is_home) {
+        echo '<div style="margin-top: 30px;"></div>';
+    }
+
     if ($status_home == 'Tutup' && !empty($page)) {
         // Redirect to home if accessed directly while closed
         include "public_page/home.php";
