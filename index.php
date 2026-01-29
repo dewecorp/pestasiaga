@@ -59,6 +59,15 @@ $data_panitia = $sql_panitia->fetch_assoc();
             background-color: #4E342E;
             color: white;
         }
+        @media (max-width: 767px) {
+            .navbar-default .navbar-nav .open .dropdown-menu > li > a {
+                color: white !important;
+            }
+            .navbar-default .navbar-nav .open .dropdown-menu > li > a:hover,
+            .navbar-default .navbar-nav .open .dropdown-menu > li > a:focus {
+                color: #ffeb3b !important;
+            }
+        }
         .hero {
             text-align: center;
             padding: 250px 0;

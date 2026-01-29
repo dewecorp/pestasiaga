@@ -71,6 +71,21 @@ if ($status_home == 'Tutup') {
 
     // Show normal home
     ?>
+    <style>
+        @media (max-width: 768px) {
+            .lead-message {
+                font-size: 14px !important;
+            }
+            .lead-message h1, .lead-message h2, .lead-message h3, .lead-message h4, .lead-message h5, .lead-message h6 {
+                font-size: 18px !important;
+                line-height: 1.3 !important;
+            }
+            .lead-message p, .lead-message div, .lead-message span {
+                font-size: 14px !important;
+                line-height: 1.4 !important;
+            }
+        }
+    </style>
     <div class="jumbotron hero bg-light-brown" style="<?= !empty($data_panitia['hero_image']) ? "background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('assets/images/".$data_panitia['hero_image']."'); background-size: cover; background-position: center; color: white;" : "" ?>">
         <div class="container">
             <h1 style="font-size: 60px; font-weight: bold;">Selamat Datang</h1>
