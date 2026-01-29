@@ -21,6 +21,7 @@ $sql = $koneksi->query("SELECT * FROM tb_peserta_pi WHERE id_pi='$id'");
                         <a href="../laporan/pesertapi_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i>
                 PDF</a>
                         <a href="../laporan/pesertapi_excel.php" target="_blank" class="btn btn-success btn-sm waves-effect"><i class="fa fa-download"></i> Excel</a>
+                        <button type="button" class="btn btn-danger btn-sm waves-effect" data-toggle="modal" data-target="#modal_reset_pi"><i class="material-icons">delete_forever</i> Reset Data</button>
                         <button type="button" class="btn btn-info btn-sm waves-effect" data-toggle="modal" data-target="#modal_tambah"><i class="fa fa-plus"></i> Tambah
                         </button>
                     </div>
@@ -74,6 +75,7 @@ $sql = $koneksi->query("SELECT * FROM tb_peserta_pi WHERE id_pi='$id'");
 <?php 
 include "modal_tambah.php";
 include "modal_edit.php";
+include "modal_reset.php";
 ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {

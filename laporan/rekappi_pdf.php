@@ -1,11 +1,12 @@
 <?php
 ob_start();
 include"../config/koneksi.php";
-$sql_panitia = $koneksi->query("SELECT nama_kegiatan, tempat, tempat_ttd, ketua_panitia FROM tb_panitia LIMIT 1");
+$sql_panitia = $koneksi->query("SELECT nama_kegiatan, tempat, tempat_ttd, ketua_juri, logo FROM tb_panitia LIMIT 1");
 $data_panitia = $sql_panitia->fetch_assoc();
 $nama_kegiatan = (isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung') . ' ' . date('Y');
 $tempat = isset($data_panitia['tempat_ttd']) ? $data_panitia['tempat_ttd'] : 'Jepara';
-$ketua_panitia = isset($data_panitia['ketua_panitia']) ? $data_panitia['ketua_panitia'] : '..................';
+$ketua_juri = isset($data_panitia['ketua_juri']) ? $data_panitia['ketua_juri'] : '..................';
+$logo = isset($data_panitia['logo']) ? $data_panitia['logo'] : '';
 $bulan_indo = array(
     1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni',
     7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
@@ -27,8 +28,17 @@ $content = '
 	';
     $content .= '
 
-	<h4 align="center">Rekap Nilai Barung Putri</h4>
-	<h4 align="center">'.$nama_kegiatan.'</h4>
+	<table style="width: 100%; border: none; margin-bottom: 20px;">
+		<tr>
+			<td style="width: 10%; text-align: left; vertical-align: middle; border: none;">
+				'.(!empty($logo) ? '<img src="../assets/images/'.$logo.'" style="height: 80px; width: auto;">' : '').'
+			</td>
+			<td style="width: 90%; text-align: center; vertical-align: middle; border: none;">
+				<h4 style="margin: 0;">Rekap Nilai Barung Putri</h4>
+				<h4 style="margin: 5px 0 0 0;">'.$nama_kegiatan.'</h4>
+			</td>
+		</tr>
+	</table>
 	<table border="1" class="table">
 		<tr>
 
@@ -81,9 +91,9 @@ $content = '
             <td style="width: 70%;"></td>
             <td style="width: 30%; text-align: center;">
                 ' . $tempat . ', ' . $tanggal_indo . '<br>
-                Ketua Panitia<br>
+                Ketua Dewan Juri<br>
                 <br><br><br>
-                <b><u>' . $ketua_panitia . '</u></b>
+                <b><u>' . $ketua_juri . '</u></b>
             </td>
         </tr>
     </table>

@@ -245,6 +245,8 @@ $sql = $koneksi->query("SELECT * FROM tb_panitia WHERE id_panitia='$id'");
             </div>
         </div>
 
+
+
     </div>
 <?php
 include "modal_edit.php";
