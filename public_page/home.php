@@ -150,7 +150,7 @@ if ($status_home == 'Tutup') {
             <div class="col-md-12">
                 <div class="card">
                     <div class="header bg-purple">
-                        <h2><i class="glyphicon glyphicon-bullhorn"></i> Informasi Terkini</h2>
+                        <h2><i class="glyphicon glyphicon-bullhorn"></i> Selamat Datang</h2>
                     </div>
                     <div class="body">
                         <?php if (!empty($data_panitia['info_image'])): ?>
