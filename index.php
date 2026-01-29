@@ -161,7 +161,7 @@ $data_panitia = $sql_panitia->fetch_assoc();
                 </button>
                 <a class="navbar-brand" href="index.php">
                     <img src="assets/images/<?= $data_panitia['logo'] ?>" alt="Logo" style="height: 30px; display: inline-block; margin-right: 10px; vertical-align: top;">
-                    <?= $data_panitia['nama_kegiatan'] ?>
+                    <?= $data_panitia['nama_kegiatan'] ?> <?= date('Y') ?>
                 </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
