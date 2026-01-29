@@ -3,6 +3,12 @@
         <!-- Putra -->
         <div class="col-md-6">
             <div class="card">
+                <style>
+                    .table thead th {
+                        text-align: center !important;
+                        vertical-align: middle !important;
+                    }
+                </style>
                 <div class="header bg-purple">
                     <h2>BARUNG BERPRESTASI PUTRA</h2>
                 </div>

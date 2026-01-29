@@ -1,5 +1,11 @@
 <div class="container content-section">
     <div class="card">
+        <style>
+            .table thead th {
+                text-align: center !important;
+                vertical-align: middle !important;
+            }
+        </style>
         <div class="header bg-purple">
             <h2>DATA TAMAN</h2>
         </div>
