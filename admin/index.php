@@ -465,6 +465,7 @@ header("location:../login.php");
     <script src="../assets/plugins/chartjs/Chart.min.js"></script>
     <!-- Custom Js -->
     <script src="../assets/js/admin.js"></script>
+    <script src="../assets/plugins/ckeditor/ckeditor.js"></script>
     <script src="../assets/js/select2.min.js"></script>
     <script src="../assets/js/pages/tables/jquery-datatable.js"></script>
     <script src="../assets/js/pages/charts/chartjs.js"></script>

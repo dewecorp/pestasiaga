@@ -36,6 +36,10 @@ $data_panitia = $sql_panitia->fetch_assoc();
             background-color: #7B1FA2 !important;
             color: white !important;
         }
+        .bg-red {
+            background-color: #F44336 !important;
+            color: white !important;
+        }
         .navbar-default .navbar-brand {
             color: white;
             font-weight: bold;
@@ -57,7 +61,7 @@ $data_panitia = $sql_panitia->fetch_assoc();
         }
         .hero {
             text-align: center;
-            padding: 80px 0;
+            padding: 250px 0;
             margin-bottom: 30px;
         }
         .hero h1 {
@@ -84,6 +88,16 @@ $data_panitia = $sql_panitia->fetch_assoc();
             margin: 0 auto;
             line-height: 1.5;
         }
+        .lead-message {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5em;
+            text-align: center;
+            line-height: 1.6;
+            font-weight: 500;
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
         .content-section {
             padding: 20px 0;
             min-height: 400px;
@@ -91,20 +105,28 @@ $data_panitia = $sql_panitia->fetch_assoc();
         .card {
             background: #fff;
             min-height: 50px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             position: relative;
             margin-bottom: 30px;
-            border-radius: 2px;
+            border-radius: 10px;
+            border: 1px solid #eee;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
         }
         .card .header {
             color: #555;
-            padding: 20px;
+            padding: 25px;
             position: relative;
             border-bottom: 1px solid rgba(204, 204, 204, 0.35);
+            border-radius: 10px 10px 0 0;
         }
         .card .header.bg-purple, 
         .card .header.bg-dark-brown, 
-        .card .header.bg-light-brown {
+        .card .header.bg-light-brown,
+        .card .header.bg-red {
             color: #fff !important;
         }
         .card .header h2 {
@@ -145,6 +167,7 @@ $data_panitia = $sql_panitia->fetch_assoc();
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="index.php">Beranda</a></li>
+                    <?php if (($data_panitia['status_home'] ?? 'Buka') == 'Buka') { ?>
                     <li><a href="?page=taman">Taman</a></li>
                     <li><a href="?page=juri">Juri</a></li>
                     <li class="dropdown">
@@ -168,6 +191,7 @@ $data_panitia = $sql_panitia->fetch_assoc();
                             <li><a href="?page=prestasi_juaraumum">Juara Umum</a></li>
                         </ul>
                     </li>
+                    <?php } ?>
                     <li><a href="auth/login.php" target="_blank" class="btn btn-warning navbar-btn" style="color: #5D4037 !important; font-weight: bold; margin-left: 10px;">Login Admin</a></li>
                 </ul>
             </div>
@@ -177,7 +201,12 @@ $data_panitia = $sql_panitia->fetch_assoc();
     <!-- Main Content -->
     <?php
     $page = @$_GET['page'];
-    if (empty($page)) {
+    $status_home = $data_panitia['status_home'] ?? 'Buka';
+
+    if ($status_home == 'Tutup' && !empty($page)) {
+        // Redirect to home if accessed directly while closed
+        include "public_page/home.php";
+    } elseif (empty($page)) {
         include "public_page/home.php";
     } elseif ($page == 'taman') {
         include "public_page/taman.php";

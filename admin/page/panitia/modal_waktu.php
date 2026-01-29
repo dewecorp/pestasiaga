@@ -30,6 +30,18 @@ while ($data = $sql->fetch_assoc()) {
                     </div>
                     <div class="row">
                         <div class="col-lg-2 form-control-label">
+                            <label for="jam">Waktu/Jam</label>
+                        </div>
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <div class="form-line">
+                                    <input type="text" name="jam" class="form-control" placeholder="Contoh: 08:00 - Selesai" value="<?= isset($data['jam']) ? $data['jam'] : ''; ?>">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-2 form-control-label">
                             <label for="tempat">Lokasi Kegiatan</label>
                         </div>
                         <div class="col-lg-10">
@@ -69,9 +81,10 @@ while ($data = $sql->fetch_assoc()) {
 if (isset($_POST['ubah'])) {
 $id = $_POST['id'];
 $waktu = $_POST['waktu'];
+$jam = $_POST['jam'];
 $tempat = $_POST['tempat'];
 $tempat_ttd = $_POST['tempat_ttd'];
-$koneksi->query("UPDATE tb_panitia SET waktu='$waktu', tempat='$tempat', tempat_ttd='$tempat_ttd' WHERE id_panitia='$id'"); ?>
+$koneksi->query("UPDATE tb_panitia SET waktu='$waktu', jam='$jam', tempat='$tempat', tempat_ttd='$tempat_ttd' WHERE id_panitia='$id'"); ?>
 <script>
     Swal.fire({
         position: 'top-center',
