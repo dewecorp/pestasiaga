@@ -34,6 +34,41 @@ if ($status_home == 'Tutup') {
     </div>
     <?php
 } else {
+    // Fetch counts - Explicit connection to avoid scope issues
+    $koneksi_count = mysqli_connect("localhost","root","","pestasiaga");
+    
+    // Default values
+    $jml_taman = 0;
+    $jml_juri = 0;
+    $jml_pa = 0;
+    $jml_pi = 0;
+
+    if ($koneksi_count) {
+        $q_taman = $koneksi_count->query("SELECT COUNT(*) as total FROM tb_taman");
+        if ($q_taman && $q_taman->num_rows > 0) {
+            $row = $q_taman->fetch_assoc();
+            $jml_taman = $row['total'];
+        }
+
+        $q_juri = $koneksi_count->query("SELECT COUNT(*) as total FROM tb_juri");
+        if ($q_juri && $q_juri->num_rows > 0) {
+            $row = $q_juri->fetch_assoc();
+            $jml_juri = $row['total'];
+        }
+
+        $q_pa = $koneksi_count->query("SELECT COUNT(*) as total FROM tb_peserta_pa");
+        if ($q_pa && $q_pa->num_rows > 0) {
+            $row = $q_pa->fetch_assoc();
+            $jml_pa = $row['total'];
+        }
+
+        $q_pi = $koneksi_count->query("SELECT COUNT(*) as total FROM tb_peserta_pi");
+        if ($q_pi && $q_pi->num_rows > 0) {
+            $row = $q_pi->fetch_assoc();
+            $jml_pi = $row['total'];
+        }
+    }
+
     // Show normal home
     ?>
     <div class="jumbotron hero bg-light-brown" style="<?= !empty($data_panitia['hero_image']) ? "background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('assets/images/".$data_panitia['hero_image']."'); background-size: cover; background-position: center; color: white;" : "" ?>">
@@ -45,15 +80,20 @@ if ($status_home == 'Tutup') {
     <div class="container content-section">
         <div class="row">
             <div class="col-md-12">
-                <div class="card" style="margin-top: -30px; z-index: 10; position: relative; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                <!-- Info Box with Counts -->
+                <div class="card" style="margin-top: -15px; margin-bottom: 30px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); position: relative; z-index: 10;">
                     <div class="body" style="background-color: #ff9800; color: white; padding: 20px;">
                         <div class="row">
                             <div class="col-md-6 text-center" style="border-right: 1px solid rgba(255,255,255,0.3);">
                                 <h4 style="margin-top: 0; color: white;"><i class="glyphicon glyphicon-calendar"></i> WAKTU KEGIATAN</h4>
                                 <p style="font-size: 18px; font-weight: bold; margin-bottom: 0;">
                                     <?php
-                                    $date = date_create($data_panitia['waktu']);
-                                    echo date_format($date, "d F Y");
+                                    if (!empty($data_panitia['waktu'])) {
+                                        $date = date_create($data_panitia['waktu']);
+                                        echo ($date) ? date_format($date, "d F Y") : $data_panitia['waktu'];
+                                    } else {
+                                        echo "-";
+                                    }
                                     ?>
                                 </p>
                                 <?php if (!empty($data_panitia['jam'])): ?>
@@ -65,6 +105,25 @@ if ($status_home == 'Tutup') {
                                 <p style="font-size: 18px; font-weight: bold; margin-bottom: 0;">
                                     <?= $data_panitia['tempat'] ?>
                                 </p>
+                            </div>
+                        </div>
+                        <hr style="border-top: 1px solid rgba(255,255,255,0.3); margin: 20px 0;">
+                        <div class="row text-center">
+                            <div class="col-xs-3 col-md-3" style="border-right: 1px solid rgba(255,255,255,0.3);">
+                                <h3 style="margin: 0; font-weight: bold; color: white !important;"><?php echo $jml_taman; ?></h3>
+                                <small style="color: white !important;">TAMAN</small>
+                            </div>
+                            <div class="col-xs-3 col-md-3" style="border-right: 1px solid rgba(255,255,255,0.3);">
+                                <h3 style="margin: 0; font-weight: bold; color: white !important;"><?php echo $jml_juri; ?></h3>
+                                <small style="color: white !important;">DEWAN JURI</small>
+                            </div>
+                            <div class="col-xs-3 col-md-3" style="border-right: 1px solid rgba(255,255,255,0.3);">
+                                <h3 style="margin: 0; font-weight: bold; color: white !important;"><?php echo $jml_pa; ?></h3>
+                                <small style="color: white !important;">PESERTA PUTRA</small>
+                            </div>
+                            <div class="col-xs-3 col-md-3">
+                                <h3 style="margin: 0; font-weight: bold; color: white !important;"><?php echo $jml_pi; ?></h3>
+                                <small style="color: white !important;">PESERTA PUTRI</small>
                             </div>
                         </div>
                     </div>
