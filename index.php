@@ -191,6 +191,7 @@ $data_panitia = $sql_panitia->fetch_assoc();
                             <li><a href="?page=prestasi_juaraumum">Juara Umum</a></li>
                         </ul>
                     </li>
+                    <li><a href="?page=denah">Denah Lokasi</a></li>
                     <?php } ?>
                     <li><a href="auth/login.php" target="_blank" class="btn btn-warning navbar-btn" style="color: #5D4037 !important; font-weight: bold; margin-left: 10px;">Login Admin</a></li>
                 </ul>
@@ -230,6 +231,8 @@ $data_panitia = $sql_panitia->fetch_assoc();
         include "public_page/prestasi_berprestasi.php";
     } elseif ($page == 'prestasi_juaraumum') {
         include "public_page/prestasi_juaraumum.php";
+    } elseif ($page == 'denah') {
+        include "public_page/denah.php";
     } else {
         include "public_page/home.php";
     }
