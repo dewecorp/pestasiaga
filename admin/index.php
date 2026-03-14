@@ -144,6 +144,50 @@ header("location:../login.php");
         display: inline-block;
         filter: drop-shadow(0 0 1px #ffffff) drop-shadow(0 0 3px #ffffff);
     }
+    @media (min-width: 768px) {
+        .navbar .navbar-nav.navbar-right > li.navbar-date > a,
+        .navbar .navbar-nav.navbar-right > li.dropdown > a.navbar-user {
+            display: flex;
+            align-items: center;
+            height: 34px;
+            padding-top: 0;
+            padding-bottom: 0;
+            color: #ffffff;
+        }
+        .navbar .navbar-nav.navbar-right > li.dropdown > a.navbar-user {
+            gap: 10px;
+        }
+        .navbar .navbar-nav.navbar-right > li.dropdown > a.navbar-user:hover,
+        .navbar .navbar-nav.navbar-right > li.dropdown > a.navbar-user:focus {
+            color: #ffffff;
+        }
+        .navbar .navbar-nav.navbar-right > li.navbar-date > a {
+            line-height: 34px;
+            cursor: default;
+        }
+        .navbar .navbar-nav.navbar-right > li.navbar-date > a:hover,
+        .navbar .navbar-nav.navbar-right > li.navbar-date > a:focus {
+            color: #ffffff;
+        }
+        .navbar .navbar-nav.navbar-right .dropdown:hover > .dropdown-menu,
+        .navbar .navbar-nav.navbar-right .dropdown-menu:hover {
+            display: block;
+        }
+        .navbar .navbar-nav.navbar-right > li.dropdown > .dropdown-menu {
+            top: 100% !important;
+            right: 0;
+            left: auto;
+            margin-top: 8px !important;
+        }
+        .navbar .navbar-nav.navbar-right > li.dropdown > .dropdown-menu:before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 0;
+            right: 0;
+            height: 8px;
+        }
+    }
 
 </style>
 
@@ -179,11 +223,38 @@ header("location:../login.php");
                 </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar-collapse">
-                <div class="nav navbar-nav navbar-right" style="padding: 10px;">
-                    <div class="pull-right navbar-brand"><?php $date=date('Y-m-d');
-							echo format_hari_tanggal($date)?><span id="clock"></span>
-                    </div>
-                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="navbar-date" style="white-space: nowrap;">
+                        <a href="javascript:void(0);" class="navbar-date-link" style="pointer-events: none;">
+                            <?php $date=date('Y-m-d'); echo format_hari_tanggal($date) ?><span id="clock"></span>
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0);" class="dropdown-toggle navbar-user" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="image">
+                                <?php
+                                $foto = isset($tampil['foto']) ? $tampil['foto'] : '';
+                                if (!empty($foto)) {
+                                    echo '<img src="../assets/images/'.$foto.'" width="34" height="34" alt="User" style="object-fit:cover;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,0.8);">';
+                                } else {
+                                    $initial = strtoupper(substr($tampil['nama'],0,1));
+                                    echo '<span style="display:inline-flex;align-items:center;justify-content:center;height:34px;width:34px;border-radius:50%;background:rgba(255,255,255,0.85);color:#1b5e20;font-weight:bold;font-size:16px;box-shadow:0 0 0 2px rgba(255,255,255,0.8);">'.$initial.'</span>';
+                                }
+                                ?>
+                            </span>
+                            <span style="font-weight: 700; font-size: 14px; white-space: nowrap; max-width: 240px; overflow: hidden; text-overflow: ellipsis;">
+                                <?= htmlspecialchars($tampil['nama']); ?>
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu pull-right">
+                            <li>
+                                <a href="../auth/logout.php" class="js-logout">
+                                    <i class="material-icons">exit_to_app</i> Log Out
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -191,26 +262,6 @@ header("location:../login.php");
     <section>
         <!-- Left Sidebar -->
         <aside id="leftsidebar" class="sidebar">
-            <!-- User Info -->
-            <div class="user-info" align="center">
-                <div class="image">
-                    <?php
-                    $foto = isset($tampil['foto']) ? $tampil['foto'] : '';
-                    if (!empty($foto)) {
-                        echo '<img src="../assets/images/'.$foto.'" width="70" height="70" alt="User" style="object-fit:cover;border-radius:50%;box-shadow:0 0 0 2px #ffffff;">';
-                    } else {
-                        $initial = strtoupper(substr($tampil['nama'],0,1));
-                        echo '<span style="display:inline-flex;align-items:center;justify-content:center;height:70px;width:70px;border-radius:50%;background:#e0e0e0;color:#333;font-weight:bold;font-size:28px;box-shadow:0 0 0 2px #ffffff;">'.$initial.'</span>';
-                    }
-                    ?>
-                </div>
-                <div class="info-container">
-                    <div class="name" style="color: #ffffff; font-weight: bold; font-size: 18px; ">
-                        <?=$tampil['nama']; ?>
-                    </div>
-                </div>
-            </div>
-            <!-- #User Info -->
             <!-- Menu -->
             <div class="menu">
                 <ul class="list">
@@ -301,7 +352,7 @@ header("location:../login.php");
                         </a>
                     </li>
                     <li>
-                        <a href="../auth/login.php">
+                        <a href="../auth/logout.php" class="js-logout">
                             <i class="material-icons">exit_to_app</i>
                             <span>Log Out</span>
                         </a>
@@ -491,6 +542,42 @@ header("location:../login.php");
         }
         updateClock();
         setInterval(updateClock, 1000);
+    </script>
+    <script>
+        $(document).on('click', 'a.js-logout', function(e) {
+            e.preventDefault();
+            var href = this.getAttribute('href');
+            if (!href) return;
+            var targetUrl = href;
+            try {
+                targetUrl = new URL(href, window.location.href).href;
+            } catch (err) {}
+            if (window.Swal) {
+                var fireResult = Swal.fire({
+                    title: 'Konfirmasi Logout',
+                    text: 'Yakin ingin keluar?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya, logout',
+                    cancelButtonText: 'Batal',
+                    confirmButtonColor: '#d33'
+                });
+                if (fireResult && typeof fireResult.then === 'function') {
+                    fireResult.then(function(result) {
+                        var confirmed = !!(result && (result.isConfirmed || result.value));
+                        if (confirmed) {
+                            window.location.assign(targetUrl);
+                        }
+                    }
+                    );
+                    return;
+                }
+                return;
+            }
+            if (window.confirm('Yakin ingin keluar?')) {
+                window.location.assign(targetUrl);
+            }
+        });
     </script>
     <script>
         var ctx = document.getElementById('myChart').getContext('2d');

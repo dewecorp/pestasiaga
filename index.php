@@ -205,7 +205,11 @@ $data_panitia = $sql_panitia->fetch_assoc();
                     </li>
                     <li><a href="?page=denah">Denah Lokasi</a></li>
                     <?php } ?>
-                    <li><a href="auth/login.php" target="_blank" class="btn btn-warning navbar-btn" style="color: #5D4037 !important; font-weight: bold; margin-left: 10px; padding: 4px 10px !important; font-size: 13px !important; margin-top: 10px !important;">Login Admin</a></li>
+                    <li>
+                        <a href="auth/login.php" target="_blank" title="Login Admin" aria-label="Login Admin" class="navbar-btn" style="display:inline-flex;align-items:center;justify-content:center;margin-left:10px;margin-top:10px;width:34px;height:34px;border:none;background:transparent;padding:0;box-shadow:none;text-decoration:none;">
+                            <i class="material-icons" style="font-size: 20px; line-height: 1; vertical-align: middle; color: #8D6E63;">settings</i>
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>

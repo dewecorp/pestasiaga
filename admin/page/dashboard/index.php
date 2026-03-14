@@ -23,9 +23,6 @@ $jumlah_peserta_pi = $data_peserta_pi->num_rows;
 $data_juri = $koneksi->query("SELECT * FROM tb_juri");
 // menghitung data juri
 $jumlah_juri = $data_juri->num_rows;
-$data_user = $koneksi->query("SELECT * FROM tb_user");
-// menghitung data user
-$jumlah_user = $data_user->num_rows;
 $total_peserta = $jumlah_peserta_pa + $jumlah_peserta_pi;
 $sql = $koneksi->query("SELECT * FROM tb_user WHERE id ='$id'");
 $tampil = $sql->fetch_assoc();
@@ -99,24 +96,7 @@ $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
         </div>
     </div>
     <div class="row clearfix">
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-            <div class="info-box bg-green hover-expand-effect">
-                <div class="icon">
-                    <i class="material-icons">person</i>
-                </div>
-                <div class="content">
-                    <div class="text">
-                        <h4><b>USER</b></h4>
-                    </div>
-                    <div class="number count-to" data-from="0" data-to="<?=$jumlah_user?>" data-speed="1000"
-                        data-fresh-interval="20"></div>
-                    <!--  <div class="text">
-                            <h5><?=$jumlah_user?> Pengguna</h5>
-                        </div> -->
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="info-box bg-green hover-expand-effect">
                 <div class="icon">
                     <i class="material-icons">alarm</i>
@@ -132,7 +112,7 @@ $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
                 </div>
             </div>
         </div>
-        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
             <div class="info-box bg-green hover-expand-effect">
                 <div class="icon">
                     <i class="material-icons">account_balance</i>
