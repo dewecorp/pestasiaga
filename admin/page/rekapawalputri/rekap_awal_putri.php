@@ -153,10 +153,42 @@ if (!function_exists('map_column_putri')) {
             <div class="body">
                 <div class=" pull-right">
                     <a href="../laporan/rekappi_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i>
-                PDF</a>
+                        PDF</a>
                     <a href="../laporan/rekappi_excel.php" target="_blank" class="btn btn-success btn-sm waves-effect"><i class="fa fa-download"></i> Excel</a>
                 </div>
-                <br><br>
+                <?php
+                // Hitung Progres Nilai
+                $total_peserta_sql = $koneksi->query("SELECT COUNT(*) as total FROM tb_peserta_pi");
+                $total_peserta = $total_peserta_sql->fetch_assoc()['total'];
+                
+                $total_taman = count($data_taman);
+                $total_sel = $total_peserta * $total_taman;
+                
+                $terisi = 0;
+                $sql_rekap = $koneksi->query("SELECT * FROM tb_rekap_pi");
+                while($r = $sql_rekap->fetch_assoc()) {
+                    foreach($data_taman as $t) {
+                        $col = map_column_putri($t['nama_taman']);
+                        if(isset($r[$col]) && $r[$col] !== "" && $r[$col] !== null) {
+                            $terisi++;
+                        }
+                    }
+                }
+                
+                $persentase = ($total_sel > 0) ? ($terisi / $total_sel) * 100 : 0;
+                $persentase = round($persentase, 2);
+                ?>
+                <div class="row">
+                    <div class="col-md-6">
+                        <b>Progres Nilai Masuk: <?= $persentase ?>% (<?= $terisi ?> / <?= $total_sel ?>)</b>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<?= $persentase ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $persentase ?>%">
+                                <?= $persentase ?>%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover dataTable js-basic-example dataTable">
                         <thead>

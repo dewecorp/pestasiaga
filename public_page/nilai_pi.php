@@ -10,6 +10,65 @@
             <h2>REKAP NILAI PUTRI</h2>
         </div>
         <div class="body">
+            <?php
+            // Ambil data taman untuk Putri
+            $sql_taman = $koneksi->query("SELECT * FROM tb_taman WHERE nama_taman LIKE '%PUTRI%' ORDER BY id_taman ASC");
+            $data_taman = [];
+            while ($t = $sql_taman->fetch_assoc()) {
+                $data_taman[] = $t;
+            }
+
+            // Fungsi mapping yang sama dengan admin
+            if (!function_exists('map_col_public_pi')) {
+                function map_col_public_pi($nama) {
+                    $nama = strtolower(trim($nama));
+                    if (strpos($nama, 'scout') !== false) return 'scout_skill';
+                    if (strpos($nama, 'kim') !== false) return 'kim';
+                    if (strpos($nama, 'bumbung') !== false) return 'bumbung';
+                    if (strpos($nama, 'ketakwaan') !== false) return 'ketakwaan';
+                    if (strpos($nama, 'toleransi') !== false) return 'toleransi';
+                    if (strpos($nama, 'tanda') !== false) return 'tanda_pengenal';
+                    if (strpos($nama, 'ranking') !== false || strpos($nama, 'rangking') !== false) return 'rangking';
+                    if (strpos($nama, 'lbb') !== false) return 'lbb';
+                    if (strpos($nama, 'seni') !== false) return 'seni_budaya';
+                    if (strpos($nama, 'lempar') !== false) return 'lempar_bola';
+                    if (strpos($nama, 'kereta') !== false) return 'kereta_bola';
+                    $nama = str_replace([' putra', ' putri'], '', $nama);
+                    return str_replace(' ', '_', $nama);
+                }
+            }
+
+            $total_peserta_sql = $koneksi->query("SELECT COUNT(*) as total FROM tb_peserta_pi");
+            $total_peserta = $total_peserta_sql->fetch_assoc()['total'];
+            
+            $total_taman = count($data_taman);
+            $total_sel = $total_peserta * $total_taman;
+            
+            $terisi = 0;
+            $sql_rekap = $koneksi->query("SELECT * FROM tb_rekap_pi");
+            while($r = $sql_rekap->fetch_assoc()) {
+                foreach($data_taman as $t) {
+                    $col = map_col_public_pi($t['nama_taman']);
+                    if(isset($r[$col]) && $r[$col] !== "" && $r[$col] !== null) {
+                        $terisi++;
+                    }
+                }
+            }
+            
+            $persentase = ($total_sel > 0) ? ($terisi / $total_sel) * 100 : 0;
+            $persentase = round($persentase, 2);
+            ?>
+            <div class="row" style="margin-bottom: 20px;">
+                <div class="col-md-12">
+                    <b>Progres Nilai Masuk: <?= $persentase ?>% (<?= $terisi ?> / <?= $total_sel ?>)</b>
+                    <div class="progress" style="height: 20px; margin-top: 10px;">
+                        <div class="progress-bar progress-bar-success progress-bar-striped active" role="progressbar" aria-valuenow="<?= $persentase ?>" aria-valuemin="0" aria-valuemax="100" style="width: <?= $persentase ?>%; line-height: 20px;">
+                            <?= $persentase ?>%
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
                     <thead>

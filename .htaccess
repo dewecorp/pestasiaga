@@ -2,15 +2,13 @@ Options -Indexes -MultiViews
 
 RewriteEngine On
 
-# Canonical URL (hindari redirect saat POST agar tidak merusak request)
-RewriteCond %{REQUEST_METHOD} =GET [OR]
-RewriteCond %{REQUEST_METHOD} =HEAD
-
 # Hilangkan index.php dari URL (GET/HEAD saja)
+RewriteCond %{REQUEST_METHOD} !=POST
 RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.php[?\s] [NC]
 RewriteRule ^(.*/)?index\.php$ /$1 [R=302,L]
 
 # Hilangkan ekstensi .php dari URL (GET/HEAD saja)
+RewriteCond %{REQUEST_METHOD} !=POST
 RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[?\s] [NC]
 RewriteRule ^(.+?)\.php$ /$1 [R=302,L]
 
