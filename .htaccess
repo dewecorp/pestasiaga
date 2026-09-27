@@ -2,15 +2,15 @@ Options -Indexes -MultiViews
 
 RewriteEngine On
 
-# Hilangkan index.php dari URL (GET/HEAD saja)
+# Hilangkan index.php dari URL (GET/HEAD saja) tanpa merusak subfolder
 RewriteCond %{REQUEST_METHOD} !=POST
-RewriteCond %{THE_REQUEST} \s/+(.*/)?index\.php[?\s] [NC]
-RewriteRule ^(.*/)?index\.php$ /$1 [R=302,L]
+RewriteCond %{THE_REQUEST} \s([^?#\s]*)/index\.php[\s?#] [NC]
+RewriteRule ^(.*)index\.php$ %1/ [R=302,L]
 
-# Hilangkan ekstensi .php dari URL (GET/HEAD saja)
+# Hilangkan ekstensi .php dari URL (GET/HEAD saja) tanpa merusak subfolder
 RewriteCond %{REQUEST_METHOD} !=POST
-RewriteCond %{THE_REQUEST} \s/+(.+?)\.php[?\s] [NC]
-RewriteRule ^(.+?)\.php$ /$1 [R=302,L]
+RewriteCond %{THE_REQUEST} \s([^?#\s]+)\.php[\s?#] [NC]
+RewriteRule ^ %1 [R=302,L]
 
 # Akses tanpa ekstensi: /path -> /path.php (internal rewrite, aman untuk GET/POST)
 RewriteCond %{REQUEST_FILENAME} !-d

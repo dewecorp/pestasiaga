@@ -171,14 +171,14 @@ $data_panitia = $sql_panitia->fetch_assoc();
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="index.php">
+                <a class="navbar-brand" href="./">
                     <img src="assets/images/<?= $data_panitia['logo'] ?>" alt="Logo" style="height: 30px; display: inline-block; margin-right: 10px; vertical-align: top;">
                     <?= $data_panitia['nama_kegiatan'] ?> <?= date('Y') ?>
                 </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="index.php">Beranda</a></li>
+                    <li><a href="./">Beranda</a></li>
                     <?php if (($data_panitia['status_home'] ?? 'Buka') == 'Buka') { ?>
                     <li><a href="?page=taman">Taman</a></li>
                     <li><a href="?page=juri">Juri</a></li>

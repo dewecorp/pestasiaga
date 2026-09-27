@@ -84,6 +84,119 @@ if ($status_home == 'Tutup') {
                 font-size: 14px !important;
                 line-height: 1.4 !important;
             }
+            .event-info-box {
+                padding: 20px 15px !important;
+            }
+            .event-info-divider-col {
+                border-right: none !important;
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+                padding-bottom: 20px;
+                margin-bottom: 20px;
+            }
+        }
+
+        .event-info-card {
+            margin-top: -30px;
+            margin-bottom: 35px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: none;
+            box-shadow: 0 12px 30px rgba(230, 81, 0, 0.25), 0 4px 15px rgba(0,0,0,0.06);
+            background: linear-gradient(135deg, #ff9800 0%, #e65100 100%);
+            color: white;
+            position: relative;
+            z-index: 10;
+        }
+
+        .event-info-box {
+            padding: 28px 30px;
+        }
+
+        .info-header-icon {
+            width: 46px;
+            height: 46px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            backdrop-filter: blur(4px);
+        }
+
+        .info-header-icon i {
+            font-size: 24px;
+            color: #fff;
+        }
+
+        .info-label {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.85);
+            margin-bottom: 4px;
+        }
+
+        .info-value-main {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            line-height: 1.3;
+            color: #ffffff;
+        }
+
+        .info-time-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            border-radius: 12px;
+            padding: 16px 10px;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(4px);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-2px);
+        }
+
+        .stat-icon {
+            font-size: 20px;
+            margin-bottom: 4px;
+            opacity: 0.9;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 6px;
+            color: #ffffff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            color: rgba(255, 255, 255, 0.9);
+            text-transform: uppercase;
         }
     </style>
     <div class="jumbotron hero bg-light-brown" style="<?= !empty($data_panitia['hero_image']) ? "background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('assets/images/".$data_panitia['hero_image']."'); background-size: cover; background-position: center; color: white;" : "" ?>">
@@ -96,12 +209,15 @@ if ($status_home == 'Tutup') {
         <div class="row">
             <div class="col-md-12">
                 <!-- Info Box with Counts -->
-                <div class="card" style="margin-top: -15px; margin-bottom: 30px; box-shadow: 0 4px 8px rgba(0,0,0,0.2); position: relative; z-index: 10;">
-                    <div class="body" style="background-color: #ff9800; color: white; padding: 20px;">
+                <div class="card event-info-card">
+                    <div class="event-info-box">
                         <div class="row">
-                            <div class="col-md-6 text-center" style="border-right: 1px solid rgba(255,255,255,0.3);">
-                                <h4 style="margin-top: 0; color: white;"><i class="glyphicon glyphicon-calendar"></i> WAKTU KEGIATAN</h4>
-                                <p style="font-size: 18px; font-weight: bold; margin-bottom: 0;">
+                            <div class="col-md-6 text-center event-info-divider-col" style="border-right: 1px solid rgba(255,255,255,0.25);">
+                                <div class="info-header-icon">
+                                    <i class="material-icons">event</i>
+                                </div>
+                                <div class="info-label">Waktu Kegiatan</div>
+                                <div class="info-value-main">
                                     <?php
                                     if (!empty($data_panitia['waktu'])) {
                                         $date = date_create($data_panitia['waktu']);
@@ -131,35 +247,55 @@ if ($status_home == 'Tutup') {
                                         echo "-";
                                     }
                                     ?>
-                                </p>
+                                </div>
                                 <?php if (!empty($data_panitia['jam'])): ?>
-                                    <p style="font-size: 16px; margin-bottom: 0;"><?= e($data_panitia['jam']) ?></p>
+                                    <div>
+                                        <span class="info-time-badge">
+                                            <i class="material-icons" style="font-size: 15px; vertical-align: middle;">schedule</i>
+                                            <?= e($data_panitia['jam']) ?>
+                                        </span>
+                                    </div>
                                 <?php endif; ?>
                             </div>
                             <div class="col-md-6 text-center">
-                                <h4 style="margin-top: 0; color: white;"><i class="glyphicon glyphicon-map-marker"></i> LOKASI KEGIATAN</h4>
-                                <p style="font-size: 18px; font-weight: bold; margin-bottom: 0;">
+                                <div class="info-header-icon">
+                                    <i class="material-icons">place</i>
+                                </div>
+                                <div class="info-label">Lokasi Kegiatan</div>
+                                <div class="info-value-main">
                                     <?= e($data_panitia['tempat']) ?>
-                                </p>
+                                </div>
                             </div>
                         </div>
-                        <hr style="border-top: 1px solid rgba(255,255,255,0.3); margin: 20px 0;">
-                        <div class="row text-center">
-                            <div class="col-xs-3 col-md-3" style="border-right: 1px solid rgba(255,255,255,0.3);">
-                                <h3 style="margin: 0; font-weight: bold; color: white !important;"><?php echo $jml_taman; ?></h3>
-                                <small style="color: white !important;">TAMAN</small>
+                        <div style="background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 50%, rgba(255,255,255,0) 100%); height: 1px; margin: 24px 0 20px 0;"></div>
+                        <div class="row">
+                            <div class="col-xs-6 col-md-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="material-icons">domain</i></div>
+                                    <div class="stat-number"><?php echo $jml_taman; ?></div>
+                                    <div class="stat-label">Taman</div>
+                                </div>
                             </div>
-                            <div class="col-xs-3 col-md-3" style="border-right: 1px solid rgba(255,255,255,0.3);">
-                                <h3 style="margin: 0; font-weight: bold; color: white !important;"><?php echo $jml_juri; ?></h3>
-                                <small style="color: white !important;">DEWAN JURI</small>
+                            <div class="col-xs-6 col-md-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="material-icons">gavel</i></div>
+                                    <div class="stat-number"><?php echo $jml_juri; ?></div>
+                                    <div class="stat-label">Dewan Juri</div>
+                                </div>
                             </div>
-                            <div class="col-xs-3 col-md-3" style="border-right: 1px solid rgba(255,255,255,0.3);">
-                                <h3 style="margin: 0; font-weight: bold; color: white !important;"><?php echo $jml_pa; ?></h3>
-                                <small style="color: white !important;">PESERTA PUTRA</small>
+                            <div class="col-xs-6 col-md-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="material-icons">people</i></div>
+                                    <div class="stat-number"><?php echo $jml_pa; ?></div>
+                                    <div class="stat-label">Peserta Putra</div>
+                                </div>
                             </div>
-                            <div class="col-xs-3 col-md-3">
-                                <h3 style="margin: 0; font-weight: bold; color: white !important;"><?php echo $jml_pi; ?></h3>
-                                <small style="color: white !important;">PESERTA PUTRI</small>
+                            <div class="col-xs-6 col-md-3">
+                                <div class="stat-card">
+                                    <div class="stat-icon"><i class="material-icons">people_outline</i></div>
+                                    <div class="stat-number"><?php echo $jml_pi; ?></div>
+                                    <div class="stat-label">Peserta Putri</div>
+                                </div>
                             </div>
                         </div>
                     </div>
