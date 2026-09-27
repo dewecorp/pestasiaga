@@ -4,7 +4,7 @@ while ($data = $sql->fetch_assoc()) {
 
 ?>
 <!-- Modal -->
-<div class="modal fade" id="modal_waktu<?= $data['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_waktu<?= (int)$data['id_panitia']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,8 +14,9 @@ while ($data = $sql->fetch_assoc()) {
                 <h5 class="modal-title" id="exampleModalLabel" align="center">EDIT WAKTU DAN TEMPAT KEGIATAN</h5>
             </div>
             <form action="#" method="POST">
+                <?= csrf_field() ?>
                 <div class="modal-body">
-                    <input type="hidden" name="id" value="<?= $data['id_panitia']; ?>">
+                    <input type="hidden" name="id" value="<?= (int)$data['id_panitia']; ?>">
                     <div class="row">
                         <div class="col-lg-2 form-control-label">
                             <label for="tgl">Tanggal</label>
@@ -23,7 +24,7 @@ while ($data = $sql->fetch_assoc()) {
                         <div class="col-lg-10">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="date" name="waktu" class="form-control" value="<?=$data['waktu']; ?>">
+                                    <input type="date" name="waktu" class="form-control" value="<?= e($data['waktu'] ?? ''); ?>">
                                 </div>
                             </div>
                         </div>
@@ -35,7 +36,7 @@ while ($data = $sql->fetch_assoc()) {
                         <div class="col-lg-10">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" name="jam" class="form-control" placeholder="Contoh: 08:00 - Selesai" value="<?= isset($data['jam']) ? $data['jam'] : ''; ?>">
+                                    <input type="text" name="jam" class="form-control" placeholder="Contoh: 08:00 - Selesai" value="<?= e($data['jam'] ?? ''); ?>">
                                 </div>
                             </div>
                         </div>
@@ -47,7 +48,7 @@ while ($data = $sql->fetch_assoc()) {
                         <div class="col-lg-10">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <textarea name="tempat" rows="2" cols="50" class="form-control"><?= $data['tempat']; ?></textarea>
+                                    <textarea name="tempat" rows="2" cols="50" class="form-control"><?= e($data['tempat'] ?? ''); ?></textarea>
                                 </div>
                             </div>
                         </div>
@@ -59,7 +60,7 @@ while ($data = $sql->fetch_assoc()) {
                         <div class="col-lg-10">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" name="tempat_ttd" class="form-control" value="<?=$data['tempat_ttd']; ?>">
+                                    <input type="text" name="tempat_ttd" class="form-control" value="<?= e($data['tempat_ttd'] ?? ''); ?>">
                                 </div>
                             </div>
                         </div>
@@ -79,12 +80,13 @@ while ($data = $sql->fetch_assoc()) {
 ?>
 <?php
 if (isset($_POST['ubah'])) {
-$id = $_POST['id'];
-$waktu = $_POST['waktu'];
-$jam = $_POST['jam'];
-$tempat = $_POST['tempat'];
-$tempat_ttd = $_POST['tempat_ttd'];
-$koneksi->query("UPDATE tb_panitia SET waktu='$waktu', jam='$jam', tempat='$tempat', tempat_ttd='$tempat_ttd' WHERE id_panitia='$id'"); ?>
+csrf_verify();
+$id = (int)($_POST['id'] ?? 0);
+$waktu = trim($_POST['waktu'] ?? '');
+$jam = trim($_POST['jam'] ?? '');
+$tempat = trim($_POST['tempat'] ?? '');
+$tempat_ttd = trim($_POST['tempat_ttd'] ?? '');
+db_exec($koneksi, "UPDATE tb_panitia SET waktu=?, jam=?, tempat=?, tempat_ttd=? WHERE id_panitia=?", [$waktu, $jam, $tempat, $tempat_ttd, $id]); ?>
 <script>
     Swal.fire({
         position: 'top-center',

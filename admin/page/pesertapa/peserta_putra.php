@@ -46,9 +46,8 @@ $id = (int)($_GET['id'] ?? 0);
                                     <td><?= e($data['pangkalan']); ?></td>
                                     <td><?= e($data['pembina']); ?></td>
                                     <td align="center">
-                                        <a data-toggle="modal" data-target="#modal_edit<?= (int)$data['id_pa']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
-                                        </a>
-                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-pa" data-id="<?= (int)$data['id_pa']; ?>" data-name="<?= e($data['pangkalan']); ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
+                                        <a data-toggle="modal" data-target="#modal_edit<?= (int)$data['id_pa']; ?>"><button class="btn btn-warning btn-xs waves-effect" title="Edit"><i class="material-icons">edit</i></button></a>
+                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-pa" data-id="<?= (int)$data['id_pa']; ?>" data-name="<?= e($data['pangkalan']); ?>" title="Hapus"><i class="material-icons">delete</i></button>
                                     </td>
                                 </tr>
                                 <?php

@@ -15,8 +15,8 @@ header("Content-Type: application/vnd.ms-excel; charset=utf-8");
 header("Content-Disposition: attachment; filename=\"$filename\"");
 header("Cache-Control: max-age=0");
 ?>
-<h2 align="center">Barung Berprestasi Putri</h2>
-<h2 align="center"><?= $nama_kegiatan ?></h2>
+<h2 align="center">BARUNG BERPRESTASI PUTRI</h2>
+<h2 align="center"><?= strtoupper($nama_kegiatan) ?></h2>
 <table border="1">
     <thead>
         <tr>

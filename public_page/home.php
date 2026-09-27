@@ -133,13 +133,13 @@ if ($status_home == 'Tutup') {
                                     ?>
                                 </p>
                                 <?php if (!empty($data_panitia['jam'])): ?>
-                                    <p style="font-size: 16px; margin-bottom: 0;"><?= $data_panitia['jam'] ?></p>
+                                    <p style="font-size: 16px; margin-bottom: 0;"><?= e($data_panitia['jam']) ?></p>
                                 <?php endif; ?>
                             </div>
                             <div class="col-md-6 text-center">
                                 <h4 style="margin-top: 0; color: white;"><i class="glyphicon glyphicon-map-marker"></i> LOKASI KEGIATAN</h4>
                                 <p style="font-size: 18px; font-weight: bold; margin-bottom: 0;">
-                                    <?= $data_panitia['tempat'] ?>
+                                    <?= e($data_panitia['tempat']) ?>
                                 </p>
                             </div>
                         </div>

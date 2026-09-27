@@ -49,9 +49,8 @@ $id = (int)($_GET['id'] ?? 0);
                                     <td><?= e($data['nama_taman']); ?></td>
                                     <td><?= e($data['no_hp']); ?></td>
                                     <td align="center">
-                                        <a data-toggle="modal" data-target="#modal_edit<?= (int)$data['id_juri']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
-                                        </a>
-                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-juri" data-id="<?= (int)$data['id_juri']; ?>" data-name="<?= e($data['nama_juri']); ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
+                                        <a data-toggle="modal" data-target="#modal_edit<?= (int)$data['id_juri']; ?>"><button class="btn btn-warning btn-xs waves-effect" title="Edit"><i class="material-icons">edit</i></button></a>
+                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-juri" data-id="<?= (int)$data['id_juri']; ?>" data-name="<?= e($data['nama_juri']); ?>" title="Hapus"><i class="material-icons">delete</i></button>
                                     </td>
                                 </tr>
                                 <?php

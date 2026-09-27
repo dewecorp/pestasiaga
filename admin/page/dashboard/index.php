@@ -107,8 +107,13 @@ $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
                         <h4><b>WAKTU KEGIATAN</b></h4>
                     </div>
                     <div class="text">
-                        <h5><?php $hari=$data['waktu'];
-                            echo format_hari_tanggal($hari) ?></h5>
+                        <h5><?php
+                            $hari = $data['waktu'] ?? '';
+                            echo !empty($hari) ? e(format_hari_tanggal($hari)) : '-';
+                            if (!empty($data['jam'])) {
+                                echo '<br><small>' . e($data['jam']) . '</small>';
+                            }
+                            ?></h5>
                     </div>
                 </div>
             </div>
@@ -123,7 +128,7 @@ $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
                         <h4><b>LOKASI KEGIATAN</b></h4>
                     </div>
                     <div class="text">
-                        <h5><?=$data['tempat'];?></h5>
+                        <h5><?= e($data['tempat'] ?? '-'); ?></h5>
                     </div>
                 </div>
             </div>

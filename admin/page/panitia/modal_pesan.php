@@ -4,7 +4,7 @@ while ($data = $sql->fetch_assoc()) {
 
 ?>
 <!-- Modal -->
-<div class="modal fade" id="modal_pesan<?= $data['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_pesan<?= (int)$data['id_panitia']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,8 +14,9 @@ while ($data = $sql->fetch_assoc()) {
                 <h5 class="modal-title" id="exampleModalLabel" align="center">EDIT PESAN & STATUS HOME</h5>
             </div>
             <form action="#" method="POST" enctype="multipart/form-data">
+                <?= csrf_field() ?>
                 <div class="modal-body">
-                    <input type="hidden" name="id" value="<?= $data['id_panitia']; ?>">
+                    <input type="hidden" name="id" value="<?= (int)$data['id_panitia']; ?>">
                     <div class="row clearfix">
                         <div class="col-lg-12">
                             <label for="status_home">Status Home</label>
@@ -53,7 +54,7 @@ while ($data = $sql->fetch_assoc()) {
                             <label for="pesan_beranda">Pesan Beranda</label>
                             <div class="form-group">
                                 <div class="form-line">
-                                    <textarea name="pesan_beranda" id="ckeditor_beranda" rows="5" class="form-control ckeditor"><?= $data['pesan_beranda']; ?></textarea>
+                                    <textarea name="pesan_beranda" id="ckeditor_beranda" rows="5" class="form-control ckeditor"><?= e($data['pesan_beranda']); ?></textarea>
                                 </div>
                             </div>
                         </div>
@@ -80,7 +81,7 @@ while ($data = $sql->fetch_assoc()) {
                             <label for="pesan_tutup">Pesan Tutup</label>
                             <div class="form-group">
                                 <div class="form-line">
-                                    <textarea name="pesan_tutup" id="ckeditor_tutup" rows="5" class="form-control ckeditor"><?= $data['pesan_tutup']; ?></textarea>
+                                    <textarea name="pesan_tutup" id="ckeditor_tutup" rows="5" class="form-control ckeditor"><?= e($data['pesan_tutup']); ?></textarea>
                                 </div>
                             </div>
                         </div>
@@ -100,7 +101,8 @@ while ($data = $sql->fetch_assoc()) {
 ?>
 <?php
 if (isset($_POST['ubah_pesan'])) {
-    $id = $_POST['id'];
+    csrf_verify();
+    $id = (int)($_POST['id'] ?? 0);
     $pesan_beranda = $_POST['pesan_beranda'];
     $pesan_tutup = $_POST['pesan_tutup'];
     $status_home = $_POST['status_home'];

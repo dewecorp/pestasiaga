@@ -21,6 +21,20 @@ if (mysqli_connect_errno()) {
 
 $koneksi->set_charset('utf8mb4');
 
+// Pastikan kolom pengaturan kegiatan tersedia pada instalasi database lama.
+$schema_columns = [
+    'waktu' => 'DATE NULL',
+    'jam' => 'VARCHAR(50) NULL',
+    'tempat' => 'VARCHAR(255) NOT NULL DEFAULT ""',
+    'tempat_ttd' => 'VARCHAR(255) NULL'
+];
+foreach ($schema_columns as $column => $definition) {
+    $column_check = $koneksi->query("SHOW COLUMNS FROM tb_panitia LIKE '" . $column . "'");
+    if ($column_check && $column_check->num_rows === 0) {
+        $koneksi->query("ALTER TABLE tb_panitia ADD COLUMN `" . $column . "` " . $definition);
+    }
+}
+
 // Deteksi base URL aplikasi relatif terhadap document root (untuk redirect yang benar)
 if (!defined('BASE_URL')) {
 	$appRoot = str_replace('\\', '/', dirname(__DIR__));

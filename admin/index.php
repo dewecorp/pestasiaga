@@ -111,7 +111,7 @@ require_admin();
     <link href="../assets/plugins/bootstrap-select/css/bootstrap-select.css" rel="stylesheet" />
     <!-- <link href="../aasets/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
     <script src="../assets/plugins/sweetalert/sweetalert.min.js"></script> -->
-    <link href="../assets/css/sweetalert2.min.css" rel="stylesheet">
+    <link href="../assets/css/sweetalert2.min.css?v=20260927-2" rel="stylesheet">
     <script src="../assets/js/sweetalert2.all.min.js"></script>
     <script src="../assets/js/sweetalert2@10.js"></script>
 
@@ -515,9 +515,24 @@ require_admin();
     <!-- Custom Js -->
     <script src="../assets/js/admin.js"></script>
     <script src="../assets/plugins/ckeditor/ckeditor.js"></script>
+    <script>
+        (function () {
+            if (!window.CKEDITOR) return;
+            ['ckeditor_beranda', 'ckeditor_tutup'].forEach(function (id) {
+                if (document.getElementById(id) && !CKEDITOR.instances[id]) {
+                    CKEDITOR.replace(id, {
+                        toolbar: 'FullMessageToolbar',
+                        height: 260,
+                        allowedContent: true,
+                        extraPlugins: 'justify'
+                    });
+                }
+            });
+        }());
+    </script>
     <script src="../assets/js/select2.min.js"></script>
     <script src="../assets/js/pages/tables/jquery-datatable.js"></script>
-    <script src="../assets/js/pages/charts/chartjs.js"></script>
+    <script src="../assets/js/pages/charts/chartjs.js?v=20260927"></script>
     <!-- Demo Js -->
     <script src="../assets/js/demo.js"></script>
     <script src="../assets/js/pages/forms/basic-form-elements.js"></script>
@@ -578,7 +593,9 @@ require_admin();
         });
     </script>
     <script>
-        var ctx = document.getElementById('myChart').getContext('2d');
+        var chartElement = document.getElementById('myChart');
+        if (chartElement) {
+        var ctx = chartElement.getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'horizontalBar',
             data: {
@@ -604,10 +621,12 @@ require_admin();
                 }
             }
         });
-
+        }
     </script>
     <script>
-        var ctx = document.getElementById('myChart2').getContext('2d');
+        var chartElement2 = document.getElementById('myChart2');
+        if (chartElement2) {
+        var ctx = chartElement2.getContext('2d');
         var myChart = new Chart(ctx, {
             type: 'horizontalBar',
             data: {
@@ -633,7 +652,7 @@ require_admin();
                 }
             }
         });
-
+        }
     </script>
 </body>
 

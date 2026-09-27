@@ -1,13 +1,19 @@
 <?php
 ob_start();
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
-include"../config/koneksi.php";
+include "../config/koneksi.php";
+include_once "../config/qrcode.php";
+
 $sql_panitia = $koneksi->query("SELECT nama_kegiatan, tempat, tempat_ttd, ketua_panitia, logo FROM tb_panitia LIMIT 1");
 $data_panitia = $sql_panitia->fetch_assoc();
 $nama_kegiatan = (isset($data_panitia['nama_kegiatan']) ? $data_panitia['nama_kegiatan'] : 'Pesta Siaga Kwarran Kedung') . ' ' . date('Y');
-$tempat = isset($data_panitia['tempat_ttd']) ? $data_panitia['tempat_ttd'] : 'Jepara';
+$tempat = isset($data_panitia['tempat_ttd']) && !empty($data_panitia['tempat_ttd']) ? $data_panitia['tempat_ttd'] : (isset($data_panitia['tempat']) ? $data_panitia['tempat'] : 'Jepara');
 $ketua_panitia = isset($data_panitia['ketua_panitia']) ? $data_panitia['ketua_panitia'] : '..................';
 $logo = isset($data_panitia['logo']) ? $data_panitia['logo'] : '';
+
+$qr_text = "VERIFIKASI TTE DOKUMEN SAH\nKetua Panitia: " . $ketua_panitia . "\n" . strtoupper($nama_kegiatan);
+$qr_signature = generate_qr_base64($qr_text);
+
 $bulan_indo = array(
     1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni',
     7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
@@ -19,7 +25,7 @@ include "../admin/page/juaraumum/juara_logic.php";
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cetak Juara Umum</title>
+    <title>Cetak JUARA UMUM</title>
     <style>
         body { font-family: Arial, sans-serif; }
         .table { border-collapse: collapse; width: 100%; margin: 0 auto; }
@@ -27,7 +33,7 @@ include "../admin/page/juaraumum/juara_logic.php";
         .table th { background-color: #cccccc; font-weight: bold; }
         .header { text-align: center; margin-bottom: 20px; }
         .header h3, .header h4 { margin: 5px 0; }
-        .signature-table { width: 100%; border: none; margin-top: 20px; }
+        .signature-table { width: 100%; border: none; margin-top: 15px; }
         .signature-table td { border: none; text-align: center; }
         .footer { text-align: left; font-style: italic; font-size: 10px; margin-top: 20px; }
     </style>
@@ -87,10 +93,12 @@ include "../admin/page/juaraumum/juara_logic.php";
     <table class="signature-table">
         <tr>
             <td style="width: 60%;"></td>
-            <td style="width: 40%;">
+            <td style="width: 40%; text-align: center; vertical-align: top;">
                 <?= $tempat . ', ' . $tanggal_indo ?><br>
                 Ketua Panitia<br>
-                <br><br><br>
+                <div style="margin: 5px 0;">
+                    <img src="<?= $qr_signature ?>" style="width: 70px; height: 70px;">
+                </div>
                 <b><u><?= $ketua_panitia ?></u></b>
             </td>
         </tr>

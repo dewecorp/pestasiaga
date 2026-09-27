@@ -1,8 +1,16 @@
 $(function () {
-    new Chart(document.getElementById("line_chart").getContext("2d"), getChartJs('line'));
-    new Chart(document.getElementById("bar_chart").getContext("2d"), getChartJs('bar'));
-    new Chart(document.getElementById("radar_chart").getContext("2d"), getChartJs('radar'));
-    new Chart(document.getElementById("pie_chart").getContext("2d"), getChartJs('pie'));
+    var charts = [
+        ['line_chart', 'line'],
+        ['bar_chart', 'bar'],
+        ['radar_chart', 'radar'],
+        ['pie_chart', 'pie']
+    ];
+    charts.forEach(function (item) {
+        var canvas = document.getElementById(item[0]);
+        if (canvas) {
+            new Chart(canvas.getContext('2d'), getChartJs(item[1]));
+        }
+    });
 });
 
 function getChartJs(type) {

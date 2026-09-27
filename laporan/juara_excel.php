@@ -16,7 +16,7 @@ header("Content-type: application/vnd.ms-excel");
 header("Content-Disposition: attachment; filename=Juara_Umum.xls");
 ?>
 <center>
-    <h3>JUARA UMUM<br><?= $nama_kegiatan ?></h3>
+    <h3>JUARA UMUM<br><?= strtoupper($nama_kegiatan) ?></h3>
 </center>
 <table border="1">
     <thead>

@@ -1,9 +1,9 @@
 <?php
-$sql = $koneksi->query("SELECT * FROM tb_panitia");
-while ($data = $sql->fetch_assoc()) {
+$panitia_list = db_all($koneksi, "SELECT * FROM tb_panitia");
+foreach ($panitia_list as $data) {
 ?>
 <!-- Modal -->
-<div class="modal fade" id="modal_edit<?= $data['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_edit<?= (int)$data['id_panitia']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,7 +14,8 @@ while ($data = $sql->fetch_assoc()) {
             </div>
             <div class="modal-body">
                 <form action="#" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="<?= $data['id_panitia']; ?>">
+                    <?= csrf_field() ?>
+                    <input type="hidden" name="id" value="<?= (int)$data['id_panitia']; ?>">
                     <div class="row">
                         <div class="col-lg-3 form-control-label">
                             <label for="nama_kegiatan">Nama Kegiatan</label>
@@ -22,7 +23,7 @@ while ($data = $sql->fetch_assoc()) {
                         <div class="col-lg-9">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" name="nama_kegiatan" id="nama_kegiatan" class="form-control" value="<?= isset($data['nama_kegiatan']) ? $data['nama_kegiatan'] : '' ?>">
+                                    <input type="text" name="nama_kegiatan" id="nama_kegiatan" class="form-control" value="<?= e($data['nama_kegiatan'] ?? ''); ?>" required>
                                 </div>
                             </div>
                         </div>
@@ -34,7 +35,7 @@ while ($data = $sql->fetch_assoc()) {
                         <div class="col-lg-9">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" name="kwarran" id=" kwarran" class="form-control" value="<?= $data['ka_kwarran']; ?>">
+                                    <input type="text" name="kwarran" id="kwarran" class="form-control" value="<?= e($data['ka_kwarran'] ?? ''); ?>" required>
                                 </div>
                             </div>
                         </div>
@@ -46,19 +47,19 @@ while ($data = $sql->fetch_assoc()) {
                         <div class="col-lg-9">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" name="ketua" id=" ketua" class="form-control" value="<?= $data['ketua_panitia']; ?>">
+                                    <input type="text" name="ketua" id="ketua" class="form-control" value="<?= e($data['ketua_panitia'] ?? ''); ?>" required>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-3 form-control-label">
-                            <label for="juri">Ketua Dwan Juri</label>
+                            <label for="juri">Ketua Dewan Juri</label>
                         </div>
                         <div class="col-lg-9">
                             <div class="form-group">
                                 <div class="form-line">
-                                    <input type="text" name="juri" id="juri" class="form-control" value="<?= $data['ketua_juri']; ?>">
+                                    <input type="text" name="juri" id="juri" class="form-control" value="<?= e($data['ketua_juri'] ?? ''); ?>" required>
                                 </div>
                             </div>
                         </div>
@@ -77,17 +78,17 @@ while ($data = $sql->fetch_assoc()) {
 }
 ?>
 <?php
-if ($_POST['ganti']) {
-$id = $_POST['id'];
-$nama_kegiatan = $_POST['nama_kegiatan'];
-$ketua = $_POST['ketua'];
-$juri = $_POST['juri'];
-$kwarran = $_POST['kwarran'];
-$cek = $koneksi->query("SHOW COLUMNS FROM tb_panitia LIKE 'nama_kegiatan'");
-if ($cek->num_rows == 0) {
-$koneksi->query("ALTER TABLE tb_panitia ADD nama_kegiatan VARCHAR(255) NOT NULL DEFAULT ''");
-}
-$koneksi->query("UPDATE tb_panitia SET nama_kegiatan='$nama_kegiatan', ketua_panitia='$ketua', ketua_juri='$juri', ka_kwarran='$kwarran' WHERE id_panitia='$id'"); ?>
+if (isset($_POST['ganti'])) {
+    csrf_verify();
+    $id = (int)($_POST['id'] ?? 0);
+    $nama_kegiatan = trim($_POST['nama_kegiatan'] ?? '');
+    $ketua = trim($_POST['ketua'] ?? '');
+    $juri = trim($_POST['juri'] ?? '');
+    $kwarran = trim($_POST['kwarran'] ?? '');
+
+    $stmt = db_exec($koneksi, "UPDATE tb_panitia SET nama_kegiatan=?, ketua_panitia=?, ketua_juri=?, ka_kwarran=? WHERE id_panitia=?", [$nama_kegiatan, $ketua, $juri, $kwarran, $id]);
+    if ($stmt) {
+?>
 <script>
     Swal.fire({
         position: 'top-center',
@@ -100,8 +101,8 @@ $koneksi->query("UPDATE tb_panitia SET nama_kegiatan='$nama_kegiatan', ketua_pan
     window.setTimeout(function() {
         document.location.href = '?page=panitia';
     }, 1500);
-
 </script>
 <?php
+    }
 }
 ?>

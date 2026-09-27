@@ -1581,3 +1581,66 @@ body.swal2-toast-column .swal2-toast .swal2-validation-message {
 .swal-wide{
     width:850px;
 }
+
+.swal2-popup:not(.swal2-toast) {
+  box-sizing: border-box;
+  width: 480px !important;
+  max-width: calc(100% - 32px) !important;
+  padding: 2em !important;
+}
+
+.swal2-popup:not(.swal2-toast) .swal2-title {
+  font-size: 28px !important;
+  line-height: 1.35;
+}
+
+.swal2-popup:not(.swal2-toast) .swal2-content {
+  font-size: 20px !important;
+  line-height: 1.5;
+}
+
+.swal2-popup:not(.swal2-toast) .swal2-styled {
+  font-size: 17px !important;
+  padding: 11px 24px;
+}
+
+.swal2-popup.swal2-toast .swal2-title,
+.swal2-popup.swal2-toast .swal2-content,
+.swal2-popup.swal2-toast .swal2-html-container {
+  font-size: 18px !important;
+}
+
+.swal2-container .swal2-popup h2.swal2-title {
+  font-family: Arial, sans-serif !important;
+  font-size: 28px !important;
+  font-weight: 700 !important;
+  line-height: 1.35 !important;
+}
+
+.swal2-container .swal2-popup .swal2-content,
+.swal2-container .swal2-popup .swal2-html-container {
+  font-family: Arial, sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 400 !important;
+  line-height: 1.5 !important;
+}
+
+.swal2-container .swal2-popup .swal2-styled {
+  font-family: Arial, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  min-width: 92px;
+  margin: 5px;
+}
+
+.swal2-container .swal2-popup .swal2-actions {
+  flex-direction: row !important;
+  flex-wrap: nowrap;
+  margin-top: 1.25em;
+}
+
+@media (max-width: 520px) {
+  .swal2-popup:not(.swal2-toast) {
+    width: calc(100% - 32px) !important;
+  }
+}

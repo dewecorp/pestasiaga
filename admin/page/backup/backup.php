@@ -151,10 +151,27 @@ if (isset($_GET['aksi']) && $_GET['aksi'] == 'hapus_file') {
 }
 ?>
 
-<div class="row clearfix">
+<div class="body">
+    <ol class="breadcrumb breadcrumb-bg-green">
+        <li><a href="index.php"><i class="material-icons">dashboard</i> Dashboard</a></li>
+        <li class="active"><i class="material-icons">backup</i> Backup Restore</li>
+    </ol>
+</div>
+
+<style>
+    .backup-row { display: flex; flex-wrap: wrap; }
+    .backup-row > [class*="col-"] { display: flex; }
+    .backup-card { width: 100%; display: flex; flex-direction: column; }
+    .backup-card .body { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 170px; }
+    @media (max-width: 767px) {
+        .backup-row > [class*="col-"] { width: 100%; }
+    }
+</style>
+
+<div class="row clearfix backup-row">
     <!-- Kolom Backup -->
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="card">
+        <div class="card backup-card">
             <div class="header bg-green">
                 <h2>BACKUP DATABASE</h2>
             </div>
@@ -172,11 +189,11 @@ if (isset($_GET['aksi']) && $_GET['aksi'] == 'hapus_file') {
 
     <!-- Kolom Restore -->
     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-        <div class="card">
+        <div class="card backup-card">
             <div class="header bg-orange">
                 <h2>RESTORE DATABASE</h2>
             </div>
-            <div class="body">
+            <div class="body" align="center">
                 <p>Upload file <b>.sql</b> untuk merestore database.</p>
                 <form action="" method="POST" enctype="multipart/form-data">
                     <?= csrf_field() ?>
@@ -231,14 +248,10 @@ if (isset($_GET['aksi']) && $_GET['aksi'] == 'hapus_file') {
                                             <td><?= $file; ?></td>
                                             <td><?= $fileSize; ?></td>
                                             <td><?= $fileTime; ?></td>
-                                            <td align="center">
-                                                <a href="<?= $backupDir . $file; ?>" class="btn btn-primary btn-xs waves-effect" download>
-                                                    <i class="material-icons">file_download</i> Unduh
-                                                </a>
-                                                <button class="btn btn-danger btn-xs waves-effect" onclick="hapusFile('<?= $file; ?>')">
-                                                    <i class="material-icons">delete</i> Hapus
-                                                </button>
-                                            </td>
+                                             <td align="center">
+                                                 <a href="<?= $backupDir . $file; ?>" class="btn btn-primary btn-xs waves-effect" title="Unduh File" download><i class="material-icons">file_download</i></a>
+                                                 <button class="btn btn-danger btn-xs waves-effect" title="Hapus File" onclick="hapusFile('<?= $file; ?>')"><i class="material-icons">delete</i></button>
+                                             </td>
                                         </tr>
                             <?php
                                     }

@@ -1,9 +1,9 @@
 <?php
-$sql = $koneksi->query("SELECT * FROM tb_panitia");
-while ($data = $sql->fetch_assoc()) {
+$panitia_list = db_all($koneksi, "SELECT * FROM tb_panitia");
+foreach ($panitia_list as $data) {
 ?>
 <!-- Modal -->
-<div class="modal fade" id="modal_denah<?= $data['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modal_denah<?= (int)$data['id_panitia']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -14,20 +14,21 @@ while ($data = $sql->fetch_assoc()) {
             </div>
             <div class="modal-body">
                 <form action="#" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id" value="<?= $data['id_panitia']; ?>">
+                    <?= csrf_field() ?>
+                    <input type="hidden" name="id" value="<?= (int)$data['id_panitia']; ?>">
                     <div class="col-lg-12">
                         <div class="form-group" align="center">
                             <div class="image">
                                 <?php if (!empty($data['denah_lokasi'])): ?>
-                                    <img src="../assets/images/<?=$data['denah_lokasi']; ?>" width="400" height="200" alt="Denah Lokasi" />
+                                    <img src="../assets/images/<?= e(safe_basename($data['denah_lokasi'])); ?>" width="400" height="200" alt="Denah Lokasi" />
                                 <?php else: ?>
                                     <p>Belum ada denah lokasi</p>
                                 <?php endif; ?>
                             </div>
                         </div>
                         <div class="form-group" align="center">
-                            <input class="form-control" type="hidden" name="denah_lama" value="<?=$data['denah_lokasi']; ?>">
-                            <input class="form-control" type="file" name="denah_lokasi">
+                            <input class="form-control" type="hidden" name="denah_lama" value="<?= e($data['denah_lokasi']); ?>">
+                            <input class="form-control" type="file" name="denah_lokasi" accept="image/*">
                             <span>
                                 <font color="red"><i>*Abaikan Jika Denah Lokasi Tidak Diganti</i></font>
                             </span>
@@ -48,18 +49,37 @@ while ($data = $sql->fetch_assoc()) {
 ?>
 <?php
 if (isset($_POST['edit_denah'])) {
-    $id         = $_POST['id'];
-    $sumber     = $_FILES['denah_lokasi']['tmp_name'];
-    $ekstensi   = explode(".", $_FILES['denah_lokasi']['name']);
-    $nama_denah = "denah-".round(microtime(true)).".".end($ekstensi);
-    $upload     = move_uploaded_file($sumber, "../assets/images/".$nama_denah);
-    if ($upload) {
-        $koneksi->query("UPDATE tb_panitia SET denah_lokasi='$nama_denah' WHERE id_panitia='$id'");
-        $denah_lama = $_POST['denah_lama'];
-        if (!empty($denah_lama) && file_exists("../assets/images/".$denah_lama)) {
-            unlink("../assets/images/".$denah_lama);
-        }
-?>
+    csrf_verify();
+    $id = (int)($_POST['id'] ?? 0);
+    
+    if (empty($_FILES['denah_lokasi']['name'])) {
+        ?>
+<script>
+    Swal.fire({
+        position: 'top-center',
+        icon: 'success',
+        title: 'Sukses',
+        text: 'Data Berhasil Disimpan',
+        showConfirmButton: true,
+        timer: 3000
+    });
+    window.setTimeout(function() {
+        document.location.href = '?page=panitia';
+    }, 1500);
+</script>
+<?php
+    } else {
+        $uploaded = safe_upload($_FILES['denah_lokasi'], '../assets/images/', 'denah');
+        if ($uploaded) {
+            $denah_lama = $_POST['denah_lama'] ?? '';
+            if (!empty($denah_lama)) {
+                $old_file = safe_basename($denah_lama);
+                if (file_exists("../assets/images/" . $old_file)) {
+                    @unlink("../assets/images/" . $old_file);
+                }
+            }
+            db_exec($koneksi, "UPDATE tb_panitia SET denah_lokasi=? WHERE id_panitia=?", [$uploaded, $id]);
+            ?>
 <script>
     Swal.fire({
         position: 'top-center',
@@ -68,30 +88,29 @@ if (isset($_POST['edit_denah'])) {
         text: 'Denah Lokasi Berhasil Diganti',
         showConfirmButton: true,
         timer: 3000
-    }, 10);
+    });
     window.setTimeout(function() {
         document.location.href = '?page=panitia';
     }, 1500);
-
 </script>
 <?php
-    } else {
-?>
-<script type="text/javascript">
+        } else {
+            ?>
+<script>
     Swal.fire({
         position: 'top-center',
         icon: 'error',
         title: 'Mohon Maaf',
-        text: 'Gagal Mengganti Denah Lokasi',
+        text: 'Format file tidak diizinkan. Gunakan JPG, JPEG, PNG, atau GIF.',
         showConfirmButton: true,
         timer: 3000
-    }, 10);
+    });
     window.setTimeout(function() {
         document.location.href = '?page=panitia';
     }, 1500);
-
 </script>
 <?php
+        }
     }
 }
 ?>

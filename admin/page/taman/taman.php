@@ -40,9 +40,8 @@
                                     <td><?= e($data['nama_taman']); ?></td>
                                     <td><?= e($data['lokasi']); ?></td>
                                     <td align="center">
-                                        <a data-toggle="modal" data-target="#modal_edit<?= (int)$data['id_taman']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
-                                        </a>
-                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-taman" data-id="<?= (int)$data['id_taman']; ?>" data-name="<?= e($data['nama_taman']); ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
+                                        <a data-toggle="modal" data-target="#modal_edit<?= (int)$data['id_taman']; ?>"><button class="btn btn-warning btn-xs waves-effect" title="Edit"><i class="material-icons">edit</i></button></a>
+                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-taman" data-id="<?= (int)$data['id_taman']; ?>" data-name="<?= e($data['nama_taman']); ?>" title="Hapus"><i class="material-icons">delete</i></button>
                                     </td>
                                 </tr>
                                 <?php
