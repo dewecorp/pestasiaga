@@ -1,0 +1,4 @@
+*.zip
+*.bat
+.env
+/admin/backup_data/*.sql
