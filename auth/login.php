@@ -1,6 +1,5 @@
 <?php
 ob_start();
-session_start();
 include "../config/koneksi.php";
 $sql = $koneksi->query("SELECT * FROM tb_panitia");
 while ($data = $sql->fetch_assoc()) {
@@ -75,6 +74,7 @@ header("location:../index.php");
                     </div>
                     <!-- <div class="msg">Masukkan Username dan Password</div> -->
                     <form id="sign_in" method="POST">
+                        <?= csrf_field() ?>
                         <div class="input-group">
                             <span class="input-group-addon">
                                 <i class="material-icons">person</i>
@@ -118,33 +118,39 @@ header("location:../index.php");
 </html>
 <?php
     if (isset($_POST['login'])) {
-    $username = mysqli_real_escape_string($koneksi, $_POST['username']);
-    $pass     = mysqli_real_escape_string($koneksi, $_POST['password']);
-    $sql = $koneksi->query("SELECT * FROM tb_user WHERE username ='$username' AND password ='$pass'");
-    $data = $sql->fetch_assoc();
-    $login = $sql->num_rows;
-    if ($login > 0) {
-    $_SESSION['level'] = $data['level'];
-    $_SESSION['id_user'] = $data['id'];
-    if ($_SESSION['level'] == "admin") {
-    header("location:../admin/index.php");
-    exit;
-    } elseif ($_SESSION['level'] == "peserta") {
-    header("location:../index.php");
-    exit;
-    }
-    ?>
-
-<script type="text/javascript">
-    Swal.fire({
-        icon: 'success',
-        title: 'Selamat',
-        text: 'Login Berhasil',
-    })
-
-</script>
-<?php
-} else {
+        csrf_verify();
+        $username = trim($_POST['username'] ?? '');
+        $pass     = $_POST['password'] ?? '';
+        
+        $user = db_one($koneksi, "SELECT * FROM tb_user WHERE username = ?", [$username]);
+        
+        $authenticated = false;
+        if ($user) {
+            // Check password hash or fallback to plaintext
+            if (password_verify($pass, $user['password'])) {
+                $authenticated = true;
+            } elseif ($user['password'] === $pass) {
+                $authenticated = true;
+                // Upgrade plaintext password to hash automatically
+                $newHash = password_hash($pass, PASSWORD_DEFAULT);
+                db_exec($koneksi, "UPDATE tb_user SET password = ? WHERE id = ?", [$newHash, $user['id']]);
+            }
+        }
+        
+        if ($authenticated) {
+            session_regenerate_id(true);
+            $_SESSION['level'] = $user['level'];
+            $_SESSION['id_user'] = $user['id'];
+            $_SESSION['nama'] = $user['nama'];
+            
+            if ($_SESSION['level'] == "admin") {
+                header("location:../admin/index.php");
+                exit;
+            } elseif ($_SESSION['level'] == "peserta") {
+                header("location:../index.php");
+                exit;
+            }
+        } else {
 ?>
 <script type="text/javascript">
     Swal.fire({
@@ -152,10 +158,9 @@ header("location:../index.php");
         title: 'Mohon Maaf Kakak',
         text: 'Login Gagal, Username/Password Salah',
     })
-
 </script>
 <?php
-    }
+        }
     }
     }
 }

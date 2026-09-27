@@ -1,8 +1,11 @@
 <?php
-$sql = $koneksi->query("SELECT * FROM tb_juri");
-while ($data = $sql->fetch_assoc()) {
+$juri_list = db_all($koneksi, "SELECT * FROM tb_juri");
+$peserta_all = db_all($koneksi, "SELECT * FROM tb_peserta_pa ORDER BY pangkalan ASC");
+$taman_all = db_all($koneksi, "SELECT * FROM tb_taman ORDER BY nama_taman ASC");
+
+foreach ($juri_list as $data) {
 ?>
-<div class="modal fade" id="modal_edit<?=$data['id_juri']?>" tabindex="-1" role="dialog">
+<div class="modal fade" id="modal_edit<?= (int)$data['id_juri']; ?>" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,52 +15,45 @@ while ($data = $sql->fetch_assoc()) {
                 <h5 class="modal-title" id="largeModalLabel" align="center">EDIT DATA JURI</h5>
             </div>
             <form action="#" method="POST">
+                <?= csrf_field() ?>
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="form-line">
                             <label for="nama">Nama Juri</label>
-                            <input type="hidden" name="id" value="<?=$data['id_juri']?>">
-                            <input type="text" name="nama" id="nama" class="form-control" value="<?=$data['nama_juri'];?>" />
+                            <input type="hidden" name="id" value="<?= (int)$data['id_juri']; ?>">
+                            <input type="text" name="nama" id="nama" class="form-control" value="<?= e($data['nama_juri']); ?>" required />
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-line">
                             <label for="pangkalan">Pangkalan</label>
-                            <select class="js-example-basic-single form-control" name="pangkalan" id="pangkalan">
+                            <select class="js-example-basic-single form-control" name="pangkalan" id="pangkalan" required>
                                 <?php
-								$query = $koneksi->query("SELECT * FROM tb_peserta_pa") or die($koneksi->error);
-								while ($tampil = $query->fetch_assoc()) {
-								echo "<option value='$tampil[id_pa]'";
-										if ($data['id_pa'] == $tampil['id_pa']) {
-										echo "selected";
-															}
-								echo "> $tampil[pangkalan]</option>";
-								}
-								?>
+                                foreach ($peserta_all as $tampil) {
+                                    $selected = ($data['id_pa'] == $tampil['id_pa']) ? 'selected' : '';
+                                    echo "<option value='" . (int)$tampil['id_pa'] . "' $selected>" . e($tampil['pangkalan']) . "</option>";
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-line">
                             <label for="taman">Koordinator Taman</label>
-                            <select class="js-example-basic-single form-control" name="taman" id="taman">
+                            <select class="js-example-basic-single form-control" name="taman" id="taman" required>
                                 <?php
-								$query = $koneksi->query("SELECT * FROM tb_taman") or die($koneksi->error);
-								while ($tampil = $query->fetch_assoc()) {
-								echo "<option value='$tampil[id_taman]'";
-										if ($data['id_taman'] == $tampil['id_taman']) {
-										echo "selected";
-															}
-								echo "> $tampil[nama_taman]</option>";
-								}
-								?>
+                                foreach ($taman_all as $tampil) {
+                                    $selected = ($data['id_taman'] == $tampil['id_taman']) ? 'selected' : '';
+                                    echo "<option value='" . (int)$tampil['id_taman'] . "' $selected>" . e($tampil['nama_taman']) . "</option>";
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-line">
                             <label for="hp">No. Handphone/WA</label>
-                            <input type="number" name="hp" id="hp" class="form-control" value="<?=$data['no_hp'];?>" />
+                            <input type="text" name="hp" id="hp" class="form-control" value="<?= e($data['no_hp']); ?>" required />
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -70,20 +66,25 @@ while ($data = $sql->fetch_assoc()) {
     </div>
 </div>
 <?php
-if($_POST['edit']){
-$id         = $_POST['id'];
-$nama 	  	= $_POST['nama'];
-$pangkalan  = $_POST['pangkalan'];
-$taman 	  	= $_POST['taman'];
-$hp 	    = $_POST['hp'];
-$koneksi->query("UPDATE tb_juri SET nama_juri='$nama', id_pa='$pangkalan', id_taman='$taman', no_hp='$hp' WHERE id_juri='$id'");
+}
 ?>
-
+<?php
+if (isset($_POST['edit'])) {
+    csrf_verify();
+    $id        = (int)($_POST['id'] ?? 0);
+    $nama 	   = trim($_POST['nama'] ?? '');
+    $pangkalan = (int)($_POST['pangkalan'] ?? 0);
+    $taman 	   = (int)($_POST['taman'] ?? 0);
+    $hp 	   = trim($_POST['hp'] ?? '');
+    
+    $stmt = db_exec($koneksi, "UPDATE tb_juri SET nama_juri=?, id_pa=?, id_taman=?, no_hp=? WHERE id_juri=?", [$nama, $pangkalan, $taman, $hp, $id]);
+    if ($stmt) {
+?>
 <script>
     Swal.fire({
         position: 'top-center',
         icon: 'success',
-        title: '<?=$nama;?>',
+        title: '<?= e($nama); ?>',
         text: 'Berhasil Diedit',
         showConfirmButton: true,
         timer: 3000
@@ -91,10 +92,8 @@ $koneksi->query("UPDATE tb_juri SET nama_juri='$nama', id_pa='$pangkalan', id_ta
     window.setTimeout(function() {
         document.location.href = '?page=juri';
     }, 1500);
-
 </script>
-
 <?php
-}
+    }
 }
 ?>

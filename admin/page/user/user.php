@@ -1,6 +1,5 @@
 <?php
-$id = @$_GET['id'];
-$sql = $koneksi->query("SELECT * FROM tb_user WHERE id ='$id'");
+$id = (int)($_GET['id'] ?? 0);
 ?>
     <div class="body">
         <ol class="breadcrumb breadcrumb-bg-green">
@@ -38,35 +37,30 @@ $sql = $koneksi->query("SELECT * FROM tb_user WHERE id ='$id'");
                             <tbody>
                                 <?php
                                 $no = 1;
-                                $sql = $koneksi->query("SELECT * FROM tb_user");
-                                while ($data = $sql->fetch_assoc()) {
-                                $level = ($data['level'] == 'admin') ? "Admin" : "User"; ?>
+                                $users = db_all($koneksi, "SELECT * FROM tb_user");
+                                foreach ($users as $data) {
+                                    $level = ($data['level'] == 'admin') ? "Admin" : "User"; ?>
                                 <tr>
-                                    <td><?=$no++."."; ?></td>
+                                    <td><?= $no++ . "."; ?></td>
                                     <td>
                                         <?php
-                                        $foto = isset($data['foto']) ? $data['foto'] : '';
-                                        if ($foto) {
-                                            echo '<img src="../assets/images/'.$foto.'" alt="Foto" style="height:40px;width:40px;object-fit:cover;border-radius:50%;">';
+                                        $foto = isset($data['foto']) ? safe_basename($data['foto']) : '';
+                                        if ($foto && file_exists("../assets/images/" . $foto)) {
+                                            echo '<img src="../assets/images/' . e($foto) . '" alt="Foto" style="height:40px;width:40px;object-fit:cover;border-radius:50%;">';
                                         } else {
-                                            $initial = strtoupper(substr($data['nama'],0,1));
-                                            echo '<span style="display:inline-flex;align-items:center;justify-content:center;height:40px;width:40px;border-radius:50%;background:#e0e0e0;color:#333;font-weight:bold;">'.$initial.'</span>';
+                                            $initial = strtoupper(substr($data['nama'], 0, 1));
+                                            echo '<span style="display:inline-flex;align-items:center;justify-content:center;height:40px;width:40px;border-radius:50%;background:#e0e0e0;color:#333;font-weight:bold;">' . e($initial) . '</span>';
                                         }
                                         ?>
                                     </td>
-                                    <td><?=$data['username']; ?></td>
-                                    <td><?=$data['password']; ?></td>
-                                    <td><?=$data['nama']; ?></td>
-                                    <td><?=$level?></td>
+                                    <td><?= e($data['username']); ?></td>
+                                    <td><span class="text-muted">••••••••</span></td>
+                                    <td><?= e($data['nama']); ?></td>
+                                    <td><?= e($level); ?></td>
                                     <td align="center">
-                                        <a data-toggle="modal" data-target="#modal_edit<?=$data['id']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
+                                        <a data-toggle="modal" data-target="#modal_edit<?= (int)$data['id']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
                                         </a>
-                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-user" data-id="<?=$data['id']; ?>" data-name="<?=$data['nama']; ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
-                                        <!-- <a href="?page=user&aksi=hapus&id=<?=$data['id']; ?>"
-                                            onclick="return confirm('Yakin Menghapus Data?')"
-                                            class="btn btn-danger btn-xs waves-effect"><i
-                                            class="material-icons">delete</i><span>Hapus</span>
-                                        </a> -->
+                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-user" data-id="<?= (int)$data['id']; ?>" data-name="<?= e($data['nama']); ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
                                     </td>
                                 </tr>
                                 <?php
@@ -102,7 +96,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href='?page=user&aksi=hapus&id='+id;
+                    window.location.href = '?page=user&aksi=hapus&id=' + id + '&<?= csrf_query() ?>';
                 }
             });
         });

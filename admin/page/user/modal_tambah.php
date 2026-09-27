@@ -9,6 +9,7 @@
             </div>
 
             <form action="#" method="POST" enctype="multipart/form-data">
+                <?= csrf_field() ?>
                 <div class="modal-body">
                     <div class="form-group">
                         <div class="form-line">
@@ -19,7 +20,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label for="pass">Password</label>
-                            <input type="text" name="pass" id="pass" class="form-control" placeholder="Password" required />
+                            <input type="password" name="pass" id="pass" class="form-control" placeholder="Password" required />
                         </div>
                     </div>
                     <div class="form-group">
@@ -41,7 +42,7 @@
                     <div class="form-group">
                         <div class="form-line">
                             <label for="foto">Foto</label>
-                            <input type="file" name="foto" id="foto" class="form-control" />
+                            <input type="file" name="foto" id="foto" class="form-control" accept="image/*" />
                         </div>
                     </div>
                 </div>
@@ -55,30 +56,40 @@
     </div>
 </div>
 <?php
-if (@$_POST['simpan']) {
-    $user  = @$_POST['user'];
-    $pass  = @$_POST['pass'];
-    $nama  = @$_POST['nama'];
-    $level = @$_POST['level'];
+if (isset($_POST['simpan'])) {
+    csrf_verify();
+    $user  = trim($_POST['user'] ?? '');
+    $pass  = $_POST['pass'] ?? '';
+    $nama  = trim($_POST['nama'] ?? '');
+    $level = $_POST['level'] ?? '';
+    
+    if (!in_array($level, ['admin', 'user'], true)) {
+        $level = 'user';
+    }
+    
+    $pass_hash = password_hash($pass, PASSWORD_DEFAULT);
+    
     $cek = $koneksi->query("SHOW COLUMNS FROM tb_user LIKE 'foto'");
-    if ($cek->num_rows == 0) {
+    if ($cek && $cek->num_rows == 0) {
         $koneksi->query("ALTER TABLE tb_user ADD foto VARCHAR(255) NOT NULL DEFAULT ''");
     }
-    $sumber = $_FILES['foto']['tmp_name'];
+    
     $nama_foto = '';
-    if (!empty($sumber)) {
-        $ekstensi = explode(".", $_FILES['foto']['name']);
-        $nama_foto = "user-".round(microtime(true)).".".end($ekstensi);
-        move_uploaded_file($sumber, "../assets/images/".$nama_foto);
+    if (!empty($_FILES['foto']['name'])) {
+        $uploaded = safe_upload($_FILES['foto'], '../assets/images/', 'user');
+        if ($uploaded) {
+            $nama_foto = $uploaded;
+        }
     }
-    $sql = $koneksi->query("INSERT INTO tb_user (username, password, nama, level, foto) VALUES ('$user', '$pass', '$nama', '$level', '$nama_foto')");
-    if ($sql) {
+    
+    $stmt = db_exec($koneksi, "INSERT INTO tb_user (username, password, nama, level, foto) VALUES (?, ?, ?, ?, ?)", [$user, $pass_hash, $nama, $level, $nama_foto]);
+    if ($stmt) {
         ?>
 <script>
     Swal.fire({
         position: 'top-center',
         icon: 'success',
-        title: '<?=$nama; ?> ',
+        title: '<?= e($nama); ?>',
         text: 'Berhasil Ditambahkan',
         showConfirmButton: true,
         timer: 3000
@@ -86,7 +97,6 @@ if (@$_POST['simpan']) {
     window.setTimeout(function() {
         document.location.href = '?page=user';
     }, 1500);
-
 </script>
 <?php
     }

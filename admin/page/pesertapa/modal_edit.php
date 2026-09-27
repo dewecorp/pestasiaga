@@ -1,8 +1,8 @@
 <?php
-$sql = $koneksi->query("SELECT * FROM tb_peserta_pa");
-while ($data = $sql->fetch_assoc()) {
+$peserta_pa_all = db_all($koneksi, "SELECT * FROM tb_peserta_pa");
+foreach ($peserta_pa_all as $data) {
 ?>
-<div class="modal fade" id="modal_edit<?=$data['id_pa'];?>" tabindex="-1" role="dialog">
+<div class="modal fade" id="modal_edit<?= (int)$data['id_pa']; ?>" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
@@ -12,24 +12,19 @@ while ($data = $sql->fetch_assoc()) {
                 <h5 class="modal-title" id="largeModalLabel" align="center">EDIT PESERTA PUTRA</h5>
             </div>
             <form action="#" method="POST">
+                <?= csrf_field() ?>
                 <div class="modal-body">
-                    <input type="hidden" name="id" value="<?=$data['id_pa'] ?>">
-                    <!-- <div class="form-group">
-                        <div class="form-line">
-                            <label for="nomor">Nomor Dada</label>
-                            <input type="text" name="nomor" id="nomor" class="form-control" placeholder="Nomor Dada" value="<?=$data['no_dada'] ?>">
-                        </div>
-                    </div> -->
+                    <input type="hidden" name="id" value="<?= (int)$data['id_pa']; ?>">
                     <div class="form-group">
                         <div class="form-line">
                             <label for="pangkalan">Nama Pangkalan</label>
-                            <input type="text" name="pangkalan" id="pangkalan" class="form-control" placeholder="Nama Pangkalan" value="<?=$data['pangkalan'] ?>">
+                            <input type="text" name="pangkalan" id="pangkalan" class="form-control" placeholder="Nama Pangkalan" value="<?= e($data['pangkalan']); ?>" required>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="form-line">
                             <label for="pembina">Nama Pembina</label>
-                            <input type="text" name="pembina" id="pembina" class="form-control" placeholder="Nama Pembina" value="<?=$data['pembina'] ?>">
+                            <input type="text" name="pembina" id="pembina" class="form-control" placeholder="Nama Pembina" value="<?= e($data['pembina']); ?>" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -42,20 +37,23 @@ while ($data = $sql->fetch_assoc()) {
     </div>
 </div>
 <?php
-$id        = @$_POST['id'];
-// $no_dada   = @$_POST['nomor'];
-$pangkalan = @$_POST['pangkalan'];
-$pembina   = @$_POST['pembina'];
-$edit   = @$_POST['edit'];
-if ($edit) {
-$koneksi->query("UPDATE tb_peserta_pa SET pangkalan='$pangkalan', pembina='$pembina' WHERE id_pa='$id'");
-
+}
+?>
+<?php
+if (isset($_POST['edit'])) {
+    csrf_verify();
+    $id        = (int)($_POST['id'] ?? 0);
+    $pangkalan = trim($_POST['pangkalan'] ?? '');
+    $pembina   = trim($_POST['pembina'] ?? '');
+    
+    $stmt = db_exec($koneksi, "UPDATE tb_peserta_pa SET pangkalan=?, pembina=? WHERE id_pa=?", [$pangkalan, $pembina, $id]);
+    if ($stmt) {
 ?>
 <script>
     Swal.fire({
         position: 'top-center',
         icon: 'success',
-        title: '<?=$pangkalan;?>',
+        title: '<?= e($pangkalan); ?>',
         text: 'Berhasil Diedit',
         showConfirmButton: true,
         timer: 3000
@@ -63,10 +61,8 @@ $koneksi->query("UPDATE tb_peserta_pa SET pangkalan='$pangkalan', pembina='$pemb
     window.setTimeout(function() {
         document.location.href = '?page=pesertapa';
     }, 1500);
-
 </script>
 <?php
+    }
 }
-}
-
 ?>

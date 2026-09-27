@@ -1,4 +1,3 @@
-
     <div class="body">
         <ol class="breadcrumb breadcrumb-bg-green">
             <li><a href="index.php"><i class="material-icons">dashboard</i> Dashboard</a></li>
@@ -17,8 +16,7 @@
                     <div class=" pull-right">
                         <a href="../laporan/taman_excel.php" target="_blank" class="btn btn-success btn-sm waves-effect"><i class="fa fa-download"></i> Export to Excel</a>
                         <a href="../laporan/taman_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i> Export to PDF</a>
-                        <button type="button" class="btn btn-info btn-sm waves-effect" data-toggle="modal" data-target="#modal_tambah"><i class="fa fa-plus"></i> Tambah
-                        </button>
+                        <button type="button" class="btn btn-info btn-sm waves-effect" data-toggle="modal" data-target="#modal_tambah"><i class="fa fa-plus"></i> Tambah</button>
                     </div>
                     <br><br>
                     <div class="table-responsive">
@@ -33,29 +31,23 @@
                             </thead>
                             <tbody>
                                 <?php
-									$no = 1;
-									$sql = $koneksi->query("SELECT * FROM tb_taman ORDER BY nama_taman ASC");
-									while ($data = $sql->fetch_assoc()) {
-									?>
+                                    $no = 1;
+                                    $tamans = db_all($koneksi, "SELECT * FROM tb_taman ORDER BY nama_taman ASC");
+                                    foreach ($tamans as $data) {
+                                    ?>
                                 <tr>
-                                    <td><?=$no++."."; ?></td>
-                                    <td><?=$data['nama_taman']; ?></td>
-                                    <td><?=$data['lokasi']; ?></td>
+                                    <td><?= $no++ . "."; ?></td>
+                                    <td><?= e($data['nama_taman']); ?></td>
+                                    <td><?= e($data['lokasi']); ?></td>
                                     <td align="center">
-                                        <a data-toggle="modal" data-target="#modal_edit<?=$data['id_taman']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
+                                        <a data-toggle="modal" data-target="#modal_edit<?= (int)$data['id_taman']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
                                         </a>
-                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-taman" data-id="<?=$data['id_taman']; ?>" data-name="<?= $data['nama_taman']; ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
-                                        <!-- <a href="?page=taman&aksi=hapus&id=<?=$data['id_taman']; ?>"
-												onclick="return confirm('Yakin Menghapus Data?')"
-												class="btn btn-danger btn-xs waves-effect" id="btn-hapus"><i
-												class="material-icons">delete</i><span>Hapus</span>
-											</a> -->
-
+                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-taman" data-id="<?= (int)$data['id_taman']; ?>" data-name="<?= e($data['nama_taman']); ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
                                     </td>
                                 </tr>
                                 <?php
-														}
-									?>
+                                    }
+                                    ?>
                             </tbody>
                         </table>
                     </div>
@@ -87,7 +79,7 @@
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href='?page=taman&aksi=hapus&id='+id;
+                    window.location.href = '?page=taman&aksi=hapus&id=' + id + '&<?= csrf_query() ?>';
                 }
             });
         });

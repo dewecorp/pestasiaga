@@ -10,6 +10,7 @@ if (!file_exists($backupDir)) {
 
 // 1. BACKUP DATABASE
 if (isset($_POST['backup_now'])) {
+    csrf_verify();
     $tables = array();
     $result = $koneksi->query("SHOW TABLES");
     while ($row = $result->fetch_row()) {
@@ -69,6 +70,7 @@ if (isset($_POST['backup_now'])) {
 
 // 2. RESTORE DATABASE
 if (isset($_POST['restore_now'])) {
+    csrf_verify();
     $filename = $_FILES['file_restore']['name'];
     $filetmp  = $_FILES['file_restore']['tmp_name'];
     $fileext  = pathinfo($filename, PATHINFO_EXTENSION);
@@ -130,8 +132,9 @@ if (isset($_POST['restore_now'])) {
 
 // 3. DELETE BACKUP
 if (isset($_GET['aksi']) && $_GET['aksi'] == 'hapus_file') {
-    $file = $_GET['file'];
-    if (file_exists($backupDir . $file)) {
+    csrf_verify();
+    $file = safe_basename($_GET['file'] ?? '');
+    if (!empty($file) && pathinfo($file, PATHINFO_EXTENSION) === 'sql' && file_exists($backupDir . $file)) {
         unlink($backupDir . $file);
         echo "<script>
             Swal.fire({
@@ -158,6 +161,7 @@ if (isset($_GET['aksi']) && $_GET['aksi'] == 'hapus_file') {
             <div class="body" align="center">
                 <p>Klik tombol di bawah untuk melakukan backup database terbaru.</p>
                 <form action="" method="POST">
+                    <?= csrf_field() ?>
                     <button type="submit" name="backup_now" class="btn btn-lg btn-success waves-effect">
                         <i class="material-icons">backup</i> MULAI BACKUP
                     </button>
@@ -175,6 +179,7 @@ if (isset($_GET['aksi']) && $_GET['aksi'] == 'hapus_file') {
             <div class="body">
                 <p>Upload file <b>.sql</b> untuk merestore database.</p>
                 <form action="" method="POST" enctype="multipart/form-data">
+                    <?= csrf_field() ?>
                     <div class="form-group">
                         <div class="form-line">
                             <input type="file" name="file_restore" class="form-control" required>
@@ -261,7 +266,7 @@ if (isset($_GET['aksi']) && $_GET['aksi'] == 'hapus_file') {
             cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
-                window.location.href = "?page=backup&aksi=hapus_file&file=" + filename;
+                window.location.href = "?page=backup&aksi=hapus_file&file=" + encodeURIComponent(filename) + "&<?= csrf_query() ?>";
             }
         })
     }

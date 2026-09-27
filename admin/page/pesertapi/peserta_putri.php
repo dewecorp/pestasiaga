@@ -1,6 +1,5 @@
 <?php
-$id = @$_GET['id'];
-$sql = $koneksi->query("SELECT * FROM tb_peserta_pi WHERE id_pi='$id'");
+$id = (int)($_GET['id'] ?? 0);
 ?>
     <div class="body">
         <ol class="breadcrumb breadcrumb-bg-green">
@@ -18,12 +17,10 @@ $sql = $koneksi->query("SELECT * FROM tb_peserta_pi WHERE id_pi='$id'");
                 </div>
                 <div class="body">
                     <div class="pull-right">
-                        <a href="../laporan/pesertapi_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i>
-                PDF</a>
+                        <a href="../laporan/pesertapi_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i> PDF</a>
                         <a href="../laporan/pesertapi_excel.php" target="_blank" class="btn btn-success btn-sm waves-effect"><i class="fa fa-download"></i> Excel</a>
                         <button type="button" class="btn btn-danger btn-sm waves-effect" data-toggle="modal" data-target="#modal_reset_pi"><i class="material-icons">delete_forever</i> Reset Data</button>
-                        <button type="button" class="btn btn-info btn-sm waves-effect" data-toggle="modal" data-target="#modal_tambah"><i class="fa fa-plus"></i> Tambah
-                        </button>
+                        <button type="button" class="btn btn-info btn-sm waves-effect" data-toggle="modal" data-target="#modal_tambah"><i class="fa fa-plus"></i> Tambah</button>
                     </div>
                     <br><br><br>
                     <div class="table-responsive">
@@ -40,23 +37,18 @@ $sql = $koneksi->query("SELECT * FROM tb_peserta_pi WHERE id_pi='$id'");
                             <tbody>
                                 <?php
                                     $no = 1;
-                                    $sql = $koneksi->query("SELECT * FROM tb_peserta_pi ORDER BY no_dada ASC") or die($koneksi->error);
-                                    while ($data = $sql->fetch_assoc()) {
+                                    $peserta = db_all($koneksi, "SELECT * FROM tb_peserta_pi ORDER BY no_dada ASC");
+                                    foreach ($peserta as $data) {
                                     ?>
                                 <tr>
-                                    <td><?=$no++."."; ?></td>
-                                    <td><?=$data['no_dada']; ?></td>
-                                    <td><?=$data['pangkalan']; ?></td>
-                                    <td><?=$data['pembina']; ?></td>
+                                    <td><?= $no++ . "."; ?></td>
+                                    <td><?= e($data['no_dada']); ?></td>
+                                    <td><?= e($data['pangkalan']); ?></td>
+                                    <td><?= e($data['pembina']); ?></td>
                                     <td align="center">
-                                        <a data-toggle="modal" data-target="#modal_edit<?=$data['id_pi']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
+                                        <a data-toggle="modal" data-target="#modal_edit<?= (int)$data['id_pi']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
                                         </a>
-                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-pi" data-id="<?=$data['id_pi']; ?>" data-name="<?= $data['pangkalan']; ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
-                                        <!--  <a href="?page=pesertapi&aksi=hapus&id=<?=$data['id_pi']; ?>"
-                                                onclick="return confirm('Yakin Menghapus Data?')"
-                                                class="btn btn-danger btn-xs waves-effect"><i
-                                                class="material-icons">delete</i><span>Hapus</span>
-                                            </a> -->
+                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-pi" data-id="<?= (int)$data['id_pi']; ?>" data-name="<?= e($data['pangkalan']); ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
                                     </td>
                                 </tr>
                                 <?php
@@ -69,9 +61,6 @@ $sql = $koneksi->query("SELECT * FROM tb_peserta_pi WHERE id_pi='$id'");
             </div>
         </div>
     </div>
-</body>
-
-</html>
 <?php 
 include "modal_tambah.php";
 include "modal_edit.php";
@@ -95,11 +84,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href='?page=pesertapi&aksi=hapus&id='+id;
+                    window.location.href = '?page=pesertapi&aksi=hapus&id=' + id + '&<?= csrf_query() ?>';
                 }
             });
         });
     });
 });
 </script>
-<?php ?>

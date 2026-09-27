@@ -8,6 +8,7 @@
                 <h5 class="modal-title" id="largeModalLabel" align="center">TAMBAH DATA JURI</h5>
             </div>
             <form action="#" method="POST">
+                <?= csrf_field() ?>
                 <div class="modal-body">
                     <div class="form-group form-float">
                         <div class="form-line">
@@ -21,11 +22,11 @@
                             <select name="pangkalan" id="pangkalan" class="js-example-basic-single form-control show-tick" required>
                                 <option value="">- Pilih Pangkalan -</option>
                                 <?php
-								$sql = $koneksi->query("SELECT * FROM tb_peserta_pa ORDER BY pangkalan ASC");
-								while ($data = $sql->fetch_assoc()) {
-								echo '<option value="'.$data['id_pa'].'"> '.$data['pangkalan'].'</option>';
-								}
-								?>
+                                $peserta_list = db_all($koneksi, "SELECT * FROM tb_peserta_pa ORDER BY pangkalan ASC");
+                                foreach ($peserta_list as $data) {
+                                    echo '<option value="' . (int)$data['id_pa'] . '"> ' . e($data['pangkalan']) . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
@@ -35,18 +36,18 @@
                             <select name="taman" id="taman" class="js-example-basic-single form-control show-tick" required>
                                 <option value="">- Pilih Taman -</option>
                                 <?php
-								$sql = $koneksi->query("SELECT * FROM tb_taman ORDER BY nama_taman ASC");
-								while ($data = $sql->fetch_assoc()) {
-								echo '<option value="'.$data['id_taman'].'"> '.$data['nama_taman'].'</option>';
-								}
-								?>
+                                $taman_list = db_all($koneksi, "SELECT * FROM tb_taman ORDER BY nama_taman ASC");
+                                foreach ($taman_list as $data) {
+                                    echo '<option value="' . (int)$data['id_taman'] . '"> ' . e($data['nama_taman']) . '</option>';
+                                }
+                                ?>
                             </select>
                         </div>
                     </div>
                     <div class="form-group form-float">
                         <div class="form-line">
                             <label for="hp">No. Handphone/WA</label>
-                            <input type="number" name="hp" id="hp" class="form-control" placeholder="No. Handphone/WA" required>
+                            <input type="text" name="hp" id="hp" class="form-control" placeholder="No. Handphone/WA" required>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -59,17 +60,21 @@
     </div>
 </div>
 <?php
-if (@$_POST['simpan']) {
-$nama 	   = @$_POST['nama'];
-$pangkalan = @$_POST['pangkalan'];
-$taman 	   = @$_POST['taman'];
-$hp 	   = @$_POST['hp'];
-$sql = $koneksi->query("INSERT INTO tb_juri (nama_juri, id_pa, id_taman, no_hp) VALUES ('$nama', '$pangkalan', '$taman', '$hp')"); ?>
+if (isset($_POST['simpan'])) {
+    csrf_verify();
+    $nama 	   = trim($_POST['nama'] ?? '');
+    $pangkalan = (int)($_POST['pangkalan'] ?? 0);
+    $taman 	   = (int)($_POST['taman'] ?? 0);
+    $hp 	   = trim($_POST['hp'] ?? '');
+    
+    $stmt = db_exec($koneksi, "INSERT INTO tb_juri (nama_juri, id_pa, id_taman, no_hp) VALUES (?, ?, ?, ?)", [$nama, $pangkalan, $taman, $hp]);
+    if ($stmt) {
+?>
 <script>
     Swal.fire({
         position: 'top-center',
         icon: 'success',
-        title: '<?=$nama; ?>',
+        title: '<?= e($nama); ?>',
         text: 'Berhasil Ditambahkan',
         showConfirmButton: true,
         timer: 3000
@@ -77,8 +82,8 @@ $sql = $koneksi->query("INSERT INTO tb_juri (nama_juri, id_pa, id_taman, no_hp) 
     window.setTimeout(function() {
         document.location.href = '?page=juri';
     }, 1500);
-
 </script>
 <?php
+    }
 }
 ?>

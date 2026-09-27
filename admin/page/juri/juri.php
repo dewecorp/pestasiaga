@@ -1,6 +1,5 @@
 <?php
-$id = @$_GET['id'];
-$sql = $koneksi->query("SELECT * FROM tb_juri WHERE id_juri='$id'");
+$id = (int)($_GET['id'] ?? 0);
 ?>
     <div class="body">
         <ol class="breadcrumb breadcrumb-bg-green">
@@ -18,11 +17,9 @@ $sql = $koneksi->query("SELECT * FROM tb_juri WHERE id_juri='$id'");
                 </div>
                 <div class="body">
                     <div class="pull-right">
-                        <a href="../laporan/juri_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i>
-                PDF</a>
+                        <a href="../laporan/juri_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i> PDF</a>
                         <a href="../laporan/juri_excel.php" target="_blank" class="btn btn-success btn-sm waves-effect"><i class="fa fa-download"></i> Excel</a>
-                        <button type="button" class="btn btn-info btn-sm waves-effect" data-toggle="modal" data-target="#modal_tambah"><i class="fa fa-plus"></i> Tambah
-                        </button>
+                        <button type="button" class="btn btn-info btn-sm waves-effect" data-toggle="modal" data-target="#modal_tambah"><i class="fa fa-plus"></i> Tambah</button>
                     </div>
                     <br><br>
                     <div class="table-responsive">
@@ -40,26 +37,21 @@ $sql = $koneksi->query("SELECT * FROM tb_juri WHERE id_juri='$id'");
                             <tbody>
                                 <?php
                                     $no = 1;
-                                    $sql = $koneksi->query("SELECT * FROM tb_juri
+                                    $juris = db_all($koneksi, "SELECT * FROM tb_juri
                                     JOIN tb_taman ON tb_juri.id_taman = tb_taman.id_taman
                                     JOIN tb_peserta_pa ON tb_juri.id_pa = tb_peserta_pa.id_pa");
-                                    while ($data = $sql->fetch_assoc()) {
+                                    foreach ($juris as $data) {
                                     ?>
                                 <tr>
                                     <td><?= $no++ . "."; ?></td>
-                                    <td><?= $data['nama_juri']; ?></td>
-                                    <td><?= $data['pangkalan']; ?></td>
-                                    <td><?= $data['nama_taman']; ?></td>
-                                    <td><?= $data['no_hp']; ?></td>
+                                    <td><?= e($data['nama_juri']); ?></td>
+                                    <td><?= e($data['pangkalan']); ?></td>
+                                    <td><?= e($data['nama_taman']); ?></td>
+                                    <td><?= e($data['no_hp']); ?></td>
                                     <td align="center">
-                                        <a data-toggle="modal" data-target="#modal_edit<?=$data['id_juri']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
+                                        <a data-toggle="modal" data-target="#modal_edit<?= (int)$data['id_juri']; ?>"><button class="btn btn-warning btn-xs waves-effect"><i class="material-icons">edit</i><span>Edit</span></button>
                                         </a>
-                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-juri" data-id="<?=$data['id_juri']; ?>" data-name="<?= $data['nama_juri']; ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
-                                        <!--  <a href="?page=juri&aksi=hapus&id=<?= $data['id_juri']; ?>"
-                                                onclick="return confirm('Yakin Menghapus Data?')"
-                                                class="btn btn-danger btn-xs waves-effect"><i
-                                                class="material-icons">delete</i><span>Hapus</span>
-                                            </a> -->
+                                        <button class="btn btn-danger btn-xs waves-effect btn-delete-juri" data-id="<?= (int)$data['id_juri']; ?>" data-name="<?= e($data['nama_juri']); ?>"><i class="material-icons">delete</i><span>Hapus</span></button>
                                     </td>
                                 </tr>
                                 <?php
@@ -94,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    window.location.href='?page=juri&aksi=hapus&id='+id;
+                    window.location.href = '?page=juri&aksi=hapus&id=' + id + '&<?= csrf_query() ?>';
                 }
             });
         });

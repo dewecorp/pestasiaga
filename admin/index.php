@@ -48,9 +48,7 @@ $sql = $koneksi->query("SELECT * FROM tb_user WHERE id ='$id'");
 $tampil = $sql->fetch_assoc();
 $sql_logo = $koneksi->query("SELECT * FROM tb_panitia");
 $data = $sql_logo->fetch_assoc();
-if (isset($_SESSION['level']) == "") {
-header("location:../login.php");
-} else {
+require_admin();
 ?>
 <!DOCTYPE html>
 <html>
@@ -640,6 +638,4 @@ header("location:../login.php");
 </body>
 
 </html>
-<?php
-	}
-	?>
+
