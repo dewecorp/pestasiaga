@@ -1,11 +1,12 @@
 @echo off
 echo ========================================================
-echo        AUTO DEPLOY & BACKUP SCRIPT - PESTASIAGA
+echo        AUTO DEPLOY ^& BACKUP SCRIPT - PESTASIAGA
 echo ========================================================
 echo.
 
 :: 1. Input Commit Message
 :InputMsg
+set "commit_msg="
 set /p commit_msg="Masukkan pesan commit: "
 if "%commit_msg%"=="" goto InputMsg
 
@@ -17,6 +18,7 @@ echo Pesan Commit : %commit_msg%
 echo Repository   : https://github.com/dewecorp/pestasiaga.git
 echo File Backup  : backup_pestasiaga.zip (Update Mode)
 echo.
+set "confirm="
 set /p confirm="Lanjutkan eksekusi? (y/n): "
 if /i not "%confirm%"=="y" goto End
 
@@ -38,7 +40,7 @@ if not exist .git (
 
 :: 2. Git Process
 echo.
-echo [2/3] Eksekusi Git Commit & Push...
+echo [2/3] Eksekusi Git Commit ^& Push...
 echo -----------------------------------
 git add .
 git commit -m "%commit_msg%"
@@ -47,8 +49,8 @@ git push -u origin main
 echo.
 echo [3/3] Update Backup ZIP...
 echo --------------------------
-:: Menggunakan PowerShell untuk update zip (exclude folder .git dan file zip itu sendiri untuk mencegah loop/error)
-powershell -Command "Get-ChildItem | Where-Object { $_.Extension -ne '.zip' -and $_.Name -ne '.git' } | Compress-Archive -DestinationPath 'backup_pestasiaga.zip' -Update"
+:: Menggunakan PowerShell untuk update zip
+powershell -NoProfile -ExecutionPolicy Bypass -Command "Get-ChildItem | Where-Object { $_.Extension -ne '.zip' -and $_.Name -ne '.git' } | Compress-Archive -DestinationPath 'backup_pestasiaga.zip' -Update -Force"
 
 echo.
 echo ========================================================
@@ -57,5 +59,5 @@ echo ========================================================
 echo.
 
 :End
-echo Script dibatalkan atau selesai.
+echo Script selesai.
 pause
