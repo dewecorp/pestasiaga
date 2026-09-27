@@ -39,7 +39,7 @@
     overflow: visible; }
 
 .ls-closed .sidebar {
-  margin-left: -300px; }
+  margin-left: -250px; }
 
 .ls-closed section.content {
   margin-left: 15px; }
@@ -2402,7 +2402,7 @@ a {
   animation: none !important; }
 
 section.content {
-  margin: 100px 15px 0 315px;
+  margin: 100px 15px 0 265px;
   -moz-transition: 0.5s;
   -o-transition: 0.5s;
   -webkit-transition: 0.5s;
@@ -6677,7 +6677,7 @@ fieldset[disabled] .form-control {
     overflow: visible; }
 
 .ls-closed .sidebar {
-  margin-left: -300px; }
+  margin-left: -250px; }
 
 .ls-closed section.content {
   margin-left: 15px; }
@@ -7475,7 +7475,7 @@ fieldset[disabled] .form-control {
   transition: all 0.5s;
   font-family: "Roboto", sans-serif;
   background: #fdfdfd;
-  width: 300px;
+  width: 250px;
   overflow: hidden;
   display: inline-block;
   height: calc(100vh - 70px);
@@ -7665,10 +7665,10 @@ fieldset[disabled] .form-control {
           padding-left: 95px; }
 
 .right-sidebar {
-  width: 280px;
+  width: 250px;
   height: calc(100vh - 70px);
   position: fixed;
-  right: -300px;
+  right: -250px;
   top: 70px;
   background: #fdfdfd;
   z-index: 11 !important;

@@ -104,7 +104,7 @@ require_admin();
     <!-- JQuery DataTable Css -->
     <link href="../assets/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
     <!-- Custom Css -->
-    <link href="../assets/css/style.css" rel="stylesheet">
+    <link href="../assets/css/style.css?v=20260927" rel="stylesheet">
     <!-- AdminBSB Themes. You can choose a theme from css/themes instead of get all themes -->
     <link href="../assets/css/themes/all-themes.css" rel="stylesheet" />
     <link href="../assets/css/select2.min.css" rel="stylesheet" />
