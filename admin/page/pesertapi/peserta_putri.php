@@ -19,6 +19,7 @@ $id = (int)($_GET['id'] ?? 0);
                     <div class="pull-right">
                         <a href="../laporan/pesertapi_pdf.php" target="_blank" class="btn btn-danger btn-sm waves-effect"><i class="fa fa-print"></i> PDF</a>
                         <a href="../laporan/pesertapi_excel.php" target="_blank" class="btn btn-success btn-sm waves-effect"><i class="fa fa-download"></i> Excel</a>
+                        <button type="button" class="btn btn-warning btn-sm waves-effect" data-toggle="modal" data-target="#modal_impor"><i class="fa fa-file-excel-o"></i> Impor Excel</button>
                         <button type="button" class="btn btn-danger btn-sm waves-effect" data-toggle="modal" data-target="#modal_reset_pi"><i class="material-icons">delete_forever</i> Reset Data</button>
                         <button type="button" class="btn btn-info btn-sm waves-effect" data-toggle="modal" data-target="#modal_tambah"><i class="fa fa-plus"></i> Tambah</button>
                     </div>
@@ -64,6 +65,7 @@ $id = (int)($_GET['id'] ?? 0);
 include "modal_tambah.php";
 include "modal_edit.php";
 include "modal_reset.php";
+include "modal_impor.php";
 ?>
 <script>
 document.addEventListener('DOMContentLoaded', function() {

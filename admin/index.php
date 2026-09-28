@@ -513,6 +513,7 @@ require_admin();
     <script src="../assets/plugins/chartjs/Chart.bundle.js"></script>
     <script src="../assets/plugins/chartjs/Chart.min.js"></script>
     <!-- Custom Js -->
+    <script src="../assets/js/xlsx.full.min.js"></script>
     <script src="../assets/js/admin.js"></script>
     <script src="../assets/plugins/ckeditor/ckeditor.js"></script>
     <script>
