@@ -45,22 +45,25 @@ $content = '
         <tr>
             <th style="padding: 8px 5px;">No.</th>
             <th style="padding: 8px 5px;">Nama Juri</th>
-            <th style="padding: 8px 5px;">Pangkalan</th>
+            <th style="padding: 8px 5px;">Pangkalan / Instansi</th>
             <th style="padding: 8px 5px;">Koordinator Taman</th>
             <th style="padding: 8px 5px;">No. HP/WA</th>
         </tr>';
         $no = 1;
-        $sql = $koneksi->query("SELECT * FROM tb_juri
-        JOIN tb_taman ON tb_juri.id_taman = tb_taman.id_taman
-        JOIN tb_peserta_pa ON tb_juri.id_pa = tb_peserta_pa.id_pa");
+        $sql = $koneksi->query("SELECT j.*, t.nama_taman,
+            COALESCE(NULLIF(j.pangkalan, ''), p.pangkalan, '-') AS pangkalan_instansi
+        FROM tb_juri j
+        LEFT JOIN tb_taman t ON j.id_taman = t.id_taman
+        LEFT JOIN tb_peserta_pa p ON j.id_pa = p.id_pa
+        ORDER BY j.id_juri ASC");
         while ($data = $sql->fetch_assoc()) {
             $content.= '
         <tr>
             <td>'.$no++.'</td>
-            <td>'.$data['nama_juri'].'</td>
-            <td>'.$data['pangkalan'].'</td>
-            <td>'.$data['nama_taman'].'</td>
-            <td>'.$data['no_hp'].'</td>
+            <td>'.htmlspecialchars($data['nama_juri']).'</td>
+            <td>'.htmlspecialchars($data['pangkalan_instansi']).'</td>
+            <td>'.htmlspecialchars($data['nama_taman'] ?? '-').'</td>
+            <td>'.htmlspecialchars($data['no_hp']).'</td>
         </tr>
         ';
         }
@@ -86,4 +89,3 @@ $content = '
 ';
 
 echo $content;
-

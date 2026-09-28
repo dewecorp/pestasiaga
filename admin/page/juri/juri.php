@@ -28,7 +28,7 @@ $id = (int)($_GET['id'] ?? 0);
                                 <tr>
                                     <th style="width: 5px;">No.</th>
                                     <th>Nama Juri</th>
-                                    <th>Pangkalan</th>
+                                    <th>Pangkalan / Instansi</th>
                                     <th>Koordinator Taman</th>
                                     <th>No HP/WA</th>
                                     <th>Aksi</th>
@@ -37,15 +37,18 @@ $id = (int)($_GET['id'] ?? 0);
                             <tbody>
                                 <?php
                                     $no = 1;
-                                    $juris = db_all($koneksi, "SELECT * FROM tb_juri
-                                    JOIN tb_taman ON tb_juri.id_taman = tb_taman.id_taman
-                                    JOIN tb_peserta_pa ON tb_juri.id_pa = tb_peserta_pa.id_pa");
+                                    $juris = db_all($koneksi, "SELECT j.*, t.nama_taman,
+                                        COALESCE(NULLIF(j.pangkalan, ''), p.pangkalan, '-') AS pangkalan_instansi
+                                    FROM tb_juri j
+                                    LEFT JOIN tb_taman t ON j.id_taman = t.id_taman
+                                    LEFT JOIN tb_peserta_pa p ON j.id_pa = p.id_pa
+                                    ORDER BY j.id_juri ASC");
                                     foreach ($juris as $data) {
                                     ?>
                                 <tr>
                                     <td><?= $no++ . "."; ?></td>
                                     <td><?= e($data['nama_juri']); ?></td>
-                                    <td><?= e($data['pangkalan']); ?></td>
+                                    <td><?= e($data['pangkalan_instansi']); ?></td>
                                     <td><?= e($data['nama_taman']); ?></td>
                                     <td><?= e($data['no_hp']); ?></td>
                                     <td align="center">
