@@ -180,6 +180,21 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
             padding-bottom: 64px !important;
         }
 
+        /* Label & Badge Bulat Modern */
+        .label,
+        .badge,
+        span.badge,
+        span.label {
+            border-radius: 999px !important;
+            padding: 4px 12px !important;
+            display: inline-block !important;
+            font-weight: 700 !important;
+            font-size: 11px !important;
+            line-height: 1.3 !important;
+            vertical-align: middle !important;
+            letter-spacing: 0.3px !important;
+        }
+
         .desktop-navbar-wrapper {
             display: none !important;
         }

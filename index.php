@@ -206,14 +206,17 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
         }
         /* Badge/label bulat (predikat, peringkat) */
         .label,
-        .badge {
+        .badge,
+        span.badge,
+        span.label {
             border-radius: 999px !important;
-            padding: 3px 10px;
-            display: inline-block;
-            font-weight: 700;
-            font-size: 11px;
-            line-height: 1.4;
-            vertical-align: middle;
+            padding: 4px 12px !important;
+            display: inline-block !important;
+            font-weight: 700 !important;
+            font-size: 11px !important;
+            line-height: 1.3 !important;
+            vertical-align: middle !important;
+            letter-spacing: 0.3px !important;
         }
         footer {
             background-color: #5D4037;

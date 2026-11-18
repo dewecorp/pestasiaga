@@ -325,7 +325,13 @@ $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
                 <div class="mob-grid-icon icon-orange">
                     <i class="material-icons">thumb_up</i>
                 </div>
-                <span class="mob-grid-label">Berprestasi</span>
+                <span class="mob-grid-label">Prestasi PA</span>
+            </a>
+            <a href="?page=rekapakhirputri" class="mob-grid-item">
+                <div class="mob-grid-icon icon-rose">
+                    <i class="material-icons">military_tech</i>
+                </div>
+                <span class="mob-grid-label">Prestasi PI</span>
             </a>
             <a href="?page=juaraumum" class="mob-grid-item">
                 <div class="mob-grid-icon icon-red">
@@ -344,12 +350,6 @@ $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
                     <i class="material-icons">settings</i>
                 </div>
                 <span class="mob-grid-label">Pengaturan</span>
-            </a>
-            <a href="../index.php" target="_blank" class="mob-grid-item">
-                <div class="mob-grid-icon icon-sky">
-                    <i class="material-icons">public</i>
-                </div>
-                <span class="mob-grid-label">Lihat Web</span>
             </a>
             <a href="?page=backup" class="mob-grid-item">
                 <div class="mob-grid-icon icon-indigo">
