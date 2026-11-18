@@ -77,20 +77,44 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
             background-color: #4E342E;
             color: white;
         }
-        /* Menu aktif: penanda khusus */
+        /* Menu aktif: penanda khusus underline emas elegan */
+        .navbar-default .navbar-nav > li > a {
+            position: relative;
+            transition: color 0.2s ease;
+        }
         .navbar-default .navbar-nav > li.active > a,
         .navbar-default .navbar-nav > li.active > a:hover,
         .navbar-default .navbar-nav > li.active > a:focus {
-            background-color: rgba(255, 235, 59, 0.16) !important;
+            background-color: transparent !important;
             color: #ffeb3b !important;
-            box-shadow: inset 0 -3px 0 0 #ffeb3b;
+            font-weight: 700;
+        }
+        .navbar-default .navbar-nav > li.active > a::after {
+            content: '';
+            position: absolute;
+            bottom: 6px;
+            left: 12px;
+            right: 12px;
+            height: 3px;
+            background-color: #ffeb3b;
+            border-radius: 999px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+        }
+        @media (min-width: 768px) and (max-width: 1099px) {
+            .navbar-default .navbar-nav > li.active > a::after {
+                left: 5px;
+                right: 5px;
+                bottom: 8px;
+            }
         }
         .navbar-default .navbar-nav .dropdown-menu > li.active > a,
         .navbar-default .navbar-nav .dropdown-menu > li.active > a:hover,
         .navbar-default .navbar-nav .dropdown-menu > li.active > a:focus {
-            background-color: #f3ede9;
-            color: #5D4037;
+            background-color: #fdf3ea !important;
+            color: #5D4037 !important;
             font-weight: 700;
+            border-left: 4px solid #ef6c00;
+            padding-left: 16px;
         }
         @media (max-width: 767px) {
             .navbar-default .navbar-nav .open .dropdown-menu > li > a {
