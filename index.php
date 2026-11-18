@@ -197,26 +197,25 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
         /* Tablet & laptop kecil: navbar tetap satu baris */
         @media (min-width: 768px) and (max-width: 1099px) {
             .navbar-brand {
-                padding: 10px 10px;
-            }
-            .navbar-brand .brand-text {
-                display: none;
+                padding: 10px 8px;
+                font-size: 11px;
+                white-space: nowrap;
             }
             .navbar-default .navbar-brand img {
-                height: 32px !important;
-                margin-right: 0 !important;
+                height: 26px !important;
+                margin-right: 6px !important;
                 vertical-align: middle !important;
             }
             .navbar-nav > li > a {
-                padding-left: 9px;
-                padding-right: 9px;
-                font-size: 13px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-size: 12px;
             }
             .navbar-right {
                 margin-right: 0 !important;
             }
             .navbar-nav .navbar-btn {
-                margin-left: 4px !important;
+                margin-left: 3px !important;
                 margin-top: 8px !important;
             }
         }
