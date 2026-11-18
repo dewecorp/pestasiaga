@@ -175,6 +175,149 @@ if ($status_home == 'Tutup') {
             color: rgba(255, 255, 255, 0.9);
             text-transform: uppercase;
         }
+        .welcome-card {
+            background: #ffffff;
+            border: 1px solid #eee;
+            border-radius: 18px;
+            box-shadow: 0 8px 26px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .welcome-head {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 20px 26px;
+            background: linear-gradient(135deg, #6a1b9a 0%, #8e24aa 100%);
+            color: #ffffff;
+        }
+
+        .welcome-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .welcome-icon i.material-icons {
+            font-size: 24px;
+        }
+
+        .welcome-head h3 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+        }
+
+        .welcome-head p {
+            margin: 3px 0 0;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.85;
+        }
+
+        .welcome-body {
+            display: flex;
+            gap: 26px;
+            align-items: flex-start;
+            padding: 24px 26px 6px;
+        }
+
+        .welcome-img {
+            width: 36%;
+            max-width: 340px;
+            min-width: 210px;
+            border-radius: 14px;
+            object-fit: cover;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+        }
+
+        .welcome-text {
+            flex: 1;
+            min-width: 0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 15px;
+            line-height: 1.8;
+            color: #455a64;
+            text-align: left;
+        }
+
+        .welcome-text h1,
+        .welcome-text h2,
+        .welcome-text h3,
+        .welcome-text h4,
+        .welcome-text h5,
+        .welcome-text h6 {
+            font-size: 17px !important;
+            font-weight: 800 !important;
+            color: #3e2723 !important;
+            margin: 0 0 8px !important;
+            line-height: 1.4 !important;
+            text-align: left !important;
+        }
+
+        .welcome-text p,
+        .welcome-text div,
+        .welcome-text span,
+        .welcome-text li {
+            font-size: 15px !important;
+            line-height: 1.8 !important;
+            color: #455a64 !important;
+            text-align: left !important;
+        }
+
+        .welcome-text p {
+            margin-bottom: 10px !important;
+        }
+
+        .welcome-text strong,
+        .welcome-text b {
+            color: #3e2723 !important;
+        }
+
+        .welcome-text img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 12px;
+        }
+
+        .welcome-text ul,
+        .welcome-text ol {
+            padding-left: 20px;
+            margin-bottom: 10px;
+        }
+
+        .welcome-facts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 12px 26px 24px;
+        }
+
+        .welcome-fact {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #faf6f2;
+            border: 1px solid #efe4da;
+            color: #5d4037;
+            border-radius: 999px;
+            padding: 7px 14px;
+            font-size: 12.5px;
+            font-weight: 700;
+        }
+
+        .welcome-fact i.material-icons {
+            font-size: 16px;
+            color: #8d6e63;
+        }
     </style>
     <div class="jumbotron hero bg-light-brown" style="<?= !empty($data_panitia['hero_image']) ? "background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('assets/images/".$data_panitia['hero_image']."'); background-size: cover; background-position: center; color: white;" : "" ?>">
         <div class="container">
@@ -475,19 +618,39 @@ if ($status_home == 'Tutup') {
 
         <div class="row desktop-home-block">
             <div class="col-md-12">
-                <div class="card">
-                    <div class="header bg-purple">
-                        <h2><i class="glyphicon glyphicon-bullhorn"></i> Selamat Datang</h2>
+                <div class="welcome-card">
+                    <div class="welcome-head">
+                        <div class="welcome-icon">
+                            <i class="material-icons">campaign</i>
+                        </div>
+                        <div>
+                            <h3>Sambutan Panitia</h3>
+                            <p><?= e($data_panitia['nama_kegiatan']) ?> <?= date('Y') ?></p>
+                        </div>
                     </div>
-                    <div class="body">
+                    <div class="welcome-body">
                         <?php if (!empty($data_panitia['info_image'])): ?>
-                            <div style="text-align: center; margin-bottom: 20px;">
-                                <img src="assets/images/<?= $data_panitia['info_image'] ?>" alt="Info Image" style="max-width: 100%; height: auto; max-height: 400px; mix-blend-mode: multiply;">
-                            </div>
+                            <img class="welcome-img" src="assets/images/<?= $data_panitia['info_image'] ?>" alt="Info Kegiatan">
                         <?php endif; ?>
-                        <div class="lead-message">
+                        <div class="welcome-text">
                             <?= $data_panitia['pesan_beranda'] ?? '' ?>
                         </div>
+                    </div>
+                    <div class="welcome-facts">
+                        <span class="welcome-fact">
+                            <i class="material-icons">event</i> <?= e($tgl_mobile) ?>
+                        </span>
+                        <?php if (!empty($data_panitia['tempat'])): ?>
+                        <span class="welcome-fact">
+                            <i class="material-icons">place</i> <?= e($data_panitia['tempat']) ?>
+                        </span>
+                        <?php endif; ?>
+                        <span class="welcome-fact">
+                            <i class="material-icons">groups</i> <?= (int)($jml_pa + $jml_pi) ?> Peserta
+                        </span>
+                        <span class="welcome-fact">
+                            <i class="material-icons">domain</i> <?= (int)$jml_taman ?> Taman
+                        </span>
                     </div>
                 </div>
             </div>
