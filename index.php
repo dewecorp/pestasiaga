@@ -173,6 +173,16 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
             margin-top: 50px;
         }
 
+        /* Desktop: konten melebar penuh (tanpa batas 1170px Bootstrap) */
+        @media (min-width: 768px) {
+            .container {
+                width: 100% !important;
+                max-width: 100% !important;
+                padding-left: 32px !important;
+                padding-right: 32px !important;
+            }
+        }
+
         /* =============================================
            RESPONSIVE MOBILE APPS MODE
            ============================================= */
