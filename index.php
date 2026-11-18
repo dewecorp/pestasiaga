@@ -165,6 +165,17 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
         .card .body {
             padding: 20px;
         }
+        /* Badge/label bulat (predikat, peringkat) */
+        .label,
+        .badge {
+            border-radius: 999px !important;
+            padding: 3px 10px;
+            display: inline-block;
+            font-weight: 700;
+            font-size: 11px;
+            line-height: 1.4;
+            vertical-align: middle;
+        }
         footer {
             background-color: #5D4037;
             color: white;
@@ -180,6 +191,33 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
                 max-width: 100% !important;
                 padding-left: 32px !important;
                 padding-right: 32px !important;
+            }
+        }
+
+        /* Tablet & laptop kecil: navbar tetap satu baris */
+        @media (min-width: 768px) and (max-width: 1099px) {
+            .navbar-brand {
+                padding: 10px 10px;
+            }
+            .navbar-brand .brand-text {
+                display: none;
+            }
+            .navbar-default .navbar-brand img {
+                height: 32px !important;
+                margin-right: 0 !important;
+                vertical-align: middle !important;
+            }
+            .navbar-nav > li > a {
+                padding-left: 9px;
+                padding-right: 9px;
+                font-size: 13px;
+            }
+            .navbar-right {
+                margin-right: 0 !important;
+            }
+            .navbar-nav .navbar-btn {
+                margin-left: 4px !important;
+                margin-top: 8px !important;
             }
         }
 
@@ -664,7 +702,7 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
             .mob-card-badge {
                 width: 28px;
                 height: 28px;
-                border-radius: 8px;
+                border-radius: 50%;
                 background: #5D4037;
                 color: #ffffff;
                 font-size: 12px;
@@ -833,7 +871,7 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
             <div class="navbar-header desktop-navbar-header">
                 <a class="navbar-brand" href="./">
                     <img src="assets/images/<?= $data_panitia['logo'] ?>" alt="Logo" style="height: 30px; display: inline-block; margin-right: 10px; vertical-align: top;">
-                    <?= $data_panitia['nama_kegiatan'] ?> <?= date('Y') ?>
+                    <span class="brand-text"><?= $data_panitia['nama_kegiatan'] ?> <?= date('Y') ?></span>
                 </a>
             </div>
             <div id="navbar" class="navbar-collapse collapse desktop-navbar-collapse">
@@ -1055,6 +1093,23 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
                 sheet.classList.remove('open');
             }
         }
+
+        // Samakan padding atas body dengan tinggi navbar aktual (tablet bisa 2 baris)
+        (function () {
+            function syncNavbarOffset() {
+                var nav = document.querySelector('.navbar-fixed-top');
+                if (!nav) return;
+                var h = Math.round(nav.offsetHeight);
+                if (window.innerWidth < 768) {
+                    document.body.style.paddingTop = '50px';
+                } else {
+                    document.body.style.paddingTop = (h > 0 ? h : 50) + 'px';
+                }
+            }
+            syncNavbarOffset();
+            window.addEventListener('load', syncNavbarOffset);
+            window.addEventListener('resize', syncNavbarOffset);
+        })();
     </script>
 </body>
 </html>
