@@ -166,6 +166,32 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
     }
 
     /* ===================================================
+       GLOBAL STYLING: BADGE & PROGRESS BULAT (PILL SHAPE)
+       =================================================== */
+    .label,
+    .badge,
+    span.badge,
+    span.label {
+        border-radius: 999px !important;
+        padding: 4px 12px !important;
+        display: inline-block !important;
+        font-weight: 700 !important;
+        font-size: 11px !important;
+        line-height: 1.3 !important;
+        vertical-align: middle !important;
+        letter-spacing: 0.3px !important;
+    }
+
+    .progress {
+        border-radius: 999px !important;
+        overflow: hidden !important;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,0.1) !important;
+    }
+    .progress .progress-bar {
+        border-radius: 999px !important;
+    }
+
+    /* ===================================================
        ADMIN MOBILE APP VIEW (< 768px)
        =================================================== */
     .admin-mobile-app-header,
@@ -178,21 +204,6 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
             background-color: #f4f6f9 !important;
             padding-top: 52px !important;
             padding-bottom: 64px !important;
-        }
-
-        /* Label & Badge Bulat Modern */
-        .label,
-        .badge,
-        span.badge,
-        span.label {
-            border-radius: 999px !important;
-            padding: 4px 12px !important;
-            display: inline-block !important;
-            font-weight: 700 !important;
-            font-size: 11px !important;
-            line-height: 1.3 !important;
-            vertical-align: middle !important;
-            letter-spacing: 0.3px !important;
         }
 
         .desktop-navbar-wrapper {

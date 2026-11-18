@@ -204,7 +204,7 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
         .card .body {
             padding: 20px;
         }
-        /* Badge/label bulat (predikat, peringkat) */
+        /* Badge/label bulat (predikat, peringkat) & Progress Bar Bulat */
         .label,
         .badge,
         span.badge,
@@ -217,6 +217,14 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
             line-height: 1.3 !important;
             vertical-align: middle !important;
             letter-spacing: 0.3px !important;
+        }
+        .progress {
+            border-radius: 999px !important;
+            overflow: hidden !important;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.1) !important;
+        }
+        .progress .progress-bar {
+            border-radius: 999px !important;
         }
         footer {
             background-color: #5D4037;
