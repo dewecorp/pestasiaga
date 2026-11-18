@@ -193,17 +193,12 @@ if ($status_home == 'Tutup') {
         .welcome-media {
             flex: 0 0 300px;
             max-width: 300px;
-            background: #faf7f4;
-            border-radius: 16px;
-            padding: 10px;
         }
 
         .welcome-media img {
             display: block;
             width: 100%;
             height: auto;
-            border-radius: 10px;
-            object-fit: contain;
         }
 
         .welcome-content {
