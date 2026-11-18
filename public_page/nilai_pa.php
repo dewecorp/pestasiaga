@@ -91,8 +91,28 @@ while ($r = $sql->fetch_assoc()) $rows[] = $r;
                 </div>
             </div>
 
+            <div class="row" style="margin-bottom: 14px;">
+                <div class="col-md-5 col-sm-6">
+                    <div style="position: relative;">
+                        <i class="material-icons" style="position: absolute; left: 12px; top: 11px; font-size: 20px; color: #94a3b8;">search</i>
+                        <input type="text" id="searchRekapPaDesktop" class="form-control" placeholder="Cari pangkalan atau no dada..."
+                               style="height: 42px; padding-left: 40px; padding-right: 38px; border-radius: 10px; border: 1px solid #cbd5e1; font-size: 13px;"
+                               onkeyup="filterRekapDesktop('searchRekapPaDesktop', 'tblRekapPa', 'rekapPaEmpty')">
+                        <button type="button" id="btnClearRekapPaDesktop" onclick="clearRekapDesktop('searchRekapPaDesktop', 'tblRekapPa', 'rekapPaEmpty')"
+                                style="position: absolute; right: 8px; top: 8px; border: none; background: transparent; color: #94a3b8; width: 26px; height: 26px; display: none; align-items: center; justify-content: center; cursor: pointer;">
+                            <i class="material-icons" style="font-size: 18px;">close</i>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-md-7 col-sm-6" style="padding-top: 10px;">
+                    <span id="searchRekapPaDesktop-count" style="font-size: 12.5px; color: #78909c;">
+                        Menampilkan <?= count($rows) ?> barung
+                    </span>
+                </div>
+            </div>
+
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover js-basic-example dataTable">
+                <table class="table table-bordered table-striped table-hover js-basic-example dataTable" id="tblRekapPa">
                     <thead>
                         <tr>
                             <th>No</th>
@@ -106,8 +126,8 @@ while ($r = $sql->fetch_assoc()) $rows[] = $r;
                     </thead>
                     <tbody>
                         <?php foreach ($rows as $i => $data): ?>
-                        <tr>
-                            <td><?= $i + 1 ?></td>
+                        <tr data-search="<?= htmlspecialchars(strtolower($data['pangkalan'].' '.$data['no_dada'])) ?>">
+                            <td class="rekap-no"><?= $i + 1 ?></td>
                             <td><?= $data['no_dada'] ?></td>
                             <td><?= $data['pangkalan'] ?></td>
                             <?php foreach ($col_names as $col => $lbl): ?>
@@ -116,6 +136,11 @@ while ($r = $sql->fetch_assoc()) $rows[] = $r;
                             <td><strong><?= $data['nilai_akhir_pa'] ?></strong></td>
                         </tr>
                         <?php endforeach; ?>
+                        <tr id="rekapPaEmpty" style="display: none;">
+                            <td colspan="<?= count($col_names) + 4 ?>" style="text-align: center; color: #94a3b8; padding: 22px;">
+                                Data barung tidak ditemukan.
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -197,13 +222,40 @@ while ($r = $sql->fetch_assoc()) $rows[] = $r;
 <script src="assets/plugins/jquery-datatable/jquery.dataTables.js"></script>
 <script src="assets/plugins/jquery-datatable/skin/bootstrap/js/dataTables.bootstrap.js"></script>
 <script>
-    $(function () {
-        if ($('.js-basic-example').length > 0) {
-            $('.js-basic-example').DataTable({
-                responsive: true
-            });
+    function filterRekapDesktop(inputId, tableId, emptyId) {
+        var inputEl = document.getElementById(inputId);
+        if (!inputEl) return;
+        var query = inputEl.value.toLowerCase().trim();
+        var tbody = document.querySelector('#' + tableId + ' tbody');
+        if (!tbody) return;
+        var rows = tbody.querySelectorAll('tr[data-search]');
+        var found = 0;
+        for (var i = 0; i < rows.length; i++) {
+            var term = rows[i].getAttribute('data-search') || '';
+            if (term.indexOf(query) > -1) {
+                rows[i].style.display = '';
+                found++;
+                var noCell = rows[i].querySelector('.rekap-no');
+                if (noCell) noCell.textContent = found;
+            } else {
+                rows[i].style.display = 'none';
+            }
         }
-    });
+        var emptyRow = document.getElementById(emptyId);
+        if (emptyRow) emptyRow.style.display = (found === 0) ? '' : 'none';
+        var clearBtn = document.getElementById('btnClearRekapPaDesktop');
+        if (clearBtn) clearBtn.style.display = query.length > 0 ? 'inline-flex' : 'none';
+        var counter = document.getElementById('searchRekapPaDesktop-count');
+        if (counter) counter.textContent = 'Menampilkan ' + found + ' barung';
+    }
+    function clearRekapDesktop(inputId, tableId, emptyId) {
+        var inp = document.getElementById(inputId);
+        if (inp) {
+            inp.value = '';
+            filterRekapDesktop(inputId, tableId, emptyId);
+            inp.focus();
+        }
+    }
 
     function filterCards(inputId, cardClass) {
         var inputEl = document.getElementById(inputId);
