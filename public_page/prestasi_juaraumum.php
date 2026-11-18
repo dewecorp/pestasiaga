@@ -48,8 +48,18 @@ function get_juara_umum_info($no) {
                 vertical-align: middle !important;
             }
         </style>
-        <div class="header bg-purple">
-            <h2>JUARA UMUM</h2>
+        <div class="header bg-purple" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+            <h2 style="margin: 0;">JUARA UMUM</h2>
+            <div style="display: flex; gap: 6px;">
+                <a href="laporan/juara_excel.php" target="_blank" onclick="window.open(this.href); return false;"
+                   class="btn btn-success btn-sm" style="border-radius: 8px; display: inline-flex; align-items: center; gap: 5px; font-weight: 700;">
+                    <i class="material-icons" style="font-size: 16px;">grid_on</i> Excel
+                </a>
+                <a href="laporan/juara_pdf.php" target="_blank" onclick="window.open(this.href); return false;"
+                   class="btn btn-danger btn-sm" style="border-radius: 8px; display: inline-flex; align-items: center; gap: 5px; font-weight: 700;">
+                    <i class="material-icons" style="font-size: 16px;">picture_as_pdf</i> PDF
+                </a>
+            </div>
         </div>
         <div class="body">
             <div class="table-responsive">
@@ -94,6 +104,16 @@ function get_juara_umum_info($no) {
 <div class="container mobile-card-view" style="padding-top: 15px;">
     <div style="font-size:13px; font-weight:700; color:#5D4037; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
         <i class="material-icons" style="font-size:18px;">emoji_events</i> Klasemen Juara Umum
+    </div>
+    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <a href="laporan/juara_excel.php" onclick="window.open(this.href); return false;"
+           class="btn btn-success btn-sm" style="flex: 1; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; font-size: 12.5px;">
+            <i class="material-icons" style="font-size: 17px;">grid_on</i> Excel
+        </a>
+        <a href="laporan/juara_pdf.php" onclick="window.open(this.href); return false;"
+           class="btn btn-danger btn-sm" style="flex: 1; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; font-size: 12.5px;">
+            <i class="material-icons" style="font-size: 17px;">picture_as_pdf</i> PDF
+        </a>
     </div>
 
     <?php

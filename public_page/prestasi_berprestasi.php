@@ -35,8 +35,18 @@ while ($r = $sql_pi->fetch_assoc()) $rows_pi[] = $r;
                         vertical-align: middle !important;
                     }
                 </style>
-                <div class="header bg-purple">
-                    <h2>BARUNG BERPRESTASI PUTRA</h2>
+                <div class="header bg-purple" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+                    <h2 style="margin: 0;">BARUNG BERPRESTASI PUTRA</h2>
+                    <div style="display: flex; gap: 6px;">
+                        <a href="laporan/prestasipa_excel.php" target="_blank" onclick="window.open(this.href); return false;"
+                           class="btn btn-success btn-sm" style="border-radius: 8px; display: inline-flex; align-items: center; gap: 5px; font-weight: 700;">
+                            <i class="material-icons" style="font-size: 16px;">grid_on</i> Excel
+                        </a>
+                        <a href="laporan/prestasipa_pdf.php" target="_blank" onclick="window.open(this.href); return false;"
+                           class="btn btn-danger btn-sm" style="border-radius: 8px; display: inline-flex; align-items: center; gap: 5px; font-weight: 700;">
+                            <i class="material-icons" style="font-size: 16px;">picture_as_pdf</i> PDF
+                        </a>
+                    </div>
                 </div>
                 <div class="body">
                     <div class="table-responsive">
@@ -72,8 +82,18 @@ while ($r = $sql_pi->fetch_assoc()) $rows_pi[] = $r;
         <!-- Putri -->
         <div class="col-md-6">
             <div class="card">
-                <div class="header bg-purple">
-                    <h2>BARUNG BERPRESTASI PUTRI</h2>
+                <div class="header bg-purple" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
+                    <h2 style="margin: 0;">BARUNG BERPRESTASI PUTRI</h2>
+                    <div style="display: flex; gap: 6px;">
+                        <a href="laporan/prestasipi_excel.php" target="_blank" onclick="window.open(this.href); return false;"
+                           class="btn btn-success btn-sm" style="border-radius: 8px; display: inline-flex; align-items: center; gap: 5px; font-weight: 700;">
+                            <i class="material-icons" style="font-size: 16px;">grid_on</i> Excel
+                        </a>
+                        <a href="laporan/prestasipi_pdf.php" target="_blank" onclick="window.open(this.href); return false;"
+                           class="btn btn-danger btn-sm" style="border-radius: 8px; display: inline-flex; align-items: center; gap: 5px; font-weight: 700;">
+                            <i class="material-icons" style="font-size: 16px;">picture_as_pdf</i> PDF
+                        </a>
+                    </div>
                 </div>
                 <div class="body">
                     <div class="table-responsive">
@@ -114,6 +134,16 @@ while ($r = $sql_pi->fetch_assoc()) $rows_pi[] = $r;
     <div style="font-size:13px; font-weight:700; color:#1565c0; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
         <i class="material-icons" style="font-size:18px;">military_tech</i> Barung Berprestasi Putra
     </div>
+    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <a href="laporan/prestasipa_excel.php" onclick="window.open(this.href); return false;"
+           class="btn btn-success btn-sm" style="flex: 1; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; font-size: 12.5px;">
+            <i class="material-icons" style="font-size: 17px;">grid_on</i> Excel
+        </a>
+        <a href="laporan/prestasipa_pdf.php" onclick="window.open(this.href); return false;"
+           class="btn btn-danger btn-sm" style="flex: 1; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; font-size: 12.5px;">
+            <i class="material-icons" style="font-size: 17px;">picture_as_pdf</i> PDF
+        </a>
+    </div>
     <?php foreach ($rows_pa as $i => $data):
         [$predikat, $badge_color, $color, $emo] = get_predikat_info($i + 1);
     ?>
@@ -137,6 +167,16 @@ while ($r = $sql_pi->fetch_assoc()) $rows_pi[] = $r;
     <!-- Bagian Putri -->
     <div style="font-size:13px; font-weight:700; color:#c2185b; text-transform:uppercase; letter-spacing:0.8px; margin-top:20px; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
         <i class="material-icons" style="font-size:18px;">military_tech</i> Barung Berprestasi Putri
+    </div>
+    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <a href="laporan/prestasipi_excel.php" onclick="window.open(this.href); return false;"
+           class="btn btn-success btn-sm" style="flex: 1; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; font-size: 12.5px;">
+            <i class="material-icons" style="font-size: 17px;">grid_on</i> Excel
+        </a>
+        <a href="laporan/prestasipi_pdf.php" onclick="window.open(this.href); return false;"
+           class="btn btn-danger btn-sm" style="flex: 1; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; font-size: 12.5px;">
+            <i class="material-icons" style="font-size: 17px;">picture_as_pdf</i> PDF
+        </a>
     </div>
     <?php foreach ($rows_pi as $i => $data):
         [$predikat, $badge_color, $color, $emo] = get_predikat_info($i + 1);

@@ -103,10 +103,20 @@ while ($r = $sql->fetch_assoc()) $rows[] = $r;
                         </button>
                     </div>
                 </div>
-                <div class="col-md-7 col-sm-6" style="padding-top: 10px;">
+                <div class="col-md-7 col-sm-6" style="padding-top: 6px; display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap;">
                     <span id="searchRekapPiDesktop-count" style="font-size: 12.5px; color: #78909c;">
                         Menampilkan <?= count($rows) ?> barung
                     </span>
+                    <div style="display: flex; gap: 6px;">
+                        <a href="laporan/rekappi_excel.php" target="_blank" onclick="window.open(this.href); return false;"
+                           class="btn btn-success btn-sm" style="border-radius: 8px; display: inline-flex; align-items: center; gap: 5px; font-weight: 700;">
+                            <i class="material-icons" style="font-size: 16px;">grid_on</i> Excel
+                        </a>
+                        <a href="laporan/rekappi_pdf.php" target="_blank" onclick="window.open(this.href); return false;"
+                           class="btn btn-danger btn-sm" style="border-radius: 8px; display: inline-flex; align-items: center; gap: 5px; font-weight: 700;">
+                            <i class="material-icons" style="font-size: 16px;">picture_as_pdf</i> PDF
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -161,6 +171,18 @@ while ($r = $sql->fetch_assoc()) $rows[] = $r;
             <div class="progress-bar progress-bar-success" role="progressbar" style="width: <?= $persentase ?>%; border-radius:6px;"></div>
         </div>
         <div style="font-size:11px; color:#78909c; text-align:right;">Terisi <?= $terisi ?> dari <?= $total_sel ?> item</div>
+    </div>
+
+    <!-- Tombol Ekspor Mobile -->
+    <div style="display: flex; gap: 8px; margin-bottom: 12px;">
+        <a href="laporan/rekappi_excel.php" onclick="window.open(this.href); return false;"
+           class="btn btn-success btn-sm" style="flex: 1; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; font-size: 12.5px;">
+            <i class="material-icons" style="font-size: 17px;">grid_on</i> Excel
+        </a>
+        <a href="laporan/rekappi_pdf.php" onclick="window.open(this.href); return false;"
+           class="btn btn-danger btn-sm" style="flex: 1; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: 700; font-size: 12.5px;">
+            <i class="material-icons" style="font-size: 17px;">picture_as_pdf</i> PDF
+        </a>
     </div>
 
     <!-- Search Box Mobile -->
