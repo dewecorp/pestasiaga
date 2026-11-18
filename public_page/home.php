@@ -72,38 +72,6 @@ if ($status_home == 'Tutup') {
     // Show normal home
     ?>
     <style>
-        @media (max-width: 768px) {
-            .event-info-card {
-                margin-top: -25px !important;
-                margin-bottom: 22px !important;
-                border-radius: 20px !important;
-                box-shadow: 0 8px 25px rgba(230, 81, 0, 0.22) !important;
-            }
-            .event-info-box {
-                padding: 22px 18px !important;
-            }
-            .lead-message {
-                font-size: 14px !important;
-            }
-            .lead-message h1, .lead-message h2, .lead-message h3, .lead-message h4, .lead-message h5, .lead-message h6 {
-                font-size: 18px !important;
-                line-height: 1.3 !important;
-            }
-            .lead-message p, .lead-message div, .lead-message span {
-                font-size: 14px !important;
-                line-height: 1.4 !important;
-            }
-            .event-info-divider-col {
-                border-right: none !important;
-                border-bottom: 1px solid rgba(255,255,255,0.2);
-                padding-bottom: 20px;
-                margin-bottom: 20px;
-            }
-            .stat-card {
-                border-radius: 14px !important;
-            }
-        }
-
         .event-info-card {
             margin-top: -30px;
             margin-bottom: 35px;
