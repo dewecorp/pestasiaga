@@ -264,86 +264,87 @@ require_admin();
             <div class="menu">
                 <ul class="list">
                     <li class="header" id="dashboard">MENU UTAMA</li>
-                    <li class="active">
+                    <?php $page_menu = @$_GET['page']; ?>
+                    <li class="<?= (empty($page_menu) || $page_menu == 'index') ? 'active' : '' ?>">
                         <a href="index.php">
                             <i class="material-icons">dashboard</i>
                             <span>Dashboard</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="<?= ($page_menu == 'taman') ? 'active' : '' ?>">
                         <a href="?page=taman">
                             <i class="material-icons">domain</i>
                             <span>Taman - Taman</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="<?= ($page_menu == 'juri') ? 'active' : '' ?>">
                         <a href="?page=juri">
                             <i class="material-icons">visibility</i>
                             <span>Dewan Juri</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="<?= in_array($page_menu, ['pesertapa','pesertapi']) ? 'active' : '' ?>">
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">people</i>
                             <span>Peserta</span>
                         </a>
                         <ul class="ml-menu">
-                            <li>
+                            <li class="<?= ($page_menu == 'pesertapa') ? 'active' : '' ?>">
                                 <a href="?page=pesertapa">Barung Putra</a>
                             </li>
-                            <li>
+                            <li class="<?= ($page_menu == 'pesertapi') ? 'active' : '' ?>">
                                 <a href="?page=pesertapi">Barung Putri</a>
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li class="<?= in_array($page_menu, ['rekapawalputra','rekapawalputri']) ? 'active' : '' ?>">
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">list</i>
                             <span>Rekap Nilai</span>
                         </a>
                         <ul class="ml-menu">
-                            <li>
+                            <li class="<?= ($page_menu == 'rekapawalputra') ? 'active' : '' ?>">
                                 <a href="?page=rekapawalputra">Barung Putra</a>
                             </li>
-                            <li>
+                            <li class="<?= ($page_menu == 'rekapawalputri') ? 'active' : '' ?>">
                                 <a href="?page=rekapawalputri">Barung Putri</a>
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li class="<?= in_array($page_menu, ['rekapakhirputra','rekapakhirputri']) ? 'active' : '' ?>">
                         <a href="javascript:void(0);" class="menu-toggle">
                             <i class="material-icons">thumb_up</i>
                             <span>Barung Berprestasi</span>
                         </a>
                         <ul class="ml-menu">
-                            <li>
+                            <li class="<?= ($page_menu == 'rekapakhirputra') ? 'active' : '' ?>">
                                 <a href="?page=rekapakhirputra">Barung Putra</a>
                             </li>
-                            <li>
+                            <li class="<?= ($page_menu == 'rekapakhirputri') ? 'active' : '' ?>">
                                 <a href="?page=rekapakhirputri">Barung Putri</a>
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li class="<?= ($page_menu == 'juaraumum') ? 'active' : '' ?>">
                         <a href="?page=juaraumum">
                             <i class="material-icons">school</i>
                             <span>Juara Umum</span>
                         </a>
                     </li>
                     <li class="header" id="dashboard">PENGATURAN</li>
-                    <li>
+                    <li class="<?= ($page_menu == 'backup') ? 'active' : '' ?>">
                         <a href="?page=backup">
                             <i class="material-icons">backup</i>
                             <span>Backup Restore</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="<?= ($page_menu == 'user') ? 'active' : '' ?>">
                         <a href="?page=user">
                             <i class="material-icons">person</i>
                             <span>User</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="<?= ($page_menu == 'panitia') ? 'active' : '' ?>">
                         <a href="?page=panitia">
                             <i class="material-icons">settings</i>
                             <span>Setting</span>
@@ -542,7 +543,6 @@ require_admin();
 
     <script>
         $('.count-to').countTo();
-        $("#dashboard").addClass('active');
 
     </script>
     <script>

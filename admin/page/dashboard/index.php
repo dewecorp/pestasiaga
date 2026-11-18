@@ -29,111 +29,149 @@ $tampil = $sql->fetch_assoc();
 $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
 
 ?>
-    <div class="body">
-        <div class="alert alert-success alert-dismissable" role="alert" id="alert">
-            <font style="font-size: 22px;"><b>Salam Pramuka ......</b> Selamat Datang <strong> <?=$tampil['nama'];?>,
-                </strong> Anda login sebagai <strong><?=$level?></strong>
-            </font>
+    <style>
+        .welcome-card {
+            border-radius: 16px !important;
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #43a047 100%);
+            color: #fff;
+            padding: 0;
+            margin-bottom: 24px;
+            box-shadow: 0 6px 24px rgba(27,94,32,.3) !important;
+            overflow: hidden;
+            position: relative;
+        }
+        .welcome-card::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 180px; height: 180px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.07);
+        }
+        .welcome-card::after {
+            content: '';
+            position: absolute;
+            bottom: -30px; left: 60px;
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.05);
+        }
+        .welcome-inner {
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            position: relative;
+            z-index: 1;
+        }
+        .welcome-avatar {
+            width: 56px; height: 56px;
+            border-radius: 50%;
+            background: rgba(255,255,255,.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; font-weight: 700; color: #fff;
+            flex-shrink: 0;
+            border: 2px solid rgba(255,255,255,.4);
+            overflow: hidden;
+        }
+        .welcome-avatar img { width: 100%; height: 100%; object-fit: cover; }
+        .welcome-text { flex: 1; min-width: 0; }
+        .welcome-text .greeting {
+            font-size: 12px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 1px;
+            opacity: .8; margin-bottom: 2px;
+        }
+        .welcome-text .name {
+            font-size: 20px; font-weight: 700;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            line-height: 1.2; margin-bottom: 4px;
+        }
+        .welcome-text .meta {
+            font-size: 12px; opacity: .75;
+            display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+        }
+        .welcome-text .meta span { display: flex; align-items: center; gap: 4px; }
+        .welcome-text .meta .material-icons { font-size: 14px; }
+        .welcome-divider {
+            height: 1px;
+            background: rgba(255,255,255,.15);
+            margin: 0 24px;
+        }
+        .welcome-stats {
+            display: flex;
+            padding: 14px 24px;
+            gap: 0;
+            position: relative; z-index: 1;
+        }
+        .welcome-stat {
+            flex: 1;
+            text-align: center;
+            padding: 0 8px;
+            border-right: 1px solid rgba(255,255,255,.18);
+        }
+        .welcome-stat:last-child { border-right: none; }
+        .welcome-stat .stat-num {
+            font-size: 22px; font-weight: 700; line-height: 1;
+        }
+        .welcome-stat .stat-lbl {
+            font-size: 10px; text-transform: uppercase;
+            letter-spacing: .6px; opacity: .75; margin-top: 3px;
+        }
+        @media (max-width: 480px) {
+            .welcome-inner { padding: 16px; gap: 12px; }
+            .welcome-text .name { font-size: 17px; }
+            .welcome-stats { padding: 12px 16px; }
+            .welcome-stat .stat-num { font-size: 18px; }
+        }
+    </style>
+
+    <div class="welcome-card">
+        <div class="welcome-inner">
+            <div class="welcome-avatar">
+                <?php
+                $foto = $tampil['foto'] ?? '';
+                if (!empty($foto)) {
+                    echo '<img src="../assets/images/'.htmlspecialchars($foto).'" alt="foto">';
+                } else {
+                    echo strtoupper(substr($tampil['nama'], 0, 1));
+                }
+                ?>
+            </div>
+            <div class="welcome-text">
+                <div class="greeting">🌿 Salam Pramuka!</div>
+                <div class="name"><?= htmlspecialchars($tampil['nama']) ?></div>
+                <div class="meta">
+                    <span><i class="material-icons">verified_user</i> <?= $level ?></span>
+                    <?php if (!empty($data['nama_kegiatan'])): ?>
+                    <span><i class="material-icons">event</i> <?= htmlspecialchars($data['nama_kegiatan']) ?></span>
+                    <?php endif; ?>
+                    <?php if (!empty($data['waktu'])): ?>
+                    <span><i class="material-icons">today</i> <?= e(format_hari_tanggal($data['waktu'])) ?></span>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+        <div class="welcome-divider"></div>
+        <div class="welcome-stats">
+            <div class="welcome-stat">
+                <div class="stat-num"><?= $jumlah_taman ?></div>
+                <div class="stat-lbl">Taman</div>
+            </div>
+            <div class="welcome-stat">
+                <div class="stat-num"><?= $jumlah_peserta_pa ?></div>
+                <div class="stat-lbl">Barung Putra</div>
+            </div>
+            <div class="welcome-stat">
+                <div class="stat-num"><?= $jumlah_peserta_pi ?></div>
+                <div class="stat-lbl">Barung Putri</div>
+            </div>
+            <div class="welcome-stat">
+                <div class="stat-num"><?= $jumlah_juri ?></div>
+                <div class="stat-lbl">Dewan Juri</div>
+            </div>
         </div>
     </div>
     <!-- Widgets -->
-    <div class="row clearfix">
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box bg-pink hover-expand-effect">
-                <div class="icon">
-                    <i class="material-icons">domain</i>
-                </div>
-                <div class="content">
-                    <div class="text">
-                        <h5><b>TAMAN-TAMAN</b></h5>
-                    </div>
-                    <div class="number count-to" data-from="0" data-to="<?=$jumlah_taman?>" data-speed="1000"
-                        data-fresh-interval="20"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box bg-cyan hover-expand-effect">
-                <div class="icon">
-                    <i class="material-icons">people</i>
-                </div>
-                <div class="content">
-                    <div class="text">
-                        <h5><b>BARUNG PUTRA</b></h5>
-                    </div>
-                    <div class="number count-to" data-from="0" data-to="<?=$jumlah_peserta_pa?>" data-speed="1000"
-                        data-fresh-interval="20"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box bg-light-green hover-expand-effect">
-                <div class="icon">
-                    <i class="material-icons">people</i>
-                </div>
-                <div class="content">
-                    <div class="text">
-                        <h5><b>BARUNG PUTRI</b></h5>
-                    </div>
-                    <div class="number count-to" data-from="0" data-to="<?=$jumlah_peserta_pi?>" data-speed="1000"
-                        data-fresh-interval="20"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-            <div class="info-box bg-orange hover-expand-effect">
-                <div class="icon">
-                    <i class="material-icons">visibility</i>
-                </div>
-                <div class="content">
-                    <div class="text">
-                        <h5><b>DEWAN JURI</b></h5>
-                    </div>
-                    <div class="number count-to" data-from="0" data-to="<?=$jumlah_juri?>" data-speed="1000"
-                        data-fresh-interval="20"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row clearfix">
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="info-box bg-green hover-expand-effect">
-                <div class="icon">
-                    <i class="material-icons">alarm</i>
-                </div>
-                <div class="content">
-                    <div class="text">
-                        <h4><b>WAKTU KEGIATAN</b></h4>
-                    </div>
-                    <div class="text">
-                        <h5><?php
-                            $hari = $data['waktu'] ?? '';
-                            echo !empty($hari) ? e(format_hari_tanggal($hari)) : '-';
-                            if (!empty($data['jam'])) {
-                                echo '<br><small>' . e($data['jam']) . '</small>';
-                            }
-                            ?></h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-            <div class="info-box bg-green hover-expand-effect">
-                <div class="icon">
-                    <i class="material-icons">account_balance</i>
-                </div>
-                <div class="content">
-                    <div class="text">
-                        <h4><b>LOKASI KEGIATAN</b></h4>
-                    </div>
-                    <div class="text">
-                        <h5><?= e($data['tempat'] ?? '-'); ?></h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Progres Nilai Section -->
     <?php

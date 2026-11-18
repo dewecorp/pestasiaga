@@ -73,6 +73,15 @@ if ($status_home == 'Tutup') {
     ?>
     <style>
         @media (max-width: 768px) {
+            .event-info-card {
+                margin-top: -25px !important;
+                margin-bottom: 22px !important;
+                border-radius: 20px !important;
+                box-shadow: 0 8px 25px rgba(230, 81, 0, 0.22) !important;
+            }
+            .event-info-box {
+                padding: 22px 18px !important;
+            }
             .lead-message {
                 font-size: 14px !important;
             }
@@ -84,14 +93,14 @@ if ($status_home == 'Tutup') {
                 font-size: 14px !important;
                 line-height: 1.4 !important;
             }
-            .event-info-box {
-                padding: 20px 15px !important;
-            }
             .event-info-divider-col {
                 border-right: none !important;
                 border-bottom: 1px solid rgba(255,255,255,0.2);
                 padding-bottom: 20px;
                 margin-bottom: 20px;
+            }
+            .stat-card {
+                border-radius: 14px !important;
             }
         }
 
@@ -299,6 +308,89 @@ if ($status_home == 'Tutup') {
                             </div>
                         </div>
                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Apps Grid Menu (Hanya Muncul di Mobile) -->
+        <div class="row mobile-grid-home">
+            <div class="col-xs-12">
+                <div style="font-size:12px; font-weight:700; color:#5D4037; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:10px; display:flex; align-items:center; gap:6px;">
+                    <i class="material-icons" style="font-size:18px;">grid_view</i> Menu Kegiatan
+                </div>
+                <div class="mobile-grid-menu">
+                    <a href="?page=taman" class="mobile-grid-item">
+                        <div class="mobile-grid-box">
+                            <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #10b981, #059669);">
+                                <i class="material-icons">domain</i>
+                            </div>
+                            <span class="mobile-grid-label">Taman</span>
+                        </div>
+                    </a>
+                    <a href="?page=juri" class="mobile-grid-item">
+                        <div class="mobile-grid-box">
+                            <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                                <i class="material-icons">gavel</i>
+                            </div>
+                            <span class="mobile-grid-label">Dewan Juri</span>
+                        </div>
+                    </a>
+                    <a href="?page=peserta_pa" class="mobile-grid-item">
+                        <div class="mobile-grid-box">
+                            <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
+                                <i class="material-icons">boy</i>
+                            </div>
+                            <span class="mobile-grid-label">Peserta PA</span>
+                        </div>
+                    </a>
+                    <a href="?page=peserta_pi" class="mobile-grid-item">
+                        <div class="mobile-grid-box">
+                            <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);">
+                                <i class="material-icons">girl</i>
+                            </div>
+                            <span class="mobile-grid-label">Peserta PI</span>
+                        </div>
+                    </a>
+                    <a href="?page=nilai_pa" class="mobile-grid-item">
+                        <div class="mobile-grid-box">
+                            <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #06b6d4, #0891b2);">
+                                <i class="material-icons">bar_chart</i>
+                            </div>
+                            <span class="mobile-grid-label">Nilai PA</span>
+                        </div>
+                    </a>
+                    <a href="?page=nilai_pi" class="mobile-grid-item">
+                        <div class="mobile-grid-box">
+                            <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed);">
+                                <i class="material-icons">analytics</i>
+                            </div>
+                            <span class="mobile-grid-label">Nilai PI</span>
+                        </div>
+                    </a>
+                    <a href="?page=prestasi_berprestasi" class="mobile-grid-item">
+                        <div class="mobile-grid-box">
+                            <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                                <i class="material-icons">military_tech</i>
+                            </div>
+                            <span class="mobile-grid-label">Berprestasi</span>
+                        </div>
+                    </a>
+                    <a href="?page=prestasi_juaraumum" class="mobile-grid-item">
+                        <div class="mobile-grid-box">
+                            <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #eab308, #ca8a04);">
+                                <i class="material-icons">emoji_events</i>
+                            </div>
+                            <span class="mobile-grid-label">Juara Umum</span>
+                        </div>
+                    </a>
+                    <a href="?page=denah" class="mobile-grid-item">
+                        <div class="mobile-grid-box">
+                            <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #14b8a6, #0d9488);">
+                                <i class="material-icons">map</i>
+                            </div>
+                            <span class="mobile-grid-label">Denah</span>
+                        </div>
+                    </a>
                 </div>
             </div>
         </div>

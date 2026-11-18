@@ -8,10 +8,10 @@
                 <div class="body">
                     <?php if (!empty($data_panitia['denah_lokasi'])): ?>
                         <div style="text-align: center;">
-                            <img src="assets/images/<?= $data_panitia['denah_lokasi'] ?>" alt="Denah Lokasi" class="img-responsive" style="margin: 0 auto; max-width: 100%; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                            <img src="assets/images/<?= htmlspecialchars($data_panitia['denah_lokasi']) ?>" alt="Denah Lokasi" class="img-responsive" style="margin: 0 auto; max-width: 100%; border-radius: 10px; box-shadow: 0 4px 14px rgba(0,0,0,0.1);">
                         </div>
                     <?php else: ?>
-                        <div class="alert alert-warning text-center">
+                        <div class="alert alert-warning text-center" style="border-radius:10px;">
                             <h4>Mohon Maaf</h4>
                             <p>Denah Lokasi belum tersedia.</p>
                         </div>
