@@ -43,6 +43,7 @@ if (!function_exists('map_column_putri')) {
 ?>
 
 <style>
+@media (min-width: 768px) {
     .table-responsive {
         overflow-x: auto;
         max-height: 70vh; /* Add vertical scroll */
@@ -117,6 +118,7 @@ if (!function_exists('map_column_putri')) {
     table.table-striped tbody tr:nth-of-type(even) td:nth-child(3) {
         background-color: #fff !important;
     }
+}
 
     .input-nilai {
         width: 70px;
@@ -264,12 +266,18 @@ window.addEventListener('load', function() {
     $(document).on('click', '.btn-edit', function() {
         var tr = $(this).closest('tr');
         tr.find('.input-nilai').prop('disabled', false);
-        $(this).hide();
-        tr.find('.btn-simpan').show();
+        this.style.setProperty('display', 'none', 'important');
+        var btnSimpan = tr.find('.btn-simpan')[0];
+        if (btnSimpan) {
+            btnSimpan.style.setProperty('display', 'inline-flex', 'important');
+        }
+        var firstInput = tr.find('.input-nilai')[0];
+        if (firstInput) firstInput.focus();
     });
 
     // Save button handler
     $(document).on('click', '.btn-simpan', function() {
+        var self = this;
         var tr = $(this).closest('tr');
         var id = tr.data('id');
         var peserta_id = tr.data('peserta-id');
@@ -331,8 +339,11 @@ window.addEventListener('load', function() {
                         tr.data('id', response.new_id);
                     }
                     tr.find('.input-nilai').prop('disabled', true);
-                    tr.find('.btn-simpan').hide();
-                    tr.find('.btn-edit').show();
+                    self.style.setProperty('display', 'none', 'important');
+                    var btnEdit = tr.find('.btn-edit')[0];
+                    if (btnEdit) {
+                        btnEdit.style.setProperty('display', 'inline-flex', 'important');
+                    }
                     
                     // Update total
                     tr.find('.cell-total').text(response.total);

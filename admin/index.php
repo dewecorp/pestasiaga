@@ -541,9 +541,33 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
             padding: 5px 10px !important;
             font-size: 11px !important;
             border-radius: 6px !important;
-            display: inline-flex !important;
+            display: inline-flex;
             align-items: center !important;
             gap: 4px !important;
+        }
+
+        /* Penyesuaian khusus form input-nilai di kartu mobile */
+        .table-responsive table tbody tr td .input-nilai {
+            width: 75px !important;
+            padding: 5px 6px !important;
+            font-size: 13px !important;
+            font-weight: 700 !important;
+            text-align: right !important;
+            border-radius: 6px !important;
+            box-sizing: border-box !important;
+            -webkit-appearance: none !important;
+            margin: 0 !important;
+        }
+        .table-responsive table tbody tr td .input-nilai:disabled {
+            background: transparent !important;
+            border: 1px dashed #cbd5e1 !important;
+            color: #1e293b !important;
+        }
+        .table-responsive table tbody tr td .input-nilai:not(:disabled) {
+            background: #ffffff !important;
+            border: 1.5px solid #2e7d32 !important;
+            box-shadow: 0 0 0 2px rgba(46,125,50,0.15) !important;
+            color: #0f172a !important;
         }
 
         /* State jika tabel kosong */
