@@ -49,6 +49,25 @@ $tampil = $sql->fetch_assoc();
 $sql_logo = $koneksi->query("SELECT * FROM tb_panitia");
 $data = $sql_logo->fetch_assoc();
 require_admin();
+
+$page = $_GET['page'] ?? '';
+$admin_titles = [
+    '' => 'Dashboard Admin',
+    'index' => 'Dashboard Admin',
+    'taman' => 'Taman-taman',
+    'juri' => 'Dewan Juri',
+    'pesertapa' => 'Barung Putra',
+    'pesertapi' => 'Barung Putri',
+    'rekapawalputra' => 'Rekap Nilai Barung Putra',
+    'rekapawalputri' => 'Rekap Nilai Barung Putri',
+    'rekapakhirputra' => 'Barung Berprestasi Putra',
+    'rekapakhirputri' => 'Barung Berprestasi Putri',
+    'juaraumum' => 'Juara Umum',
+    'backup' => 'Backup & Restore',
+    'user' => 'Data User',
+    'panitia' => 'Pengaturan'
+];
+$current_title = $admin_titles[$page] ?? 'Dashboard Admin';
 ?>
 <!DOCTYPE html>
 <html>
@@ -57,40 +76,7 @@ require_admin();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>
-        <?php
-		$page = @$_GET['page'];
-		if(!empty($page)){
-		if ($page == 'index') {
-		echo "Dashboard Admin";
-		} elseif($page == 'taman') {
-		echo "Taman-taman";
-		} elseif($page == 'juri') {
-		echo "Dewan Juri";
-		} elseif($page == 'pesertapa') {
-		echo "Barung Putra";
-		} elseif($page == 'pesertapi') {
-		echo "Barung Putri";
-		} elseif($page == 'rekapawalputra') {
-		echo "Rekap Nilai Barung Putra";
-		} elseif($page == 'rekapawalputri') {
-		echo "Rekap Nilai Barung Putri";
-		} elseif($page == 'rekapakhirputra') {
-		echo "Barung Berprestasi Putra";
-		} elseif($page == 'rekapakhirputri') {
-		echo "Barung Berprestasi Putri";
-		} elseif($page == 'juaraumum') {
-		echo "Juara Umum";
-		} elseif($page == 'user') {
-		echo "Data User";
-		} elseif($page == 'panitia') {
-		echo "Pengaturan";
-		}
-		} else {
-		echo "Dashboard Admin";
-		}
-		?>
-    </title>
+    <title><?= htmlspecialchars($current_title) ?> - Sistem Informasi Nilai</title>
     <!-- Favicon-->
     <link rel="icon" href="../assets/images/tunas.png" type="image/x-icon">
     <link href="../assets/css/material-google-font.css" rel="stylesheet" type="text/css">
@@ -177,13 +163,339 @@ require_admin();
             left: auto;
             margin-top: 8px !important;
         }
-        .navbar .navbar-nav.navbar-right > li.dropdown > .dropdown-menu:before {
-            content: '';
-            position: absolute;
-            top: -8px;
+    }
+
+    /* ===================================================
+       ADMIN MOBILE APP VIEW (< 768px)
+       =================================================== */
+    .admin-mobile-app-header,
+    .admin-mobile-bottom-nav {
+        display: none;
+    }
+
+    @media (max-width: 767px) {
+        body {
+            background-color: #f4f6f9 !important;
+            padding-top: 52px !important;
+            padding-bottom: 64px !important;
+        }
+
+        .desktop-navbar-wrapper {
+            display: none !important;
+        }
+
+        .navbar {
+            height: 52px !important;
+            min-height: 52px !important;
+            padding: 0 12px !important;
+            background: linear-gradient(135deg, #1b5e20, #2e7d32) !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.18) !important;
+            border: none !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            z-index: 1030 !important;
+            margin: 0 !important;
+        }
+        .navbar > .container-fluid {
+            padding: 0 !important;
+            height: 100% !important;
+        }
+
+        .admin-mobile-app-header {
+            display: flex !important;
+            align-items: center;
+            justify-content: space-between;
+            height: 52px;
+            width: 100%;
+        }
+        .admin-mobile-app-header .mob-header-btn {
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff !important;
+            text-decoration: none !important;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.12);
+            border: none;
+            outline: none;
+            flex-shrink: 0;
+            transition: background 0.15s ease;
+        }
+        .admin-mobile-app-header .mob-header-btn:active {
+            background: rgba(255,255,255,0.25);
+        }
+        .admin-mobile-app-header .mob-header-btn i.material-icons {
+            font-size: 22px;
+            line-height: 1;
+        }
+        .admin-mobile-app-header .mob-header-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 10px;
+            letter-spacing: 0.3px;
+        }
+        .admin-mobile-app-header .mob-header-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #ffffff;
+            text-decoration: none !important;
+            flex: 1;
+            min-width: 0;
+        }
+        .admin-mobile-app-header .mob-header-brand img {
+            height: 30px;
+            width: auto;
+            flex-shrink: 0;
+            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.25));
+        }
+        .admin-mobile-app-header .mob-brand-text {
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+        .admin-mobile-app-header .mob-brand-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.2;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .admin-mobile-app-header .mob-brand-sub {
+            font-size: 10px;
+            color: rgba(255,255,255,0.85);
+            line-height: 1.1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Content Area Gutters */
+        section.content {
+            margin: 14px 0 72px 0 !important;
+            padding: 0 14px !important;
+            transition: none !important;
+        }
+        section.content > .container-fluid {
+            padding: 0 !important;
+        }
+
+        /* Mobile Bottom Navigation Bar */
+        .admin-mobile-bottom-nav {
+            display: flex !important;
+            position: fixed;
+            bottom: 0;
             left: 0;
             right: 0;
-            height: 8px;
+            height: 58px;
+            background: #ffffff;
+            border-top: 1px solid #e0e0e0;
+            box-shadow: 0 -2px 14px rgba(0,0,0,0.08);
+            z-index: 9999;
+            align-items: center;
+            justify-content: space-around;
+            padding: 0 4px;
+        }
+        .admin-mobile-bottom-nav .bnav-btn {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none !important;
+            color: #78909c;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 4px 0;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: color 0.15s ease;
+            outline: none;
+        }
+        .admin-mobile-bottom-nav .bnav-btn * {
+            pointer-events: none;
+        }
+        .admin-mobile-bottom-nav .bnav-btn i.material-icons {
+            font-size: 22px;
+            margin-bottom: 2px;
+            display: block;
+            line-height: 1;
+            transition: transform 0.15s ease;
+        }
+        .admin-mobile-bottom-nav .bnav-btn.active {
+            color: #1b5e20 !important;
+            font-weight: 700;
+        }
+        .admin-mobile-bottom-nav .bnav-btn.active i.material-icons {
+            color: #1b5e20 !important;
+            transform: scale(1.1);
+        }
+        .admin-mobile-bottom-nav .bnav-btn:active {
+            background-color: rgba(27,94,32,0.06);
+            border-radius: 10px;
+        }
+
+        /* Kartu & Container */
+        .card {
+            border-radius: 16px !important;
+            border: 1px solid #edf2f7 !important;
+            box-shadow: 0 3px 12px rgba(0,0,0,0.04) !important;
+            margin-bottom: 14px !important;
+            overflow: hidden;
+        }
+        .card .header {
+            padding: 14px 16px !important;
+            border-top-left-radius: 16px !important;
+            border-top-right-radius: 16px !important;
+        }
+        .card .header h2 {
+            font-size: 14px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.3px !important;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .card .body {
+            padding: 14px !important;
+        }
+
+        /* Breadcrumb modern */
+        .breadcrumb {
+            padding: 10px 14px !important;
+            font-size: 12px !important;
+            border-radius: 12px !important;
+            margin-bottom: 12px !important;
+            display: flex !important;
+            align-items: center !important;
+            flex-wrap: wrap !important;
+            gap: 4px !important;
+        }
+        .breadcrumb > li + li:before {
+            content: '/' !important;
+            padding: 0 4px !important;
+            color: rgba(255,255,255,0.7) !important;
+        }
+
+        /* Toolbar Aksi & Tombol */
+        .card .body > .pull-right {
+            float: none !important;
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+            margin-bottom: 12px !important;
+        }
+        .card .body > br {
+            display: none !important;
+        }
+        .card .body .btn {
+            font-size: 12px !important;
+            padding: 6px 12px !important;
+            border-radius: 8px !important;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
+        }
+
+        /* Tabel Responsif Touch-friendly */
+        .table-responsive {
+            border-radius: 12px !important;
+            border: 1px solid #eef2f5 !important;
+            -webkit-overflow-scrolling: touch !important;
+            margin-bottom: 8px !important;
+        }
+        .table-responsive table {
+            margin-bottom: 0 !important;
+        }
+        .table > thead > tr > th {
+            font-size: 11px !important;
+            white-space: nowrap !important;
+            background-color: #f8fafc !important;
+            color: #475569 !important;
+            text-transform: uppercase !important;
+            padding: 10px 8px !important;
+        }
+        .table > tbody > tr > td {
+            font-size: 12px !important;
+            padding: 8px !important;
+            vertical-align: middle !important;
+        }
+
+        /* DataTables Controls di HP */
+        .dataTables_wrapper .dataTables_length {
+            float: none !important;
+            text-align: left !important;
+            margin-bottom: 8px !important;
+            font-size: 12px !important;
+        }
+        .dataTables_wrapper .dataTables_filter {
+            float: none !important;
+            text-align: left !important;
+            margin-bottom: 12px !important;
+        }
+        .dataTables_wrapper .dataTables_filter label {
+            width: 100% !important;
+            font-size: 12px !important;
+        }
+        .dataTables_wrapper .dataTables_filter input {
+            width: 100% !important;
+            margin-left: 0 !important;
+            border-radius: 8px !important;
+            border: 1px solid #cfd8dc !important;
+            padding: 6px 10px !important;
+            font-size: 13px !important;
+            margin-top: 4px !important;
+        }
+        .dataTables_wrapper .dataTables_info {
+            float: none !important;
+            text-align: center !important;
+            font-size: 11px !important;
+            margin-top: 8px !important;
+            color: #78909c !important;
+        }
+        .dataTables_wrapper .dataTables_paginate {
+            float: none !important;
+            text-align: center !important;
+            margin-top: 8px !important;
+        }
+        .dataTables_wrapper .pagination {
+            display: inline-flex !important;
+            flex-wrap: wrap !important;
+            justify-content: center !important;
+            margin: 4px 0 !important;
+        }
+        .dataTables_wrapper .pagination > li > a {
+            padding: 5px 10px !important;
+            font-size: 12px !important;
+            border-radius: 6px !important;
+            margin: 2px !important;
+        }
+
+        /* Sidebar Drawer Mobile */
+        aside#leftsidebar {
+            z-index: 10001 !important;
+            top: 0 !important;
+            height: 100vh !important;
+            box-shadow: 4px 0 24px rgba(0,0,0,0.25) !important;
+        }
+        body.overlay-open aside#leftsidebar,
+        body.overlay-open .sidebar {
+            margin-left: 0 !important;
+            z-index: 100001 !important;
+        }
+        .overlay {
+            z-index: 10000 !important;
         }
     }
 
@@ -212,47 +524,74 @@ require_admin();
     <!-- Top Bar -->
     <nav class="navbar">
         <div class="container-fluid">
-            <div class="navbar-header">
-                <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
-                <a href="javascript:void(0);" class="bars"></a>
-                <a class="navbar-brand" href="index.php">
-                    <img src="../assets/images/<?=$data['logo']; ?>" alt="Logo" style="height:24px; vertical-align:middle; margin-right:8px;">
-                    <?= strtoupper('Sistem Informasi Nilai'); ?> | <?= isset($data['nama_kegiatan']) ? strtoupper(htmlspecialchars($data['nama_kegiatan'])) . ' ' . date('Y') : '' ?>
-                </a>
+            <!-- Mobile App Header (< 768px) -->
+            <div class="admin-mobile-app-header">
+                <?php if (!empty($page) && $page !== 'index'): ?>
+                    <a href="index.php" class="mob-header-btn" title="Kembali ke Dashboard">
+                        <i class="material-icons">arrow_back</i>
+                    </a>
+                    <div class="mob-header-title"><?= htmlspecialchars($current_title) ?></div>
+                    <a href="index.php" class="mob-header-btn" title="Dashboard">
+                        <i class="material-icons">home</i>
+                    </a>
+                <?php else: ?>
+                    <div class="mob-header-brand">
+                        <img src="../assets/images/<?= $data['logo']; ?>" alt="Logo">
+                        <div class="mob-brand-text">
+                            <span class="mob-brand-title">Admin Pesta Siaga</span>
+                            <span class="mob-brand-sub"><?= htmlspecialchars($data['nama_kegiatan'] ?? '') ?></span>
+                        </div>
+                    </div>
+                    <a href="../auth/logout.php" class="js-logout mob-header-btn" title="Log Out">
+                        <i class="material-icons">power_settings_new</i>
+                    </a>
+                <?php endif; ?>
             </div>
-            <div class="collapse navbar-collapse" id="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="navbar-date" style="white-space: nowrap;">
-                        <a href="javascript:void(0);" class="navbar-date-link" style="pointer-events: none;">
-                            <?php $date=date('Y-m-d'); echo format_hari_tanggal($date) ?><span id="clock"></span>
-                        </a>
-                    </li>
-                    <li class="dropdown">
-                        <a href="javascript:void(0);" class="dropdown-toggle navbar-user" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span class="image">
-                                <?php
-                                $foto = isset($tampil['foto']) ? $tampil['foto'] : '';
-                                if (!empty($foto)) {
-                                    echo '<img src="../assets/images/'.$foto.'" width="34" height="34" alt="User" style="object-fit:cover;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,0.8);">';
-                                } else {
-                                    $initial = strtoupper(substr($tampil['nama'],0,1));
-                                    echo '<span style="display:inline-flex;align-items:center;justify-content:center;height:34px;width:34px;border-radius:50%;background:rgba(255,255,255,0.85);color:#1b5e20;font-weight:bold;font-size:16px;box-shadow:0 0 0 2px rgba(255,255,255,0.8);">'.$initial.'</span>';
-                                }
-                                ?>
-                            </span>
-                            <span style="font-weight: 700; font-size: 14px; white-space: nowrap; max-width: 240px; overflow: hidden; text-overflow: ellipsis;">
-                                <?= htmlspecialchars($tampil['nama']); ?>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu pull-right">
-                            <li>
-                                <a href="../auth/logout.php" class="js-logout">
-                                    <i class="material-icons">exit_to_app</i> Log Out
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
+
+            <!-- Desktop Topbar (>= 768px) -->
+            <div class="desktop-navbar-wrapper">
+                <div class="navbar-header">
+                    <a href="javascript:void(0);" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false"></a>
+                    <a href="javascript:void(0);" class="bars"></a>
+                    <a class="navbar-brand" href="index.php">
+                        <img src="../assets/images/<?=$data['logo']; ?>" alt="Logo" style="height:24px; vertical-align:middle; margin-right:8px;">
+                        <?= strtoupper('Sistem Informasi Nilai'); ?> | <?= isset($data['nama_kegiatan']) ? strtoupper(htmlspecialchars($data['nama_kegiatan'])) . ' ' . date('Y') : '' ?>
+                    </a>
+                </div>
+                <div class="collapse navbar-collapse" id="navbar-collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="navbar-date" style="white-space: nowrap;">
+                            <a href="javascript:void(0);" class="navbar-date-link" style="pointer-events: none;">
+                                <?php $date=date('Y-m-d'); echo format_hari_tanggal($date) ?><span id="clock"></span>
+                            </a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="javascript:void(0);" class="dropdown-toggle navbar-user" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span class="image">
+                                    <?php
+                                    $foto = isset($tampil['foto']) ? $tampil['foto'] : '';
+                                    if (!empty($foto)) {
+                                        echo '<img src="../assets/images/'.$foto.'" width="34" height="34" alt="User" style="object-fit:cover;border-radius:50%;box-shadow:0 0 0 2px rgba(255,255,255,0.8);">';
+                                    } else {
+                                        $initial = strtoupper(substr($tampil['nama'],0,1));
+                                        echo '<span style="display:inline-flex;align-items:center;justify-content:center;height:34px;width:34px;border-radius:50%;background:rgba(255,255,255,0.85);color:#1b5e20;font-weight:bold;font-size:16px;box-shadow:0 0 0 2px rgba(255,255,255,0.8);">'.$initial.'</span>';
+                                    }
+                                    ?>
+                                </span>
+                                <span style="font-weight: 700; font-size: 14px; white-space: nowrap; max-width: 240px; overflow: hidden; text-overflow: ellipsis;">
+                                    <?= htmlspecialchars($tampil['nama']); ?>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu pull-right">
+                                <li>
+                                    <a href="../auth/logout.php" class="js-logout">
+                                        <i class="material-icons">exit_to_app</i> Log Out
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>
@@ -537,6 +876,7 @@ require_admin();
     <script src="../assets/js/pages/charts/chartjs.js?v=20260927"></script>
     <!-- Demo Js -->
     <script src="../assets/js/demo.js"></script>
+    <script src="../assets/plugins/autosize/autosize.min.js"></script>
     <script src="../assets/js/pages/forms/basic-form-elements.js"></script>
     <!-- SweetAlert Plugin Js -->
 
@@ -610,6 +950,8 @@ require_admin();
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 legend: {
                     display: false
                 },
@@ -641,6 +983,8 @@ require_admin();
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 legend: {
                     display: false
                 },
@@ -653,6 +997,46 @@ require_admin();
                 }
             }
         });
+        }
+    </script>
+
+    <!-- Mobile Bottom Navigation Bar (< 768px) -->
+    <div class="admin-mobile-bottom-nav">
+        <a href="index.php" class="bnav-btn <?= (empty($page) || $page === 'index') ? 'active' : '' ?>">
+            <i class="material-icons">dashboard</i>
+            <span>Dashboard</span>
+        </a>
+        <a href="?page=pesertapa" class="bnav-btn <?= in_array($page, ['pesertapa', 'pesertapi']) ? 'active' : '' ?>">
+            <i class="material-icons">people</i>
+            <span>Peserta</span>
+        </a>
+        <a href="?page=rekapawalputra" class="bnav-btn <?= in_array($page, ['rekapawalputra', 'rekapawalputri']) ? 'active' : '' ?>">
+            <i class="material-icons">assessment</i>
+            <span>Nilai</span>
+        </a>
+        <a href="?page=juaraumum" class="bnav-btn <?= in_array($page, ['rekapakhirputra', 'rekapakhirputri', 'juaraumum']) ? 'active' : '' ?>">
+            <i class="material-icons">school</i>
+            <span>Prestasi</span>
+        </a>
+        <button type="button" class="bnav-btn js-admin-mob-drawer-toggle">
+            <i class="material-icons">menu</i>
+            <span>Menu</span>
+        </button>
+    </div>
+
+    <script>
+        var mobDrawerBtn = document.querySelector('.js-admin-mob-drawer-toggle');
+        if (mobDrawerBtn) {
+            mobDrawerBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                document.body.classList.toggle('overlay-open');
+                if (document.body.classList.contains('overlay-open')) {
+                    $('.overlay').fadeIn();
+                } else {
+                    $('.overlay').fadeOut();
+                }
+            });
         }
     </script>
 </body>

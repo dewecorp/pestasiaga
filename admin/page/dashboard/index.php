@@ -123,6 +123,112 @@ $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
             .welcome-stats { padding: 12px 16px; }
             .welcome-stat .stat-num { font-size: 18px; }
         }
+
+        /* Admin Mobile Quick Grid Menu (< 768px) */
+        .admin-mobile-grid {
+            display: none;
+        }
+        @media (max-width: 767px) {
+            .welcome-card {
+                border-radius: 18px !important;
+                margin-bottom: 16px !important;
+            }
+            .admin-mobile-grid {
+                display: block;
+                margin-bottom: 16px;
+            }
+            .mob-section-title {
+                display: flex;
+                justify-content: space-between;
+                align-items: baseline;
+                margin-bottom: 10px;
+                padding: 0 4px;
+            }
+            .mob-section-title span {
+                font-size: 13px;
+                font-weight: 700;
+                color: #1b5e20;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+            .mob-section-title small {
+                font-size: 11px;
+                color: #78909c;
+                font-weight: 500;
+            }
+            .mob-grid-row {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 8px;
+            }
+            .mob-grid-item {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                background: #ffffff;
+                border-radius: 14px;
+                padding: 10px 4px 8px;
+                text-decoration: none !important;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+                border: 1px solid #edf2f7;
+                transition: transform 0.15s ease, box-shadow 0.15s ease;
+            }
+            .mob-grid-item:active {
+                transform: scale(0.93);
+                box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            }
+            .mob-grid-icon {
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #ffffff;
+                margin-bottom: 5px;
+                box-shadow: 0 3px 8px rgba(0,0,0,0.14);
+            }
+            .mob-grid-icon i.material-icons {
+                font-size: 22px;
+                line-height: 1;
+            }
+            .mob-grid-label {
+                font-size: 10px;
+                font-weight: 600;
+                color: #37474f;
+                text-align: center;
+                line-height: 1.15;
+                max-width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: 0 2px;
+            }
+            /* Icon Gradients */
+            .icon-teal   { background: linear-gradient(135deg, #00897b, #004d40); }
+            .icon-blue   { background: linear-gradient(135deg, #1e88e5, #0d47a1); }
+            .icon-amber  { background: linear-gradient(135deg, #fb8c00, #e65100); }
+            .icon-rose   { background: linear-gradient(135deg, #e91e63, #880e4f); }
+            .icon-cyan   { background: linear-gradient(135deg, #00acc1, #006064); }
+            .icon-purple { background: linear-gradient(135deg, #8e24aa, #4a148c); }
+            .icon-orange { background: linear-gradient(135deg, #ff8f00, #e65100); }
+            .icon-red    { background: linear-gradient(135deg, #e53935, #b71c1c); }
+            .icon-green  { background: linear-gradient(135deg, #43a047, #1b5e20); }
+            .icon-slate  { background: linear-gradient(135deg, #546e7a, #263238); }
+            .icon-sky    { background: linear-gradient(135deg, #0288d1, #01579b); }
+            .icon-indigo { background: linear-gradient(135deg, #3949ab, #1a237e); }
+        }
+        .chart-responsive-wrap {
+            position: relative;
+            height: 380px;
+            width: 100%;
+        }
+        @media (max-width: 767px) {
+            .chart-responsive-wrap {
+                height: 560px !important;
+            }
+        }
     </style>
 
     <div class="welcome-card">
@@ -169,6 +275,88 @@ $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
                 <div class="stat-num"><?= $jumlah_juri ?></div>
                 <div class="stat-lbl">Dewan Juri</div>
             </div>
+        </div>
+    </div>
+
+    <!-- Mobile Quick Grid Menu (Hanya tampil di HP < 768px) -->
+    <div class="admin-mobile-grid">
+        <div class="mob-section-title">
+            <span>Menu Cepat</span>
+            <small>Akses cepat layanan admin</small>
+        </div>
+        <div class="mob-grid-row">
+            <a href="?page=taman" class="mob-grid-item">
+                <div class="mob-grid-icon icon-teal">
+                    <i class="material-icons">domain</i>
+                </div>
+                <span class="mob-grid-label">Taman</span>
+            </a>
+            <a href="?page=juri" class="mob-grid-item">
+                <div class="mob-grid-icon icon-blue">
+                    <i class="material-icons">groups</i>
+                </div>
+                <span class="mob-grid-label">Dewan Juri</span>
+            </a>
+            <a href="?page=pesertapa" class="mob-grid-item">
+                <div class="mob-grid-icon icon-amber">
+                    <i class="material-icons">directions_run</i>
+                </div>
+                <span class="mob-grid-label">Barung PA</span>
+            </a>
+            <a href="?page=pesertapi" class="mob-grid-item">
+                <div class="mob-grid-icon icon-rose">
+                    <i class="material-icons">local_florist</i>
+                </div>
+                <span class="mob-grid-label">Barung PI</span>
+            </a>
+            <a href="?page=rekapawalputra" class="mob-grid-item">
+                <div class="mob-grid-icon icon-cyan">
+                    <i class="material-icons">format_list_numbered</i>
+                </div>
+                <span class="mob-grid-label">Rekap PA</span>
+            </a>
+            <a href="?page=rekapawalputri" class="mob-grid-item">
+                <div class="mob-grid-icon icon-purple">
+                    <i class="material-icons">assessment</i>
+                </div>
+                <span class="mob-grid-label">Rekap PI</span>
+            </a>
+            <a href="?page=rekapakhirputra" class="mob-grid-item">
+                <div class="mob-grid-icon icon-orange">
+                    <i class="material-icons">thumb_up</i>
+                </div>
+                <span class="mob-grid-label">Berprestasi</span>
+            </a>
+            <a href="?page=juaraumum" class="mob-grid-item">
+                <div class="mob-grid-icon icon-red">
+                    <i class="material-icons">school</i>
+                </div>
+                <span class="mob-grid-label">Juara Umum</span>
+            </a>
+            <a href="?page=user" class="mob-grid-item">
+                <div class="mob-grid-icon icon-green">
+                    <i class="material-icons">person</i>
+                </div>
+                <span class="mob-grid-label">Data User</span>
+            </a>
+            <a href="?page=panitia" class="mob-grid-item">
+                <div class="mob-grid-icon icon-slate">
+                    <i class="material-icons">settings</i>
+                </div>
+                <span class="mob-grid-label">Pengaturan</span>
+            </a>
+            <a href="../index.php" target="_blank" class="mob-grid-item">
+                <div class="mob-grid-icon icon-sky">
+                    <i class="material-icons">public</i>
+                </div>
+                <span class="mob-grid-label">Lihat Web</span>
+            </a>
+            <a href="?page=backup" class="mob-grid-item">
+                <div class="mob-grid-icon icon-indigo">
+                    <i class="material-icons">backup</i>
+                </div>
+                <span class="mob-grid-label">Backup DB</span>
+            </a>
         </div>
     </div>
     <!-- Widgets -->
@@ -263,7 +451,9 @@ $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
                     <h2>GRAFIK NILAI BARUNG PUTRA</h2>
                 </div>
                 <div class="body">
-                    <canvas id="myChart" height="150"></canvas>
+                    <div class="chart-responsive-wrap">
+                        <canvas id="myChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
@@ -273,7 +463,9 @@ $level = ($tampil['level'] == 'admin') ? "Admin" : "Peserta";
                     <h2>GRAFIK NILAI BARUNG PUTRI</h2>
                 </div>
                 <div class="body">
-                    <canvas id="myChart2" height="150"></canvas>
+                    <div class="chart-responsive-wrap">
+                        <canvas id="myChart2"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
