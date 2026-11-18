@@ -268,10 +268,9 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
             .card .body {
                 padding: 16px 18px !important;
             }
+            /* Footer & pesan sambutan disembunyikan di mobile */
             footer {
-                margin-top: 20px;
-                padding: 15px 0 25px;
-                font-size: 12px;
+                display: none !important;
             }
 
             /* Sembunyikan elemen desktop & hamburger di mobile */
@@ -354,68 +353,14 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
                 display: block !important;
             }
             .mobile-home-greeting,
-            .mobile-event-info,
-            .mobile-welcome {
+            .mobile-event-info {
                 display: block !important;
+            }
+            .mobile-welcome {
+                display: none !important;
             }
             .desktop-home-block {
                 display: none !important;
-            }
-            .mob-welcome-card {
-                background: #ffffff;
-                border-radius: 18px;
-                border: 1px solid #edf2f7;
-                box-shadow: 0 4px 16px rgba(0,0,0,0.05);
-                padding: 16px 16px 18px;
-                overflow: hidden;
-            }
-            .mob-welcome-img {
-                text-align: center;
-                margin-bottom: 12px;
-            }
-            .mob-welcome-img img {
-                max-width: 100%;
-                height: auto;
-                max-height: 220px;
-                border-radius: 14px;
-                object-fit: cover;
-            }
-            .mob-welcome-text {
-                font-size: 13.5px;
-                line-height: 1.65;
-                color: #455a64;
-            }
-            .mob-welcome-text h1,
-            .mob-welcome-text h2,
-            .mob-welcome-text h3,
-            .mob-welcome-text h4,
-            .mob-welcome-text h5 {
-                font-size: 16px !important;
-                font-weight: 800 !important;
-                color: #3e2723 !important;
-                margin: 0 0 8px !important;
-                line-height: 1.35 !important;
-            }
-            .mob-welcome-text p {
-                font-size: 13.5px !important;
-                line-height: 1.65 !important;
-                color: #546e7a !important;
-                margin-bottom: 10px !important;
-            }
-            .mob-welcome-text span,
-            .mob-welcome-text div {
-                font-size: inherit !important;
-                line-height: inherit !important;
-            }
-            .mob-welcome-text img {
-                max-width: 100%;
-                height: auto;
-                border-radius: 12px;
-            }
-            .mob-welcome-text ul,
-            .mob-welcome-text ol {
-                padding-left: 18px;
-                margin-bottom: 10px;
             }
 
             /* Mobile Bottom Navigation Bar */
