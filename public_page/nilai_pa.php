@@ -206,9 +206,11 @@ while ($r = $sql->fetch_assoc()) $rows[] = $r;
     });
 
     function filterCards(inputId, cardClass) {
-        var query = document.getElementById(inputId).value.toLowerCase().trim();
+        var inputEl = document.getElementById(inputId);
+        var query = inputEl.value.toLowerCase().trim();
         var cards = document.getElementsByClassName(cardClass);
-        var clearBtn = document.getElementById(inputId.replace('search', 'btnClearSearch'));
+        var wrap = inputEl.parentElement;
+        var clearBtn = wrap ? wrap.querySelector('button') : null;
         if (clearBtn) {
             clearBtn.style.display = query.length > 0 ? 'inline-flex' : 'none';
         }

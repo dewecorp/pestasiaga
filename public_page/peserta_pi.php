@@ -61,7 +61,7 @@ while ($r = $sql->fetch_assoc()) $rows[] = $r;
     </div>
 
     <div style="font-size:13px; font-weight:700; color:#c2185b; text-transform:uppercase; letter-spacing:0.8px; margin-bottom:12px; display:flex; align-items:center; gap:6px;">
-        <i class="material-icons" style="font-size:18px;">girl</i> Peserta Barung Putri
+        <i class="material-icons" style="font-size:18px;">local_florist</i> Peserta Barung Putri
     </div>
     <?php if (empty($rows)): ?>
         <div class="mob-card-item" style="text-align:center; color:#78909c;">Belum ada data peserta putri.</div>
@@ -88,9 +88,11 @@ while ($r = $sql->fetch_assoc()) $rows[] = $r;
 
 <script>
     function filterPeserta(inputId, cardClass) {
-        var query = document.getElementById(inputId).value.toLowerCase().trim();
+        var inputEl = document.getElementById(inputId);
+        var query = inputEl.value.toLowerCase().trim();
         var cards = document.getElementsByClassName(cardClass);
-        var clearBtn = document.getElementById(inputId.replace('search', 'btnClearSearch'));
+        var wrap = inputEl.parentElement;
+        var clearBtn = wrap ? wrap.querySelector('button') : null;
         if (clearBtn) {
             clearBtn.style.display = query.length > 0 ? 'inline-flex' : 'none';
         }

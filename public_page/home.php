@@ -214,8 +214,118 @@ if ($status_home == 'Tutup') {
             <h2><?= $data_panitia['nama_kegiatan'] ?> <?= date('Y') ?></h2>
         </div>
     </div>
+
+    <?php
+    // Tanggal kegiatan terformat untuk tampilan mobile
+    $tgl_mobile = '-';
+    if (!empty($data_panitia['waktu'])) {
+        $d_mobile = date_create($data_panitia['waktu']);
+        if ($d_mobile) {
+            $bulan_mobile = [
+                '01' => 'Januari', '02' => 'Februari', '03' => 'Maret', '04' => 'April',
+                '05' => 'Mei', '06' => 'Juni', '07' => 'Juli', '08' => 'Agustus',
+                '09' => 'September', '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
+            ];
+            $bln_mobile = date_format($d_mobile, "m");
+            $tgl_mobile = date_format($d_mobile, "d") . ' ' . ($bulan_mobile[$bln_mobile] ?? $bln_mobile) . ' ' . date_format($d_mobile, "Y");
+        } else {
+            $tgl_mobile = $data_panitia['waktu'];
+        }
+    }
+    ?>
+
+    <!-- MOBILE: Kartu Sapaan + Informasi Kegiatan (App Style) -->
+    <div class="container mobile-home-greeting" style="padding-top: 0;">
+        <div class="mob-greeting-card">
+            <div class="mob-greeting-avatar">
+                <img src="assets/images/<?= $data_panitia['logo'] ?>" alt="Logo">
+            </div>
+            <div class="mob-greeting-text">
+                <div class="mob-greeting-title">Selamat Datang di</div>
+                <div class="mob-greeting-name"><?= e($data_panitia['nama_kegiatan']) ?> <?= date('Y') ?></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mobile-event-info" style="padding-top: 0;">
+        <div class="mob-section-title"><i class="material-icons">info</i> Informasi Kegiatan</div>
+
+        <div class="mob-info-card">
+            <div class="mob-info-tile" style="background:#fff3e0;">
+                <i class="material-icons" style="color:#ef6c00;">event</i>
+            </div>
+            <div class="mob-info-body">
+                <div class="mob-info-label">Waktu Kegiatan</div>
+                <div class="mob-info-value"><?= e($tgl_mobile) ?></div>
+                <?php if (!empty($data_panitia['jam'])): ?>
+                    <span class="mob-info-chip">
+                        <i class="material-icons">schedule</i> <?= e($data_panitia['jam']) ?>
+                    </span>
+                <?php endif; ?>
+            </div>
+        </div>
+
+        <div class="mob-info-card">
+            <div class="mob-info-tile" style="background:#e8f5e9;">
+                <i class="material-icons" style="color:#2e7d32;">place</i>
+            </div>
+            <div class="mob-info-body">
+                <div class="mob-info-label">Lokasi Kegiatan</div>
+                <div class="mob-info-value"><?= e($data_panitia['tempat']) ?></div>
+            </div>
+        </div>
+
+        <div class="mob-section-title"><i class="material-icons">leaderboard</i> Ringkasan Data</div>
+        <div class="mob-stat-grid">
+            <div class="mob-stat-cell">
+                <div class="mob-stat-box">
+                    <div class="mob-stat-icon" style="background:#e8f5e9;">
+                        <i class="material-icons" style="color:#2e7d32;">domain</i>
+                    </div>
+                    <div>
+                        <div class="mob-stat-num"><?= (int)$jml_taman ?></div>
+                        <div class="mob-stat-name">Taman</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mob-stat-cell">
+                <div class="mob-stat-box">
+                    <div class="mob-stat-icon" style="background:#fff8e1;">
+                        <i class="material-icons" style="color:#f57f17;">gavel</i>
+                    </div>
+                    <div>
+                        <div class="mob-stat-num"><?= (int)$jml_juri ?></div>
+                        <div class="mob-stat-name">Dewan Juri</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mob-stat-cell">
+                <div class="mob-stat-box">
+                    <div class="mob-stat-icon" style="background:#e3f2fd;">
+                        <i class="material-icons" style="color:#1565c0;">directions_run</i>
+                    </div>
+                    <div>
+                        <div class="mob-stat-num"><?= (int)$jml_pa ?></div>
+                        <div class="mob-stat-name">Peserta Putra</div>
+                    </div>
+                </div>
+            </div>
+            <div class="mob-stat-cell">
+                <div class="mob-stat-box">
+                    <div class="mob-stat-icon" style="background:#fce4ec;">
+                        <i class="material-icons" style="color:#c2185b;">local_florist</i>
+                    </div>
+                    <div>
+                        <div class="mob-stat-num"><?= (int)$jml_pi ?></div>
+                        <div class="mob-stat-name">Peserta Putri</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="container content-section">
-        <div class="row">
+        <div class="row desktop-home-block">
             <div class="col-md-12">
                 <!-- Info Box with Counts -->
                 <div class="card event-info-card">
@@ -338,7 +448,7 @@ if ($status_home == 'Tutup') {
                     <a href="?page=peserta_pa" class="mobile-grid-item">
                         <div class="mobile-grid-box">
                             <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
-                                <i class="material-icons">boy</i>
+                                <i class="material-icons">directions_run</i>
                             </div>
                             <span class="mobile-grid-label">Peserta PA</span>
                         </div>
@@ -346,7 +456,7 @@ if ($status_home == 'Tutup') {
                     <a href="?page=peserta_pi" class="mobile-grid-item">
                         <div class="mobile-grid-box">
                             <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);">
-                                <i class="material-icons">girl</i>
+                                <i class="material-icons">local_florist</i>
                             </div>
                             <span class="mobile-grid-label">Peserta PI</span>
                         </div>
@@ -395,7 +505,7 @@ if ($status_home == 'Tutup') {
             </div>
         </div>
 
-        <div class="row">
+        <div class="row desktop-home-block">
             <div class="col-md-12">
                 <div class="card">
                     <div class="header bg-purple">
@@ -410,6 +520,23 @@ if ($status_home == 'Tutup') {
                         <div class="lead-message">
                             <?= $data_panitia['pesan_beranda'] ?? '' ?>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MOBILE: Pesan Sambutan (App Style) -->
+        <div class="row mobile-welcome">
+            <div class="col-xs-12">
+                <div class="mob-section-title"><i class="material-icons">campaign</i> Pesan Sambutan</div>
+                <div class="mob-welcome-card">
+                    <?php if (!empty($data_panitia['info_image'])): ?>
+                        <div class="mob-welcome-img">
+                            <img src="assets/images/<?= $data_panitia['info_image'] ?>" alt="Info Image">
+                        </div>
+                    <?php endif; ?>
+                    <div class="mob-welcome-text">
+                        <?= $data_panitia['pesan_beranda'] ?? '' ?>
                     </div>
                 </div>
             </div>

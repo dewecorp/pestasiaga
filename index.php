@@ -183,7 +183,10 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
         .mob-sheet-overlay,
         .mob-sheet-content,
         .mobile-grid-home,
-        .mobile-card-view {
+        .mobile-card-view,
+        .mobile-home-greeting,
+        .mobile-event-info,
+        .mobile-welcome {
             display: none !important;
         }
         .desktop-navbar-header,
@@ -350,6 +353,70 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
             .mobile-grid-home {
                 display: block !important;
             }
+            .mobile-home-greeting,
+            .mobile-event-info,
+            .mobile-welcome {
+                display: block !important;
+            }
+            .desktop-home-block {
+                display: none !important;
+            }
+            .mob-welcome-card {
+                background: #ffffff;
+                border-radius: 18px;
+                border: 1px solid #edf2f7;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+                padding: 16px 16px 18px;
+                overflow: hidden;
+            }
+            .mob-welcome-img {
+                text-align: center;
+                margin-bottom: 12px;
+            }
+            .mob-welcome-img img {
+                max-width: 100%;
+                height: auto;
+                max-height: 220px;
+                border-radius: 14px;
+                object-fit: cover;
+            }
+            .mob-welcome-text {
+                font-size: 13.5px;
+                line-height: 1.65;
+                color: #455a64;
+            }
+            .mob-welcome-text h1,
+            .mob-welcome-text h2,
+            .mob-welcome-text h3,
+            .mob-welcome-text h4,
+            .mob-welcome-text h5 {
+                font-size: 16px !important;
+                font-weight: 800 !important;
+                color: #3e2723 !important;
+                margin: 0 0 8px !important;
+                line-height: 1.35 !important;
+            }
+            .mob-welcome-text p {
+                font-size: 13.5px !important;
+                line-height: 1.65 !important;
+                color: #546e7a !important;
+                margin-bottom: 10px !important;
+            }
+            .mob-welcome-text span,
+            .mob-welcome-text div {
+                font-size: inherit !important;
+                line-height: inherit !important;
+            }
+            .mob-welcome-text img {
+                max-width: 100%;
+                height: auto;
+                border-radius: 12px;
+            }
+            .mob-welcome-text ul,
+            .mob-welcome-text ol {
+                padding-left: 18px;
+                margin-bottom: 10px;
+            }
 
             /* Mobile Bottom Navigation Bar */
             .mobile-bottom-nav {
@@ -450,6 +517,175 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
                 line-height: 1.2;
                 display: block;
                 margin-top: 2px;
+            }
+
+            /* Mobile Home Greeting & Info Cards (App Style) */
+            .mob-greeting-card {
+                background: #ffffff;
+                border-radius: 18px;
+                padding: 16px 16px 14px;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+                border: 1px solid #edf2f7;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 12px;
+            }
+            .mob-greeting-avatar {
+                width: 46px;
+                height: 46px;
+                border-radius: 14px;
+                background: #fdf3ea;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+                overflow: hidden;
+            }
+            .mob-greeting-avatar img {
+                width: 32px;
+                height: 32px;
+                object-fit: contain;
+            }
+            .mob-greeting-text {
+                flex: 1;
+                min-width: 0;
+            }
+            .mob-greeting-title {
+                font-size: 11px;
+                font-weight: 700;
+                letter-spacing: 0.6px;
+                text-transform: uppercase;
+                color: #a1887f;
+                margin-bottom: 2px;
+            }
+            .mob-greeting-name {
+                font-size: 15px;
+                font-weight: 800;
+                color: #3e2723;
+                line-height: 1.25;
+            }
+
+            .mob-info-card {
+                background: #ffffff;
+                border-radius: 18px;
+                padding: 14px 16px;
+                box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+                border: 1px solid #edf2f7;
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 10px;
+            }
+            .mob-info-tile {
+                width: 42px;
+                height: 42px;
+                border-radius: 13px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            .mob-info-tile i.material-icons {
+                font-size: 22px;
+            }
+            .mob-info-body {
+                flex: 1;
+                min-width: 0;
+            }
+            .mob-info-label {
+                font-size: 10px;
+                font-weight: 700;
+                letter-spacing: 0.7px;
+                text-transform: uppercase;
+                color: #90a4ae;
+                margin-bottom: 2px;
+            }
+            .mob-info-value {
+                font-size: 14px;
+                font-weight: 700;
+                color: #263238;
+                line-height: 1.3;
+                word-break: break-word;
+            }
+            .mob-info-chip {
+                display: inline-flex;
+                align-items: center;
+                gap: 3px;
+                background: #f1f5f9;
+                color: #546e7a;
+                border-radius: 999px;
+                padding: 2px 9px;
+                font-size: 11px;
+                font-weight: 700;
+                margin-top: 5px;
+            }
+            .mob-info-chip i.material-icons {
+                font-size: 13px;
+            }
+
+            .mob-stat-grid {
+                display: flex;
+                flex-wrap: wrap;
+                margin: 0 -4px 4px;
+            }
+            .mob-stat-cell {
+                flex: 0 0 50%;
+                max-width: 50%;
+                padding: 0 4px;
+                box-sizing: border-box;
+                margin-bottom: 8px;
+            }
+            .mob-stat-box {
+                background: #ffffff;
+                border-radius: 16px;
+                border: 1px solid #edf2f7;
+                box-shadow: 0 3px 12px rgba(0,0,0,0.04);
+                padding: 12px 12px 10px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .mob-stat-icon {
+                width: 36px;
+                height: 36px;
+                border-radius: 11px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+            .mob-stat-icon i.material-icons {
+                font-size: 19px;
+            }
+            .mob-stat-num {
+                font-size: 19px;
+                font-weight: 800;
+                color: #263238;
+                line-height: 1;
+            }
+            .mob-stat-name {
+                font-size: 10px;
+                font-weight: 700;
+                color: #90a4ae;
+                text-transform: uppercase;
+                letter-spacing: 0.4px;
+                margin-top: 3px;
+            }
+
+            .mob-section-title {
+                font-size: 11px;
+                font-weight: 800;
+                color: #8d6e63;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                margin: 16px 0 10px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+            .mob-section-title i.material-icons {
+                font-size: 16px;
             }
 
             /* Mobile Card View Items */
@@ -782,7 +1018,7 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
             <a href="?page=peserta_pa" class="mobile-grid-item" onclick="closeMobSheet()">
                 <div class="mobile-grid-box">
                     <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #3b82f6, #2563eb);">
-                        <i class="material-icons">boy</i>
+                        <i class="material-icons">directions_run</i>
                     </div>
                     <span class="mobile-grid-label">Peserta PA</span>
                 </div>
@@ -790,7 +1026,7 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
             <a href="?page=peserta_pi" class="mobile-grid-item" onclick="closeMobSheet()">
                 <div class="mobile-grid-box">
                     <div class="mobile-grid-icon" style="background: linear-gradient(135deg, #ec4899, #db2777);">
-                        <i class="material-icons">girl</i>
+                        <i class="material-icons">local_florist</i>
                     </div>
                     <span class="mobile-grid-label">Peserta PI</span>
                 </div>
