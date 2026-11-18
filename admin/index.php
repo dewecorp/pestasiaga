@@ -285,11 +285,29 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
         /* Content Area Gutters */
         section.content {
             margin: 14px 0 72px 0 !important;
-            padding: 0 14px !important;
+            padding: 0 16px !important;
             transition: none !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+            max-width: 100% !important;
         }
-        section.content > .container-fluid {
+        section.content > .container-fluid,
+        section.content .container-fluid {
             padding: 0 !important;
+            margin: 0 !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
+        }
+        /* Netralkan negative margin dari .row Bootstrap */
+        section.content .row,
+        section.content .row.clearfix {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        section.content [class*="col-"] {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
 
         /* Mobile Bottom Navigation Bar */
@@ -373,21 +391,11 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
             padding: 14px !important;
         }
 
-        /* Breadcrumb modern */
-        .breadcrumb {
-            padding: 10px 14px !important;
-            font-size: 12px !important;
-            border-radius: 12px !important;
-            margin-bottom: 12px !important;
-            display: flex !important;
-            align-items: center !important;
-            flex-wrap: wrap !important;
-            gap: 4px !important;
-        }
-        .breadcrumb > li + li:before {
-            content: '/' !important;
-            padding: 0 4px !important;
-            color: rgba(255,255,255,0.7) !important;
+        /* Breadcrumb Disembunyikan saat Mobile */
+        .breadcrumb,
+        ol.breadcrumb,
+        .body > .breadcrumb {
+            display: none !important;
         }
 
         /* Toolbar Aksi & Tombol */
@@ -408,28 +416,148 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
             box-shadow: 0 2px 6px rgba(0,0,0,0.1) !important;
         }
 
-        /* Tabel Responsif Touch-friendly */
+        /* ========================================================
+           TRANSFORMASI TABEL KE CARD VIEW DI MOBILE
+           Tidak ada bentuk grid/tabel konvensional di HP
+           ======================================================== */
         .table-responsive {
-            border-radius: 12px !important;
-            border: 1px solid #eef2f5 !important;
-            -webkit-overflow-scrolling: touch !important;
-            margin-bottom: 8px !important;
+            border: none !important;
+            overflow: visible !important;
+            padding: 0 !important;
+            margin: 0 0 8px 0 !important;
+            background: transparent !important;
         }
-        .table-responsive table {
-            margin-bottom: 0 !important;
+
+        /* Sembunyikan Header Kolom Tabel */
+        .table-responsive table thead,
+        .table-responsive table.dataTable thead,
+        .table thead {
+            display: none !important;
         }
-        .table > thead > tr > th {
+
+        /* Tabel dan Body menjadi block container vertikal */
+        .table-responsive table,
+        .table-responsive table.dataTable,
+        .table-responsive table.table-bordered,
+        .table-responsive table.table-striped,
+        .table-responsive table.table-hover {
+            display: block !important;
+            width: 100% !important;
+            border: none !important;
+            background: transparent !important;
+        }
+
+        .table-responsive table tbody,
+        .table-responsive table.dataTable tbody {
+            display: block !important;
+            width: 100% !important;
+            border: none !important;
+        }
+
+        /* Tiap Baris (TR) Menjadi Kartu Mandiri */
+        .table-responsive table tbody tr,
+        .table-responsive table.dataTable tbody tr {
+            display: block !important;
+            background: #ffffff !important;
+            border: 1px solid #e2e8f0 !important;
+            border-radius: 14px !important;
+            padding: 12px 14px !important;
+            margin-bottom: 12px !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important;
+            position: relative !important;
+            box-sizing: border-box !important;
+        }
+
+        .table-responsive table tbody tr:hover,
+        .table-responsive table.dataTable tbody tr:hover {
+            background: #fafbfd !important;
+        }
+
+        /* Tiap Kolom (TD) Menjadi Baris Key-Value di dalam Kartu */
+        .table-responsive table tbody tr td,
+        .table-responsive table.dataTable tbody tr td {
+            display: flex !important;
+            justify-content: space-between !important;
+            align-items: center !important;
+            text-align: right !important;
+            padding: 7px 0 !important;
+            border: none !important;
+            border-bottom: 1px dashed #f1f5f9 !important;
+            font-size: 13px !important;
+            color: #1e293b !important;
+            line-height: 1.4 !important;
+            min-height: 30px !important;
+            white-space: normal !important;
+            word-break: break-word !important;
+            box-sizing: border-box !important;
+            width: 100% !important;
+        }
+
+        /* Kolom terakhir (Aksi / Tombol) */
+        .table-responsive table tbody tr td:last-child,
+        .table-responsive table.dataTable tbody tr td:last-child {
+            border-bottom: none !important;
+            padding-top: 10px !important;
+            padding-bottom: 2px !important;
+            justify-content: flex-end !important;
+            gap: 6px !important;
+        }
+        .table-responsive table tbody tr td:last-child::before,
+        .table-responsive table.dataTable tbody tr td:last-child::before {
+            display: none !important;
+        }
+
+        /* Kolom Pertama (No/Urut) */
+        .table-responsive table tbody tr td:first-child {
+            border-bottom: 1px solid #f1f5f9 !important;
+            font-weight: 700 !important;
+            color: #2e7d32 !important;
+        }
+
+        /* Label Otomatis dari Header Kolom via data-title */
+        .table-responsive table tbody tr td::before,
+        .table-responsive table.dataTable tbody tr td::before {
+            content: attr(data-title);
+            font-weight: 600;
+            color: #64748b;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: left;
+            margin-right: 12px;
+            flex-shrink: 0;
+            max-width: 48%;
+        }
+
+        .table-responsive table tbody tr td:not([data-title])::before,
+        .table-responsive table tbody tr td[data-title=""]::before {
+            display: none !important;
+        }
+
+        /* Tombol Aksi di dalam baris */
+        .table-responsive table tbody tr td .btn,
+        .table-responsive table.dataTable tbody tr td .btn {
+            margin: 0 !important;
+            padding: 5px 10px !important;
             font-size: 11px !important;
-            white-space: nowrap !important;
-            background-color: #f8fafc !important;
-            color: #475569 !important;
-            text-transform: uppercase !important;
-            padding: 10px 8px !important;
+            border-radius: 6px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            gap: 4px !important;
         }
-        .table > tbody > tr > td {
-            font-size: 12px !important;
-            padding: 8px !important;
-            vertical-align: middle !important;
+
+        /* State jika tabel kosong */
+        .table-responsive table tbody tr td.dataTables_empty,
+        .table-responsive table.dataTable tbody tr td.dataTables_empty {
+            display: block !important;
+            text-align: center !important;
+            padding: 24px 12px !important;
+            color: #94a3b8 !important;
+            font-style: italic !important;
+            border: none !important;
+        }
+        .table-responsive table tbody tr td.dataTables_empty::before {
+            display: none !important;
         }
 
         /* DataTables Controls di HP */
@@ -443,19 +571,26 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
             float: none !important;
             text-align: left !important;
             margin-bottom: 12px !important;
+            width: 100% !important;
         }
         .dataTables_wrapper .dataTables_filter label {
             width: 100% !important;
             font-size: 12px !important;
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            margin: 0 !important;
+            gap: 4px;
         }
         .dataTables_wrapper .dataTables_filter input {
             width: 100% !important;
+            max-width: 100% !important;
+            box-sizing: border-box !important;
             margin-left: 0 !important;
             border-radius: 8px !important;
             border: 1px solid #cfd8dc !important;
-            padding: 6px 10px !important;
+            padding: 7px 12px !important;
             font-size: 13px !important;
-            margin-top: 4px !important;
         }
         .dataTables_wrapper .dataTables_info {
             float: none !important;
@@ -1038,6 +1173,33 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
                 }
             });
         }
+
+        // Setup otomatis label kolom untuk kartu baris di mobile (hilangkan tampilan tabel)
+        function setupMobileTableCards() {
+            var tables = document.querySelectorAll('.table-responsive table, table.dataTable');
+            tables.forEach(function(table) {
+                var ths = table.querySelectorAll('thead th');
+                if (!ths || ths.length === 0) return;
+                var headers = Array.from(ths).map(function(th) {
+                    return th.innerText.replace(/[\n\r\t]+/g, ' ').trim();
+                });
+                var rows = table.querySelectorAll('tbody tr');
+                rows.forEach(function(tr) {
+                    var tds = tr.children;
+                    for (var i = 0; i < tds.length; i++) {
+                        if (headers[i] && !tds[i].classList.contains('dataTables_empty')) {
+                            tds[i].setAttribute('data-title', headers[i]);
+                        }
+                    }
+                });
+            });
+        }
+        $(document).ready(function() {
+            setupMobileTableCards();
+            $(document).on('draw.dt', function() {
+                setupMobileTableCards();
+            });
+        });
     </script>
 </body>
 
