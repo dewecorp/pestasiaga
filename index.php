@@ -77,6 +77,21 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
             background-color: #4E342E;
             color: white;
         }
+        /* Menu aktif: penanda khusus */
+        .navbar-default .navbar-nav > li.active > a,
+        .navbar-default .navbar-nav > li.active > a:hover,
+        .navbar-default .navbar-nav > li.active > a:focus {
+            background-color: rgba(255, 235, 59, 0.16) !important;
+            color: #ffeb3b !important;
+            box-shadow: inset 0 -3px 0 0 #ffeb3b;
+        }
+        .navbar-default .navbar-nav .dropdown-menu > li.active > a,
+        .navbar-default .navbar-nav .dropdown-menu > li.active > a:hover,
+        .navbar-default .navbar-nav .dropdown-menu > li.active > a:focus {
+            background-color: #f3ede9;
+            color: #5D4037;
+            font-weight: 700;
+        }
         @media (max-width: 767px) {
             .navbar-default .navbar-nav .open .dropdown-menu > li > a {
                 color: white !important;
@@ -875,32 +890,32 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
             </div>
             <div id="navbar" class="navbar-collapse collapse desktop-navbar-collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="./">Beranda</a></li>
+                    <li class="<?= empty($page) ? 'active' : '' ?>"><a href="./">Beranda</a></li>
                     <?php if (($data_panitia['status_home'] ?? 'Buka') == 'Buka') { ?>
-                    <li><a href="?page=taman">Taman</a></li>
-                    <li><a href="?page=juri">Juri</a></li>
-                    <li class="dropdown">
+                    <li class="<?= $page === 'taman' ? 'active' : '' ?>"><a href="?page=taman">Taman</a></li>
+                    <li class="<?= $page === 'juri' ? 'active' : '' ?>"><a href="?page=juri">Juri</a></li>
+                    <li class="dropdown <?= in_array($page, ['peserta_pa', 'peserta_pi']) ? 'active' : '' ?>">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Peserta <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="?page=peserta_pa">Putra</a></li>
-                            <li><a href="?page=peserta_pi">Putri</a></li>
+                            <li class="<?= $page === 'peserta_pa' ? 'active' : '' ?>"><a href="?page=peserta_pa">Putra</a></li>
+                            <li class="<?= $page === 'peserta_pi' ? 'active' : '' ?>"><a href="?page=peserta_pi">Putri</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
+                    <li class="dropdown <?= in_array($page, ['nilai_pa', 'nilai_pi']) ? 'active' : '' ?>">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Nilai <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="?page=nilai_pa">Rekap Nilai Putra</a></li>
-                            <li><a href="?page=nilai_pi">Rekap Nilai Putri</a></li>
+                            <li class="<?= $page === 'nilai_pa' ? 'active' : '' ?>"><a href="?page=nilai_pa">Rekap Nilai Putra</a></li>
+                            <li class="<?= $page === 'nilai_pi' ? 'active' : '' ?>"><a href="?page=nilai_pi">Rekap Nilai Putri</a></li>
                         </ul>
                     </li>
-                    <li class="dropdown">
+                    <li class="dropdown <?= in_array($page, ['prestasi_berprestasi', 'prestasi_juaraumum']) ? 'active' : '' ?>">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Prestasi <span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li><a href="?page=prestasi_berprestasi">Barung Berprestasi</a></li>
-                            <li><a href="?page=prestasi_juaraumum">Juara Umum</a></li>
+                            <li class="<?= $page === 'prestasi_berprestasi' ? 'active' : '' ?>"><a href="?page=prestasi_berprestasi">Barung Berprestasi</a></li>
+                            <li class="<?= $page === 'prestasi_juaraumum' ? 'active' : '' ?>"><a href="?page=prestasi_juaraumum">Juara Umum</a></li>
                         </ul>
                     </li>
-                    <li><a href="?page=denah">Denah Lokasi</a></li>
+                    <li class="<?= $page === 'denah' ? 'active' : '' ?>"><a href="?page=denah">Denah Lokasi</a></li>
                     <?php } ?>
                     <li>
                         <a href="auth/login.php" target="_blank" title="Login Admin" aria-label="Login Admin" class="navbar-btn" style="display:inline-flex;align-items:center;justify-content:center;margin-left:10px;margin-top:10px;width:34px;height:34px;border:none;background:transparent;padding:0;box-shadow:none;text-decoration:none;">
