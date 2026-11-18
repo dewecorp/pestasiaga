@@ -599,61 +599,13 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
             display: none !important;
         }
 
-        /* DataTables Controls di HP */
-        .dataTables_wrapper .dataTables_length {
-            float: none !important;
-            text-align: left !important;
-            margin-bottom: 8px !important;
-            font-size: 12px !important;
-        }
-        .dataTables_wrapper .dataTables_filter {
-            float: none !important;
-            text-align: left !important;
-            margin-bottom: 12px !important;
-            width: 100% !important;
-        }
-        .dataTables_wrapper .dataTables_filter label {
-            width: 100% !important;
-            font-size: 12px !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: flex-start !important;
-            margin: 0 !important;
-            gap: 4px;
-        }
-        .dataTables_wrapper .dataTables_filter input {
-            width: 100% !important;
-            max-width: 100% !important;
-            box-sizing: border-box !important;
-            margin-left: 0 !important;
-            border-radius: 8px !important;
-            border: 1px solid #cfd8dc !important;
-            padding: 7px 12px !important;
-            font-size: 13px !important;
-        }
-        .dataTables_wrapper .dataTables_info {
-            float: none !important;
-            text-align: center !important;
-            font-size: 11px !important;
-            margin-top: 8px !important;
-            color: #78909c !important;
-        }
-        .dataTables_wrapper .dataTables_paginate {
-            float: none !important;
-            text-align: center !important;
-            margin-top: 8px !important;
-        }
-        .dataTables_wrapper .pagination {
-            display: inline-flex !important;
-            flex-wrap: wrap !important;
-            justify-content: center !important;
-            margin: 4px 0 !important;
-        }
-        .dataTables_wrapper .pagination > li > a {
-            padding: 5px 10px !important;
-            font-size: 12px !important;
-            border-radius: 6px !important;
-            margin: 2px !important;
+        /* Hapus Pagination & Show Entries di Mobile */
+        .dataTables_wrapper .dataTables_length,
+        .dataTables_wrapper .dataTables_info,
+        .dataTables_wrapper .dataTables_paginate,
+        .dataTables_wrapper .pagination,
+        .pagination {
+            display: none !important;
         }
 
         /* Sidebar Drawer Mobile */
@@ -1234,6 +1186,14 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
             });
         }
         $(document).ready(function() {
+            // Saat mobile (< 768px), set page length DataTable ke all (-1) agar semua data tampil
+            if (window.innerWidth <= 767 && $.fn.DataTable) {
+                $('.table-responsive table, table.dataTable').each(function() {
+                    if ($.fn.DataTable.isDataTable(this)) {
+                        $(this).DataTable().page.len(-1).draw();
+                    }
+                });
+            }
             setupMobileTableCards();
             $(document).on('draw.dt', function() {
                 setupMobileTableCards();

@@ -823,6 +823,14 @@ $current_title = $page_titles[$page] ?? ($data_panitia['nama_kegiatan'] ?? 'Pest
                 font-weight: 800;
             }
 
+            /* Sembunyikan Pagination & Controls DataTable di Mobile */
+            .pagination,
+            .dataTables_paginate,
+            .dataTables_length,
+            .dataTables_info {
+                display: none !important;
+            }
+
             /* Sheet Modal for Mobile Menu */
             .mob-sheet-overlay {
                 position: fixed;
