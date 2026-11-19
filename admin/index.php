@@ -619,6 +619,64 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
             display: none !important;
         }
 
+        /* Modal Mobile: scroll penuh, tombol simpan selalu terjangkau */
+        .modal {
+            z-index: 100002 !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+            padding-right: 0 !important;
+        }
+        .modal-backdrop {
+            z-index: 100001 !important;
+        }
+        .modal-dialog {
+            width: auto !important;
+            max-width: calc(100% - 24px) !important;
+            margin: 12px auto 90px !important;
+        }
+        .modal .modal-content {
+            display: flex !important;
+            flex-direction: column !important;
+            max-height: calc(100vh - 110px) !important;
+            max-height: calc(100dvh - 110px) !important;
+            border-radius: 14px !important;
+        }
+        .modal .modal-content > form {
+            display: flex !important;
+            flex-direction: column !important;
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            overflow: hidden !important;
+        }
+        .modal .modal-header {
+            flex-shrink: 0 !important;
+        }
+        .modal .modal-body {
+            flex: 1 1 auto !important;
+            min-height: 0 !important;
+            overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch !important;
+        }
+        .modal .modal-content > form > hr {
+            flex-shrink: 0 !important;
+            margin: 0 !important;
+        }
+        .modal .modal-footer {
+            flex-shrink: 0 !important;
+            background: #ffffff !important;
+            border-top: 1px solid #eef2f6 !important;
+            padding: 10px 15px !important;
+        }
+        .modal .modal-footer .btn {
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 4px !important;
+            margin: 3px 0 !important;
+            padding: 8px 16px !important;
+            font-size: 12px !important;
+        }
+
         /* Sidebar Drawer Mobile */
         aside#leftsidebar {
             z-index: 10001 !important;
