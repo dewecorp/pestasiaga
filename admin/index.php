@@ -619,7 +619,7 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
             display: none !important;
         }
 
-        /* Modal Mobile: scroll penuh, tombol simpan selalu terjangkau */
+        /* Modal Mobile: tanpa scroll internal, sudut konsisten */
         .modal {
             z-index: 100002 !important;
             overflow-y: auto !important;
@@ -629,52 +629,84 @@ $current_title = $admin_titles[$page] ?? 'Dashboard Admin';
         .modal-backdrop {
             z-index: 100001 !important;
         }
-        .modal-dialog {
+        .modal .modal-dialog {
             width: auto !important;
             max-width: calc(100% - 24px) !important;
-            margin: 12px auto 90px !important;
+            margin: 16px auto 24px !important;
         }
         .modal .modal-content {
-            display: flex !important;
-            flex-direction: column !important;
-            max-height: calc(100vh - 110px) !important;
-            max-height: calc(100dvh - 110px) !important;
-            border-radius: 14px !important;
+            display: block !important;
+            max-height: none !important;
+            height: auto !important;
+            border: none !important;
+            border-radius: 18px !important;
+            overflow: hidden !important;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2) !important;
         }
         .modal .modal-content > form {
-            display: flex !important;
-            flex-direction: column !important;
-            flex: 1 1 auto !important;
-            min-height: 0 !important;
-            overflow: hidden !important;
+            display: block !important;
+            overflow: visible !important;
         }
         .modal .modal-header {
-            flex-shrink: 0 !important;
+            padding: 14px 18px !important;
+            border-bottom: 1px solid #eef2f6 !important;
+            border-radius: 0 !important;
+        }
+        .modal .modal-header .modal-title {
+            font-size: 14px !important;
+            font-weight: 700 !important;
+            letter-spacing: 0.3px !important;
+        }
+        .modal .modal-header .close {
+            margin-top: 0 !important;
+            opacity: 0.45 !important;
+            font-size: 22px !important;
+            line-height: 1 !important;
         }
         .modal .modal-body {
-            flex: 1 1 auto !important;
-            min-height: 0 !important;
-            overflow-y: auto !important;
-            -webkit-overflow-scrolling: touch !important;
+            overflow: visible !important;
+            max-height: none !important;
+            padding: 14px 18px 6px !important;
+        }
+        .modal .modal-body .form-group {
+            margin-bottom: 10px !important;
+        }
+        .modal .modal-body .form-line {
+            padding-bottom: 4px !important;
+        }
+        .modal .modal-body .form-line label {
+            font-size: 11px !important;
+            font-weight: 700 !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.4px !important;
+            color: #78909c !important;
+            margin-bottom: 2px !important;
+        }
+        .modal .modal-body .form-control {
+            font-size: 14px !important;
+            padding: 6px 0 !important;
+            border-radius: 0 !important;
         }
         .modal .modal-content > form > hr {
-            flex-shrink: 0 !important;
-            margin: 0 !important;
+            display: none !important;
         }
         .modal .modal-footer {
-            flex-shrink: 0 !important;
             background: #ffffff !important;
             border-top: 1px solid #eef2f6 !important;
-            padding: 10px 15px !important;
+            padding: 12px 18px !important;
+            text-align: right !important;
         }
         .modal .modal-footer .btn {
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
             gap: 4px !important;
-            margin: 3px 0 !important;
-            padding: 8px 16px !important;
+            margin: 0 0 0 8px !important;
+            padding: 8px 18px !important;
             font-size: 12px !important;
+            font-weight: 600 !important;
+            border-radius: 999px !important;
+            box-shadow: none !important;
         }
 
         /* Sidebar Drawer Mobile */
